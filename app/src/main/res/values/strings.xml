@@ -1,6 +1,19 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Go4Lunch</string>
-    <string name="login_with_twitter">Lopgin with Twitter</string>
+    <string name="login_with_twitter">Login with Twitter</string>
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="login_with_google">Login with Google</string>
+    <string name="connection_succeed">Connecté avec succés</string>
+    <string name="error_authentication_canceled">Authentification annulée</string>
+    <string name="error_no_internet">Pas de connection internet</string>
+    <string name="error_unknown_error">Erreur inconnue</string>
+
+    <!-- FACEBOOK PURPOSE -->
+    <string name="facebook_application_id" translatable="false">125372366068464</string>
+    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb125372366068464</string>
+
+    //twitter
+    <string name="twitter_consumer_key" translatable="false">oRCjlrXW2CrqjLzelpxUy7MUJ</string>
+    <string name="twitter_consumer_secret" translatable="false">PKoaUMpN2Ovj8HfqDtf6qLwBpY8wwWgUWioj5J27ERBXGrqLEs</string>
+<!--    had an error in those lines: forget translatable   -->
 </resources>
