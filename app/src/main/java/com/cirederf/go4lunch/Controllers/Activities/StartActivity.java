@@ -1,9 +1,13 @@
-package com.cirederf.go4lunch;
+package com.cirederf.go4lunch.Controllers.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.cirederf.go4lunch.Controllers.Activities.LoginActivity;
+import com.cirederf.go4lunch.Controllers.Activities.MainActivity;
+import com.cirederf.go4lunch.R;
 
 public class StartActivity extends AppCompatActivity {
 
