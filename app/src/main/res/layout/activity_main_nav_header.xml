@@ -13,6 +13,6 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/cup_of_tea" />
+        app:srcCompat="@drawable/restau_flou" />
 
 </LinearLayout>
