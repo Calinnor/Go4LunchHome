@@ -15,7 +15,8 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void startCorrectActivity() {
-        this.startLogin();
+       // this.startLogin();
+        this.startMain();
         //TODO: after isCurrentUserLogged implement, add here if logged or not and add startMain
     }
 
