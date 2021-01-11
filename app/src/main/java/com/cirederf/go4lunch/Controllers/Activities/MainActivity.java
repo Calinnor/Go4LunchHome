@@ -10,7 +10,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureNavigationDrawer();
         this.configureDrawerLayout();
         this.showDefaultFragment();
+        this.updateUi();
     }
 
     // Actions
@@ -144,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Nullable
     protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
+    //todo find how display values text in a drawer because this dont work: views doesnt exist.
 
 //    private void updateUi(){
 //        TextView userMail = findViewById(R.id.nav_header_user_email_txt);
@@ -156,6 +161,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        userName.setText(username);
 //        userMail.setText(email);
 //    }
+
+    //todo makes other requests for mail and picture
+    private void updateUi(){
+    NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
+    View headerView = navigationView.getHeaderView(0);
+    TextView navUsername = headerView.findViewById(R.id.nav_header_username_txt);
+    String username = TextUtils.isEmpty(this.getCurrentUser().getDisplayName()) ? getString(R.string.info_no_username_found) : this.getCurrentUser().getDisplayName();
+    navUsername.setText(username);
+    }
 
 
 
