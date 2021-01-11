@@ -10,18 +10,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.cirederf.go4lunch.Controllers.BaseActivity.BaseActivity;
-import com.cirederf.go4lunch.Controllers.Fragments.LogoutFragment;
 import com.cirederf.go4lunch.Controllers.Fragments.SettingsFragment;
 import com.cirederf.go4lunch.Controllers.Fragments.YourLunchFragment;
 import com.cirederf.go4lunch.R;
@@ -43,11 +36,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.activity_main_nav_view)
     NavigationView navigationView;
 
-    private Fragment logoutFragment;
     private Fragment settingsFragment;
     private Fragment yourLunchFragment;
 
-    private static final int FRAGMENT_LOGOUT = 0;
+    private static final int ITEM_MENU_LOGOUT = 0;
     private static final int FRAGMENT_SETTINGS = 1;
     private static final int FRAGMENT_YOUR_LUNCH = 2;
     private static final int SIGN_OUT_TASK = 10;
@@ -69,13 +61,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id){
             case R.id.activity_main_drawer_settings:
-                this.showFragment(FRAGMENT_SETTINGS);
+                this.showItemMenuAction(FRAGMENT_SETTINGS);
                 break;
             case R.id.activity_main_drawer_your_lunch:
-                this.showFragment(FRAGMENT_YOUR_LUNCH);
+                this.showItemMenuAction(FRAGMENT_YOUR_LUNCH);
                 break;
             case R.id.activity_main_drawer_logout:
-                this.showFragment(FRAGMENT_LOGOUT);
+                this.showItemMenuAction(ITEM_MENU_LOGOUT);
                 break;
             default:
                 break;
@@ -126,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.startTransactionFragment(this.yourLunchFragment);
     }
 
-    private void showFragment(int fragmentIdentifier){
+    private void showItemMenuAction(int fragmentIdentifier){
         switch (fragmentIdentifier){
-            case FRAGMENT_LOGOUT :
+            case ITEM_MENU_LOGOUT:
                 this.onClickLogoutButton();
                 break;
             case FRAGMENT_SETTINGS:
@@ -145,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void showDefaultFragment(){
         Fragment visibleFragment = getSupportFragmentManager().findFragmentById(R.id.activity_main_frame_layout);
         if (visibleFragment == null){
-            this.showFragment(FRAGMENT_YOUR_LUNCH);
+            this.showItemMenuAction(FRAGMENT_YOUR_LUNCH);
             this.navigationView.getMenu().getItem(0).setChecked(true);
         }
     }
