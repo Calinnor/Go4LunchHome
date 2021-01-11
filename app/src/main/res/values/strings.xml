@@ -20,4 +20,6 @@
     <!-- Used in NavigationDrawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="info_no_email_found">No mail found</string>
+    <string name="info_no_username_found">No username found</string>
 </resources>

@@ -6,4 +6,55 @@
     android:layout_height="match_parent"
     tools:context=".StartActivity">
 
+    <TextView
+        android:id="@+id/username_fromFirebase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="User Name"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/usermail_fromfirebase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="User Mail"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username_fromFirebase" />
+
+    <ImageView
+        android:id="@+id/user_picture_fromfirebase"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/twitter"
+        android:tooltipText="user picture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usermail_fromfirebase" />
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LogIn"
+        android:textSize="23sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_picture_fromfirebase" />
+
+    <TextView
+        android:id="@+id/usename_fromfirebase_atstart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start User Mail"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

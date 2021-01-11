@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Collections;
 
@@ -39,6 +41,24 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isCurrentUserLogged()) {
+            this.startMain();
+        }
+    }
+
+    @Nullable
+    private FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
+
+    private Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
+
+    private void startMain(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @OnClick({R.id.button_login_with_google, R.id.button_login_with_facebook, R.id.button_login_with_twitter })
