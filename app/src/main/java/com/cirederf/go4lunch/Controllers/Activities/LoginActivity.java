@@ -1,7 +1,6 @@
 package com.cirederf.go4lunch.Controllers.Activities;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.cirederf.go4lunch.Controllers.BaseActivity.BaseActivity;
 import com.cirederf.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Collections;
 
@@ -23,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private static final int RC_SIGNIN = 100;
     private static final int TWITTER_PROVIDER_CHOICE = 400;
@@ -40,8 +38,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(this.getFragmentLayout());
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public int getFragmentLayout() {
+        return R.layout.activity_login;
     }
 
     @Override
@@ -50,16 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         if(isCurrentUserLogged()) {
             this.startMain();
         }
-    }
-
-    @Nullable
-    private FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
-
-    private Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
-
-    private void startMain(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 
     @OnClick({R.id.button_login_with_google, R.id.button_login_with_facebook, R.id.button_login_with_twitter })
