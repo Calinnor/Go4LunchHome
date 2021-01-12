@@ -7,7 +7,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +23,6 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.Controllers.BaseActivity.BaseActivity;
-import com.cirederf.go4lunch.Controllers.Fragments.SettingsFragment;
 import com.cirederf.go4lunch.Controllers.Fragments.YourLunchFragment;
 import com.cirederf.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
@@ -28,6 +30,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 
@@ -55,12 +59,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void onResume() {
+        this.loadLocale();
         super.onResume();
         this.configureToolbar();
         this.configureNavigationDrawer();
         this.configureDrawerLayout();
         this.showDefaultFragment();
         this.updateUi();
+
     }
 
     // Actions
@@ -116,11 +122,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    private void showSettingsFragment(){
-        if (this.settingsFragment == null) this.settingsFragment = SettingsFragment.newInstance();
-        this.startTransactionFragment(this.settingsFragment);
-    }
-
     private void showYourLunchFragment(){
         if (this.yourLunchFragment == null) this.yourLunchFragment = YourLunchFragment.newInstance();
         this.startTransactionFragment(this.yourLunchFragment);
@@ -132,7 +133,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 this.onClickLogoutButton();
                 break;
             case FRAGMENT_SETTINGS:
-                this.showSettingsFragment();
+                this.changeLanguage();
                 break;
             case FRAGMENT_YOUR_LUNCH:
                 this.showYourLunchFragment();
@@ -152,7 +153,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Nullable
     protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
-    //todo find how display values text in a drawer because this dont work: views doesnt exist.
 
     private void updateUi(){
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
@@ -215,6 +215,53 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 })
                 .setNegativeButton(R.string.popup_message_choice_no, null)
                 .show();
+    }
+
+    //configure language change
+    private void changeLanguage(){
+        final String[] listItems= {getString(R.string.French), getString(R.string.English)};
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+        mBuilder.setTitle(R.string.choose_langage);
+        mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case 0:
+                        setLocale(getString(R.string.French));
+                        recreate();
+                        break;
+                    case 1:
+                        setLocale(getString(R.string.English));
+                        recreate();
+                        break;
+                    default:
+                        break;
+                }
+                dialog.dismiss();
+
+            }
+        });
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
+    }
+
+    private void setLocale(String lang){
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration configuration = new Configuration();
+        configuration.locale = locale;
+        getBaseContext().getResources().updateConfiguration(
+                configuration,
+                getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.settings), MODE_PRIVATE).edit();
+        editor.putString(getString(R.string.my_langage), lang);
+        editor.apply();
+    }
+
+    public void loadLocale(){
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.settings), Activity.MODE_PRIVATE);
+        String language = preferences.getString(getString(R.string.my_langage), "" );
+        setLocale(language);
     }
 
 }

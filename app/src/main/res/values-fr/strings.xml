@@ -13,4 +13,13 @@
     <string name="popup_message_confirmation_logout_account">Voulez vous vous déconnecter ?</string>
     <string name="popup_message_choice_yes">Se déconnecter</string>
     <string name="popup_message_choice_no">Rester connecté</string>
+    <string name="choose_langage">Choisissez votre langue</string>
+    <string name="your_lunch">Votre restaurant</string>
+    <string name="settings">Paramètres</string>
+    <string name="log_out">Se déconnecter</string>
+    <string name="French">Français</string>
+    <string name="English">Anglais</string>
+    <string name="locale_langage_value_en">en</string>
+    <string name="local_langage_value_fr">fr</string>
+    <string name="my_langage">Ma  langue</string>
 </resources>

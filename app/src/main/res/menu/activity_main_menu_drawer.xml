@@ -9,15 +9,15 @@
                 <item
                     android:id="@+id/activity_main_drawer_your_lunch"
                     android:icon="@drawable/ic_baseline_restaurant_menu_24"
-                    android:title="Your lunch" />
+                    android:title="@string/your_lunch" />
                 <item
                     android:id="@+id/activity_main_drawer_settings"
                     android:icon="@drawable/ic_baseline_settings_24"
-                    android:title="Settings" />
+                    android:title="@string/settings" />
                 <item
                     android:id="@+id/activity_main_drawer_logout"
                     android:icon="@drawable/ic_baseline_power_settings_new_24"
-                    android:title="Log out" />
+                    android:title="@string/log_out" />
             </group>
         </menu>
     </item>
