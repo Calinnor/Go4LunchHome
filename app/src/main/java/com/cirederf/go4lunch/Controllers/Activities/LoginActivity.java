@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -18,7 +17,6 @@ import com.firebase.ui.auth.IdpResponse;
 import java.util.Collections;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity {
@@ -34,13 +32,6 @@ public class LoginActivity extends BaseActivity {
     Button facebook;
     @BindView(R.id.button_login_with_google)
     Button google;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(this.getFragmentLayout());
-        ButterKnife.bind(this);
-    }
 
     @Override
     public int getFragmentLayout() {
