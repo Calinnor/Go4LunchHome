@@ -44,7 +44,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.activity_main_nav_view)
     NavigationView navigationView;
 
-    private Fragment settingsFragment;
     private Fragment yourLunchFragment;
 
     private static final int ITEM_MENU_LOGOUT = 0;
@@ -59,7 +58,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void onResume() {
-        this.loadLocale();
         super.onResume();
         this.configureToolbar();
         this.configureNavigationDrawer();
@@ -244,24 +242,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         AlertDialog mDialog = mBuilder.create();
         mDialog.show();
     }
-
-    private void setLocale(String lang){
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration configuration = new Configuration();
-        configuration.locale = locale;
-        getBaseContext().getResources().updateConfiguration(
-                configuration,
-                getBaseContext().getResources().getDisplayMetrics());
-        SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.settings), MODE_PRIVATE).edit();
-        editor.putString(getString(R.string.my_langage), lang);
-        editor.apply();
-    }
-
-    public void loadLocale(){
-        SharedPreferences preferences = getSharedPreferences(getString(R.string.settings), Activity.MODE_PRIVATE);
-        String language = preferences.getString(getString(R.string.my_langage), "" );
-        setLocale(language);
-    }
+//
+//    private void setLocale(String lang){
+//        Locale locale = new Locale(lang);
+//        Locale.setDefault(locale);
+//        Configuration configuration = new Configuration();
+//        configuration.locale = locale;
+//        getBaseContext().getResources().updateConfiguration(
+//                configuration,
+//                getBaseContext().getResources().getDisplayMetrics());
+//        SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.settings), MODE_PRIVATE).edit();
+//        editor.putString(getString(R.string.my_langage), lang);
+//        editor.apply();
+//    }
+//
+//    public void loadLocale(){
+//        SharedPreferences preferences = getSharedPreferences(getString(R.string.settings), Activity.MODE_PRIVATE);
+//        String language = preferences.getString(getString(R.string.my_langage), "" );
+//        setLocale(language);
+//    }
 
 }

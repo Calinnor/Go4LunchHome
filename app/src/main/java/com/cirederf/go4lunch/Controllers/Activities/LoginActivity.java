@@ -43,6 +43,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //this.loadLocale();
         if(isCurrentUserLogged()) {
             this.startMain();
         }
