@@ -10,4 +10,5 @@
     <color name="facebook">#3b5793</color>
     <color name="google">#cf472e</color>
     <color name="twitter">#50abf1</color>
+    <color name="nav_view_color">#ff8a50</color>
 </resources>

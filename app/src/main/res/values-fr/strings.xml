@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Go4Lunch</string>
+    <string name="login_with_twitter">Se connecter avec Twitter</string>
+    <string name="login_with_facebook">Se connecter avec Facebook</string>
+    <string name="login_with_google">Se connecter avec Google</string>
+    <string name="connection_succeed">Connecté avec succés</string>
+    <string name="error_authentication_canceled">Authentification annulée</string>
+    <string name="error_no_internet">Aucune connexion</string>
+    <string name="error_unknown_error">Erreur inconnue</string>
+    <string name="info_no_email_found">Aucun courriel trouvé</string>
+    <string name="info_no_username_found">Aucun nom trouvé</string>
+    <string name="popup_message_confirmation_logout_account">Voulez vous vous déconnecter ?</string>
+    <string name="popup_message_choice_yes">Se déconnecter</string>
+    <string name="popup_message_choice_no">Rester connecté</string>
+</resources>

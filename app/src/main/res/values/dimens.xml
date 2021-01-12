@@ -7,4 +7,5 @@
     <dimen name="nav_header_margin_default">15dp</dimen>
     <dimen name="nav_header_margin_image">15dp</dimen>
     <dimen name="nav_header_margin_txt">15dp</dimen>
+    <dimen name="login_button_marginBottom">20dp</dimen>
 </resources>

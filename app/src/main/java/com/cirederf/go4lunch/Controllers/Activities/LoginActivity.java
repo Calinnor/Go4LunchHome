@@ -36,13 +36,6 @@ public class LoginActivity extends BaseActivity {
     Button google;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(this.getFragmentLayout());
-        ButterKnife.bind(this);
-    }
-
-    @Override
     public int getFragmentLayout() {
         return R.layout.activity_login;
     }
