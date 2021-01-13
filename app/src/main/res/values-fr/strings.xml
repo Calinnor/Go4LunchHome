@@ -22,5 +22,5 @@
     <string name="English">Anglais</string>
     <string name="locale_langage_value_en">en</string>
     <string name="local_langage_value_fr">fr</string>
-    <string name="my_langage">Ma langue</string>
+    <string name="my_language">Ma langue</string>
 </resources>

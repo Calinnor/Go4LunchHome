@@ -7,7 +7,7 @@ public class StartActivity extends BaseActivity {
 
 
     @Override
-    public int getFragmentLayout() {
+    public int getActivityLayout() {
         return R.layout.activity_start;
     }
 
@@ -16,7 +16,8 @@ public class StartActivity extends BaseActivity {
         super.onResume();
         if(isCurrentUserLogged()) {
             this.startMain();
-        }else{
-            startLogin();}
+        } else {
+            startLogin();
+        }
     }
 }

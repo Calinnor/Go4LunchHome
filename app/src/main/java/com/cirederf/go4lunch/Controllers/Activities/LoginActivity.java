@@ -34,17 +34,16 @@ public class LoginActivity extends BaseActivity {
     Button google;
 
     @Override
-    public int getFragmentLayout() {
+    public int getActivityLayout() {
         return R.layout.activity_login;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //this.loadLocale();
-        if(isCurrentUserLogged()) {
-            this.startMain();
-        }
+//        if(isCurrentUserLogged()) {
+//            this.startMain();
+//        }
     }
 
     @OnClick({R.id.button_login_with_google, R.id.button_login_with_facebook, R.id.button_login_with_twitter })
@@ -97,6 +96,7 @@ public class LoginActivity extends BaseActivity {
         if (requestCode == RC_SIGNIN) {
             if (resultCode == RESULT_OK) {
                 toastShowLoginResult(getApplicationContext(), getString(R.string.connection_succeed));
+                this.startMain();
             } else {
                 if (response == null) {
                     toastShowLoginResult(getApplicationContext(), getString(R.string.error_authentication_canceled));

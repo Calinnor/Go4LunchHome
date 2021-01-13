@@ -18,6 +18,6 @@
         android:textStyle="bold"
         android:textColor="#fff"
         android:textAlignment="center"
-        android:text="Nous pourrions afficher your lunch ici non ?"/>
+        android:text="Test display: display_your_lunch"/>
 
 </LinearLayout>

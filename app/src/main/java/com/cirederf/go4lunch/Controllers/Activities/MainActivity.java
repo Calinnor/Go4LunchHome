@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int SIGN_OUT_TASK = 10;
 
     @Override
-    public int getFragmentLayout() {
+    public int getActivityLayout() {
         return R.layout.activity_main;
     }
 
@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         this.configureDrawerLayout();
         this.showDefaultFragment();
         this.updateUi();
-
     }
 
     // Actions
@@ -131,7 +130,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 this.onClickLogoutButton();
                 break;
             case FRAGMENT_SETTINGS:
-                this.changeLanguage();
                 break;
             case FRAGMENT_YOUR_LUNCH:
                 this.showYourLunchFragment();
@@ -214,52 +212,5 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 .setNegativeButton(R.string.popup_message_choice_no, null)
                 .show();
     }
-
-    //configure language change
-    private void changeLanguage(){
-        final String[] listItems= {getString(R.string.French), getString(R.string.English)};
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
-        mBuilder.setTitle(R.string.choose_langage);
-        mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case 0:
-                        setLocale(getString(R.string.French));
-                        recreate();
-                        break;
-                    case 1:
-                        setLocale(getString(R.string.English));
-                        recreate();
-                        break;
-                    default:
-                        break;
-                }
-                dialog.dismiss();
-
-            }
-        });
-        AlertDialog mDialog = mBuilder.create();
-        mDialog.show();
-    }
-//
-//    private void setLocale(String lang){
-//        Locale locale = new Locale(lang);
-//        Locale.setDefault(locale);
-//        Configuration configuration = new Configuration();
-//        configuration.locale = locale;
-//        getBaseContext().getResources().updateConfiguration(
-//                configuration,
-//                getBaseContext().getResources().getDisplayMetrics());
-//        SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.settings), MODE_PRIVATE).edit();
-//        editor.putString(getString(R.string.my_langage), lang);
-//        editor.apply();
-//    }
-//
-//    public void loadLocale(){
-//        SharedPreferences preferences = getSharedPreferences(getString(R.string.settings), Activity.MODE_PRIVATE);
-//        String language = preferences.getString(getString(R.string.my_langage), "" );
-//        setLocale(language);
-//    }
 
 }

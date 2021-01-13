@@ -18,6 +18,6 @@
         android:textStyle="bold"
         android:textColor="#fff"
         android:textAlignment="center"
-        android:text="Nous pourrions afficher les setings ici non ?"/>
+        android:text="display_settings_here"/>
 
 </LinearLayout>
