@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/cup_of_tea"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/logo_for_app" />
 
     <TextView
         android:id="@+id/textView"
@@ -57,7 +58,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/twitter_logo" />
+            android:background="@drawable/twitter_logo"
+            android:contentDescription="@string/is_twitter_logo" />
         <Button
             android:id="@+id/button_login_with_twitter"
             style="?android:attr/borderlessButtonStyle"
@@ -81,7 +83,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/facebook_logo" />
+            android:background="@drawable/facebook_logo"
+            android:contentDescription="@string/logo_facebook" />
         <Button
             android:id="@+id/button_login_with_facebook"
             style="?android:attr/borderlessButtonStyle"
@@ -105,7 +108,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/logo_google" />
+            android:background="@drawable/logo_google"
+            android:contentDescription="@string/logo_google" />
         <Button
             android:id="@+id/button_login_with_google"
             style="?android:attr/borderlessButtonStyle"

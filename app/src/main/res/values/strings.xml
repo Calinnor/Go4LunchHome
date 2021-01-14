@@ -45,4 +45,8 @@
     <string name="bottom_navigation_menu_workmate">Workmate</string>
     <string name="bottom_navigation_menu_list">List</string>
     <string name="tv_str_content_map" translatable="false">map ici</string>
+    <string name="logo_for_app">Logo for app</string>
+    <string name="is_twitter_logo">is Twitter logo</string>
+    <string name="logo_facebook">logo facebook</string>
+    <string name="logo_google">logo google</string>
 </resources>
