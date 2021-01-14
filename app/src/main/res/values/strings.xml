@@ -44,4 +44,5 @@
     <string name="bottom_navigation_menu_map">Map</string>
     <string name="bottom_navigation_menu_workmate">Workmate</string>
     <string name="bottom_navigation_menu_list">List</string>
+    <string name="tv_str_content_map" translatable="false">map ici</string>
 </resources>
