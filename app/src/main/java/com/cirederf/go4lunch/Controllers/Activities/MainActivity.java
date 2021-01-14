@@ -20,6 +20,9 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.Controllers.BaseActivity.BaseActivity;
+import com.cirederf.go4lunch.Controllers.Fragments.ListRestaurantsFragment;
+import com.cirederf.go4lunch.Controllers.Fragments.MapFragment;
+import com.cirederf.go4lunch.Controllers.Fragments.WorkmatesFragment;
 import com.cirederf.go4lunch.Controllers.Fragments.YourLunchFragment;
 import com.cirederf.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
@@ -33,24 +36,19 @@ import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-      @BindView(R.id.activity_main_toolbar)
-      Toolbar toolbar;
-      @BindView(R.id.activity_main_drawer_layout)
-      DrawerLayout drawerLayout;
-      @BindView(R.id.activity_main_nav_view)
-      NavigationView navigationView;
-
-    private Fragment yourLunchFragment;
+    @BindView(R.id.activity_main_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.activity_main_drawer_layout)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.activity_main_nav_view)
+    NavigationView navigationView;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView mBottomNavigationView;
 
     private static final int ITEM_MENU_LOGOUT = 0;
     private static final int FRAGMENT_SETTINGS = 1;
     private static final int FRAGMENT_YOUR_LUNCH = 2;
     private static final int SIGN_OUT_TASK = 10;
-
-    @BindView(R.id.bottom_navigation)
-    BottomNavigationView mBottomNavigationView;
-    @BindView(R.id.content_name)
-    TextView tvContenName;
 
     @Override
     public int getActivityLayout() {
@@ -64,8 +62,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         this.configureToolbar();
         this.configureNavigationDrawer();
         this.configureDrawerLayout();
-      //  this.showDefaultFragment();
-        this.updateUi();
+        this.updateCurrentUserUi();
+        this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
     }
 
 
@@ -82,17 +80,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
 
     //Get data
-    private void updateUsername(TextView textViewUsernameToUpdate){
+    private void updateCurrentUsername(TextView textViewUsernameToUpdate){
         String username = TextUtils.isEmpty(this.getCurrentUser().getDisplayName()) ? getString(R.string.info_no_username_found) : this.getCurrentUser().getDisplayName();
         textViewUsernameToUpdate.setText(username);
     }
 
-    private void updateUserMail(TextView textViewUserMailToUpdate){
+    private void updateCurrentUserMail(TextView textViewUserMailToUpdate){
         String email = TextUtils.isEmpty(this.getCurrentUser().getEmail()) ? getString(R.string.info_no_email_found) : this.getCurrentUser().getEmail();
         textViewUserMailToUpdate.setText(email);
     }
 
-    private void updateUserPicture(ImageView imageViewUserPictureToUpdate){
+    private void updateCurrentUserPicture(ImageView imageViewUserPictureToUpdate){
         Glide.with(this)
                 .load(this.getCurrentUser().getPhotoUrl())
                 .apply(RequestOptions.circleCropTransform())
@@ -100,7 +98,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     //Logout
-    private void signOutUserFromFirebase(){
+    private void signOutCurrentUserFromFirebase(){
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted(SIGN_OUT_TASK));
@@ -122,15 +120,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     //Update UI
-    private void updateUi(){
+    private void updateCurrentUserUi(){
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = headerView.findViewById(R.id.nav_header_username_txt);
         TextView navUserMail = headerView.findViewById(R.id.nav_header_user_email_txt);
         ImageView navUserPicture = headerView.findViewById(R.id.nav_header_user_picture);
-        this.updateUsername(navUsername);
-        this.updateUserMail(navUserMail);
-        this.updateUserPicture(navUserPicture);
+        this.updateCurrentUsername(navUsername);
+        this.updateCurrentUserMail(navUserMail);
+        this.updateCurrentUserPicture(navUserPicture);
     }
 
 
@@ -148,27 +146,30 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 .setPositiveButton(R.string.popup_message_choice_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        signOutUserFromFirebase();
+                        signOutCurrentUserFromFirebase();
                     }
                 })
                 .setNegativeButton(R.string.popup_message_choice_no, null)
                 .show();
     }
-    
-    //BottomNavigation
+
+    /**
+     * Configure BottomNavigation
+     */
+
     private void configureBottomNavigationView() {
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {//new bottomnavigationview with setOn
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.home:
-                        tvContenName.setText(R.string.bottom_navigation_menu_map);
+                switch (item.getItemId()) {
+                    case R.id.map:
+                        showSelectedFragment(R.id.map, MapFragment.newInstance());
                         return true;
-                    case R.id.chat:
-                        tvContenName.setText(R.string.bottom_navigation_menu_list);
+                    case R.id.list:
+                        showSelectedFragment(R.id.list, ListRestaurantsFragment.newInstance());
                         return true;
-                    case R.id.profil:
-                        tvContenName.setText(R.string.bottom_navigation_menu_workmate);
+                    case R.id.workmates:
+                        showSelectedFragment(R.id.workmates, WorkmatesFragment.newInstance());
                         return true;
                 }
                 return false;
@@ -176,7 +177,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
     }
 
-    //DrawerNavigation 
+    /**
+     * Configure DrawerNavigation
+     */
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -205,7 +209,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case FRAGMENT_SETTINGS:
                 break;
             case FRAGMENT_YOUR_LUNCH:
-                this.showYourLunchFragment();
+                this.showSelectedFragment(R.id.fragment_your_lunch, YourLunchFragment.newInstance());
                 break;
             default:
                 break;
@@ -223,23 +227,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     /**
      * CONFIGURATION
-     */    
+     */
+
     protected void configureToolbar(){
         setSupportActionBar(toolbar);
     }
 
-    private void configureDrawerLayout(){
+    private void configureDrawerLayout() {
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toogle);
         toogle.syncState();
     }
 
-    private void configureNavigationDrawer(){
+    private void configureNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener(this);//with setNavigation
     }
     //TODO find the difference between set and setOnNavigation and try to merge the two method similare but not equals
 
-    // Configure item menu views as fragments views and a first fragment view
+    // Configure fragments view : selected (is default)
     private void startTransactionFragment(Fragment fragment) {
         if (!fragment.isVisible()) {
             getSupportFragmentManager().beginTransaction()
@@ -247,10 +252,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    private void showYourLunchFragment(){
-        if (this.yourLunchFragment == null) this.yourLunchFragment = YourLunchFragment.newInstance();
-        this.startTransactionFragment(this.yourLunchFragment);
+    private void showSelectedFragment(Integer integer, Fragment fragment) {
+        Fragment visibleFragment = getSupportFragmentManager().findFragmentById(integer);
+        if (visibleFragment == null) {
+            this.startTransactionFragment(fragment);
+        }
     }
-
 
 }

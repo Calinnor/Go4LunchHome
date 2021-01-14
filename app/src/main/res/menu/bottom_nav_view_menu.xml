@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/home"
+        android:id="@+id/map"
         android:title="@string/bottom_navigation_menu_map"
-        android:icon="@drawable/logo_google"
+        android:icon="@drawable/ic_baseline_map_24"
         />
     <item
-        android:id="@+id/chat"
+        android:id="@+id/list"
         android:title="@string/bottom_navigation_menu_list"
-        android:icon="@drawable/facebook_logo"
+        android:icon="@drawable/ic_baseline_view_list_24"
         />
     <item
-        android:id="@+id/profil"
+        android:id="@+id/workmates"
         android:title="@string/bottom_navigation_menu_workmate"
-        android:icon="@drawable/twitter_logo"
+        android:icon="@drawable/ic_baseline_people_outline_24"
         />
 </menu>
