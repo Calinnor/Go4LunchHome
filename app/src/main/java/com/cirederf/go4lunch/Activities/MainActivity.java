@@ -1,4 +1,4 @@
-package com.cirederf.go4lunch.Controllers.Activities;
+package com.cirederf.go4lunch.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,11 +19,10 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.cirederf.go4lunch.Controllers.BaseActivity.BaseActivity;
-import com.cirederf.go4lunch.Controllers.Fragments.ListRestaurantsFragment;
-import com.cirederf.go4lunch.Controllers.Fragments.MapFragment;
-import com.cirederf.go4lunch.Controllers.Fragments.WorkmatesFragment;
-import com.cirederf.go4lunch.Controllers.Fragments.YourLunchFragment;
+import com.cirederf.go4lunch.Fragments.ListRestaurantsFragment;
+import com.cirederf.go4lunch.Fragments.MapFragment;
+import com.cirederf.go4lunch.Fragments.WorkmatesFragment;
+import com.cirederf.go4lunch.Fragments.YourLunchFragment;
 import com.cirederf.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;

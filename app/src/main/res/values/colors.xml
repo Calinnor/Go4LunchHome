@@ -13,4 +13,8 @@
     <color name="nav_view_color">#ff8a50</color>
     <color name="background_light">#FFC107</color>
     <color name="background_dark">#C89808</color>
+    <color name="colorAccentWhite">#FFFF</color>
+    <color name="colorAccentDark">#000000</color>
+    <color name="colorAccentGrey">#747474</color>
+    <color name="colorLightGrey">#979595</color>
 </resources>

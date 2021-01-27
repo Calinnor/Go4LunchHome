@@ -45,8 +45,16 @@
     <string name="bottom_navigation_menu_workmate">Workmate</string>
     <string name="bottom_navigation_menu_list">List</string>
     <string name="tv_str_content_map" translatable="false">map ici</string>
-    <string name="logo_for_app">Logo for app</string>
-    <string name="is_twitter_logo">is Twitter logo</string>
-    <string name="logo_facebook">logo facebook</string>
-    <string name="logo_google">logo google</string>
+    <string name="logo_for_app" translatable="false">Logo for app</string>
+    <string name="is_twitter_logo" translatable="false">is Twitter logo</string>
+    <string name="logo_facebook" translatable="false">logo facebook</string>
+    <string name="logo_google" translatable="false">logo google</string>
+    <string name="item_list_restaurants_distance">distance from the restaurant</string>
+    <string name="item_list_restaurants_address">restaurant adress</string>
+    <string name="item_list_restaurants_hours">opening hours</string>
+    <string name="item_list_restaurants_restaurant">restaurant name</string>
+    <string name="item_list_restaurants_number_workmates">workmates number</string>
+    <string name="Downloading">Downloading...</string>
+    <string name="places_api_google_key" translatable="false">AIzaSyAQIMmBdFBM6kVUJ5HyC7tpUXKbkIow_lI</string>
+    <string name="an_error">An error happened !</string>
 </resources>

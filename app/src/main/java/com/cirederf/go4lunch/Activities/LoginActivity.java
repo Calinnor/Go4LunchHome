@@ -1,4 +1,4 @@
-package com.cirederf.go4lunch.Controllers.Activities;
+package com.cirederf.go4lunch.Activities;
 
 import androidx.annotation.Nullable;
 
@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.cirederf.go4lunch.Controllers.BaseActivity.BaseActivity;
+import com.cirederf.go4lunch.Activities.BaseActivity;
 import com.cirederf.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;

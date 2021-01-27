@@ -1,4 +1,4 @@
-package com.cirederf.go4lunch.Controllers.BaseActivity;
+package com.cirederf.go4lunch.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cirederf.go4lunch.Controllers.Activities.LoginActivity;
-import com.cirederf.go4lunch.Controllers.Activities.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
