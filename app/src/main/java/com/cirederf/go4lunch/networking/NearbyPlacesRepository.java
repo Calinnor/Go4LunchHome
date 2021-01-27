@@ -2,6 +2,7 @@ package com.cirederf.go4lunch.networking;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.models.GoogleApiPlacesNearbySearchRestaurants;
 
 import retrofit2.Call;
@@ -25,7 +26,7 @@ public class NearbyPlacesRepository {
         nearbyPlacesApi = RetrofitService.createService(NearbyPlacesApi.class);
     }
 
-    public MutableLiveData<GoogleApiPlacesNearbySearchRestaurants> getNearbyRestaurants(String location, int radius, String type, int key) {
+    public MutableLiveData<GoogleApiPlacesNearbySearchRestaurants> getNearbyRestaurants(String location, int radius, String type, String key) {
         MutableLiveData<GoogleApiPlacesNearbySearchRestaurants> nearbyRestaurantsData = new MutableLiveData<>();
         nearbyPlacesApi.getNearbyRestaurants(location, radius, type, key)
                 .enqueue(new Callback<GoogleApiPlacesNearbySearchRestaurants>() {

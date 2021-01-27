@@ -12,5 +12,5 @@ public interface NearbyPlacesApi {
     Call<GoogleApiPlacesNearbySearchRestaurants> getNearbyRestaurants(@Query("location") String location,
                                                                       @Query("radius") int radius,
                                                                       @Query("type") String type,
-                                                                      @Query("key") int key);
+                                                                      @Query("key") String key);
 }

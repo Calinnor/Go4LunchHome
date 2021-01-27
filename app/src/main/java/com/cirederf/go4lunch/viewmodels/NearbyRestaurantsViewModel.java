@@ -1,5 +1,6 @@
 package com.cirederf.go4lunch.viewmodels;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -17,6 +18,10 @@ public class NearbyRestaurantsViewModel extends ViewModel {
             return;
         }
         nearbyPlacesRepository = NearbyPlacesRepository.getInstance();
-        mutableLiveData = nearbyPlacesRepository.getNearbyRestaurants("48.410692,2.738093", 15000, "restaurant", R.string.google_api_key);
+        mutableLiveData = nearbyPlacesRepository.getNearbyRestaurants("48.410692,2.738093", 15000, "restaurant", "AIzaSyAQIMmBdFBM6kVUJ5HyC7tpUXKbkIow_lI");
+    }
+
+    public LiveData<GoogleApiPlacesNearbySearchRestaurants> getNearbyRestaurantsRepository() {
+        return mutableLiveData;
     }
 }
