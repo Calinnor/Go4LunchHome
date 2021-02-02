@@ -26,8 +26,8 @@
     <string name="bottom_navigation_menu_map">Carte</string>
     <string name="bottom_navigation_menu_workmate">Collègues</string>
     <string name="bottom_navigation_menu_list">Liste</string>
-    <string name="item_list_restaurants_distance">distance jusqu\'au restaurant</string>
-    <string name="item_list_restaurants_address">adresse du restaurant</string>
+    <string name="item_list_restaurants_distance">distance du</string>
+    <string name="item_list_restaurants_address">adresse</string>
     <string name="item_list_restaurants_hours">horaires d\'ouverture</string>
     <string name="item_list_restaurants_restaurant">nom</string>
     <string name="item_list_restaurants_number_workmates">participants</string>

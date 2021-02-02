@@ -49,10 +49,10 @@
     <string name="is_twitter_logo" translatable="false">is Twitter logo</string>
     <string name="logo_facebook" translatable="false">logo facebook</string>
     <string name="logo_google" translatable="false">logo google</string>
-    <string name="item_list_restaurants_distance">distance from the restaurant</string>
-    <string name="item_list_restaurants_address">restaurant adress</string>
+    <string name="item_list_restaurants_distance">distance from</string>
+    <string name="item_list_restaurants_address">address</string>
     <string name="item_list_restaurants_hours">opening hours</string>
-    <string name="item_list_restaurants_restaurant">restaurant name</string>
+    <string name="item_list_restaurants_restaurant">name</string>
     <string name="item_list_restaurants_number_workmates">workmates number</string>
     <string name="Downloading">Downloading...</string>
     <string name="places_api_google_key" translatable="false">AIzaSyAQIMmBdFBM6kVUJ5HyC7tpUXKbkIow_lI</string>
