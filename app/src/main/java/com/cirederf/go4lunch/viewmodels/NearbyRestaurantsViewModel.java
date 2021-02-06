@@ -1,12 +1,10 @@
 package com.cirederf.go4lunch.viewmodels;
 
-import android.os.Build;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.cirederf.go4lunch.models.GoogleApiPlacesNearbySearchRestaurants;
+import com.cirederf.go4lunch.models.apiModels.GoogleApiPlacesNearbySearchRestaurants;
 import com.cirederf.go4lunch.networking.NearbyPlacesRepository;
 
 public class NearbyRestaurantsViewModel extends ViewModel {

@@ -1,4 +1,4 @@
-package com.cirederf.go4lunch.models;
+package com.cirederf.go4lunch.models.apiModels;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

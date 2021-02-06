@@ -1,9 +1,9 @@
-package com.cirederf.go4lunch.models;
+package com.cirederf.go4lunch.models.apiModels;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Location {
+public class Southwest {
 
     @SerializedName("lat")
     @Expose
@@ -29,4 +29,3 @@ public class Location {
     }
 
 }
-

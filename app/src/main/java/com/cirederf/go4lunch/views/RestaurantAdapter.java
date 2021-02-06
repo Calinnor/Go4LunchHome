@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cirederf.go4lunch.Fragments.ListRestaurantsFragment;
 import com.cirederf.go4lunch.R;
-import com.cirederf.go4lunch.models.GoogleApiPlacesNearbySearchRestaurants;
-import com.cirederf.go4lunch.models.Result;
+import com.cirederf.go4lunch.models.apiModels.Result;
 
 import java.util.List;
 

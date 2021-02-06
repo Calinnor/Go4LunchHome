@@ -2,7 +2,7 @@ package com.cirederf.go4lunch.networking;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.cirederf.go4lunch.models.GoogleApiPlacesNearbySearchRestaurants;
+import com.cirederf.go4lunch.models.apiModels.GoogleApiPlacesNearbySearchRestaurants;
 
 import retrofit2.Call;
 import retrofit2.Callback;
