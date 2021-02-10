@@ -13,12 +13,11 @@ public class Restaurant
     private String website;
     private Boolean openNow;
     private Location location;
-    private int distanceCurrentUser;
 
     //////// CONSTRUCTORS ////////
 
     public Restaurant(String name, String address, String picture, String placeId, double rating,
-                      String phoneNumber, String website, Location location) {
+                      String phoneNumber, String website, Location location, Boolean openNow) {
         this.name = name;
         this.address = address;
         this.picture = picture;
@@ -27,22 +26,12 @@ public class Restaurant
         this.phoneNumber = phoneNumber;
         this.website = website;
         this.location = location;
+        this.openNow = openNow;
     }
 
     //Empty constructor for Firebase
     public Restaurant () {}
 
-    //Constructor for Places' Request
-    public Restaurant(String name, String address, String picture, String placeId, double rating, Boolean openNow, Location location)
-    {
-        this.name = name;
-        this.address = address;
-        this.picture = picture;
-        this.placeId = placeId;
-        this.rating = rating;
-        this.openNow = openNow;
-        this.location = location;
-    }
 
     //////// GETTERS ////////
     public String getName() {

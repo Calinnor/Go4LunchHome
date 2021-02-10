@@ -9,15 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.Fragments.ListRestaurantsFragment;
 import com.cirederf.go4lunch.R;
+import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.apiModels.Result;
 
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
 
-    List<Result> nearbyRestaurants;
+    List<Restaurant> nearbyRestaurants;
 
     public static class RestaurantViewHolder extends RecyclerView.ViewHolder {
 
@@ -36,11 +39,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             textViewOpeningHours = itemRestaurantView.findViewById(R.id.item_list_restaurant_hours_txt);
             textViewDistance = itemRestaurantView.findViewById(R.id.item_list_restaurant_distance_txt);
             textViewRating = itemRestaurantView.findViewById(R.id.item_list_restaurant_number_rating_txt);
+            imageView = itemRestaurantView.findViewById(R.id.item_list_restaurant_illustration_image);
         }
     }
 
-    public RestaurantAdapter(ListRestaurantsFragment listRestaurantsFragment, List<Result> nearbyRestaurants) {
-        this.nearbyRestaurants =nearbyRestaurants;
+    public RestaurantAdapter(ListRestaurantsFragment listRestaurantsFragment, /*List<Result> nearbyRestaurants*/ List<Restaurant> restaurants) {
+        this.nearbyRestaurants = restaurants;
     }
 
     @NonNull
@@ -52,12 +56,23 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position) {
-        Result nearbySearchRestaurants = nearbyRestaurants.get(position);        
+        Restaurant nearbySearchRestaurants = nearbyRestaurants.get(position);
         holder.textViewName.setText(nearbySearchRestaurants.getName());
         holder.textViewDistance.setText("seem 100m");
-        //holder.textViewOpeningHours.setText(nearbySearchRestaurants.getOpeningHours().getOpenNow().toString()); if null error
-        holder.textViewAddress.setText(nearbySearchRestaurants.getVicinity());
-        holder.textViewRating.setText(nearbySearchRestaurants.getRating().toString());
+        holder.textViewAddress.setText(nearbySearchRestaurants./*getVicinity*/getAddress());
+        holder.textViewRating.setText(String.valueOf(nearbySearchRestaurants.getRating()));
+
+        if(nearbySearchRestaurants.getOpenNow()) {
+            holder.textViewOpeningHours.setText(R.string.open);
+        } else {
+            holder.textViewOpeningHours.setText(R.string.closed);
+        }
+
+        //Glide.with(holder.imageView.getContext())
+        Glide.with(holder.imageView.getContext())
+                .load(nearbySearchRestaurants.getPicture())
+                .apply(RequestOptions.centerCropTransform())
+                .into(holder.imageView);
     }
 
     @Override
