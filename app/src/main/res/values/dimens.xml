@@ -23,5 +23,5 @@
     <dimen name="item_list_restaurant_width_image">0dp</dimen>
     <dimen name="item_list_restaurant_height_star">16dp</dimen>
     <dimen name="item_list_restaurant_height_people_rating">30dp</dimen>
-    <dimen name="item_list_restaurant_size_image_illustration">100dp</dimen>
+    <dimen name="item_list_restaurant_size_image_illustration">80dp</dimen>
 </resources>

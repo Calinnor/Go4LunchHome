@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.apiModels.Result;
+import com.cirederf.go4lunch.networking.NearbyPlacesRepository;
 import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
 import com.cirederf.go4lunch.views.RestaurantAdapter;
 
@@ -45,10 +46,13 @@ public class ListRestaurantsFragment extends Fragment {
     }
 
     private void configureNearbyRestaurantViewModel() {
+        //String apiKey = getString(R.string.google_api_key);
+        //NearbyPlacesRepository nearbyPlacesRepository = NearbyPlacesRepository.getInstance(apiKey);
+        // TODO: Create an instance of viewmodel passing the repository as a param.
         nearbyRestaurantsViewModel = ViewModelProviders.of(this).get(NearbyRestaurantsViewModel.class);
         //nearbyRestaurantsViewModel.init(); // MutableLiveData<GoogleApiPlacesNearbySearchRestaurants> mutableLiveData
-        nearbyRestaurantsViewModel.initListRestaurants(); // MutableLiveData<List<Restaurant>> restaurantsListMutableLivedata
-        nearbyRestaurantsViewModel.getRestaurants().observe(this, restaurants -> {
+        nearbyRestaurantsViewModel.initListRestaurants(); // MutableLiveData<List<Restaurant>> restaurantsListMutableLiveData
+        nearbyRestaurantsViewModel.getRestaurants().observe(getViewLifecycleOwner(), restaurants -> {
 //                    List<Result> nearbyRestaurants = googleApiPlacesNearbySearchRestaurants.getResults();
 //                    restaurantsArrayList.addAll(nearbyRestaurants);
                     configureRecyclerViewAdapter(getView(), restaurants);

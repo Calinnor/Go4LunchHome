@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.Fragments.ListRestaurantsFragment;
 import com.cirederf.go4lunch.R;
@@ -68,8 +69,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             holder.textViewOpeningHours.setText(R.string.closed);
         }
 
-        //Glide.with(holder.imageView.getContext())
         Glide.with(holder.imageView.getContext())
+                .applyDefaultRequestOptions(
+                        new RequestOptions()
+                                .error(R.drawable.default_restaurant_picture)
+                )
                 .load(nearbySearchRestaurants.getPicture())
                 .apply(RequestOptions.centerCropTransform())
                 .into(holder.imageView);
