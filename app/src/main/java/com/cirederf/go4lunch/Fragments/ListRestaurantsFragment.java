@@ -14,19 +14,15 @@ import android.view.ViewGroup;
 
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.models.apiModels.Result;
-import com.cirederf.go4lunch.networking.NearbyPlacesRepository;
 import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
 import com.cirederf.go4lunch.views.RestaurantAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 
 public class ListRestaurantsFragment extends Fragment {
 
-    //ArrayList<Result> restaurantsArrayList = new ArrayList<>();
     NearbyRestaurantsViewModel nearbyRestaurantsViewModel;
 
     private RecyclerView recyclerView;
@@ -46,28 +42,17 @@ public class ListRestaurantsFragment extends Fragment {
     }
 
     private void configureNearbyRestaurantViewModel() {
-        //String apiKey = getString(R.string.google_api_key);
-        //NearbyPlacesRepository nearbyPlacesRepository = NearbyPlacesRepository.getInstance(apiKey);
         // TODO: Create an instance of viewmodel passing the repository as a param.
         nearbyRestaurantsViewModel = ViewModelProviders.of(this).get(NearbyRestaurantsViewModel.class);
-        //nearbyRestaurantsViewModel.init(); // MutableLiveData<GoogleApiPlacesNearbySearchRestaurants> mutableLiveData
-        nearbyRestaurantsViewModel.initListRestaurants(); // MutableLiveData<List<Restaurant>> restaurantsListMutableLiveData
+        nearbyRestaurantsViewModel.initListRestaurants();
         nearbyRestaurantsViewModel.getRestaurants().observe(getViewLifecycleOwner(), restaurants -> {
-//                    List<Result> nearbyRestaurants = googleApiPlacesNearbySearchRestaurants.getResults();
-//                    restaurantsArrayList.addAll(nearbyRestaurants);
                     configureRecyclerViewAdapter(getView(), restaurants);
                 });
     }
 
-//    private void configureRecyclerView(View view) {
-//        recyclerView = view.findViewById(R.id.fragment_list_restaurants_recycler_view);
-//        RecyclerView.LayoutManager restaurantRecyclerView = new LinearLayoutManager(view.getContext());
-//        recyclerView.setLayoutManager(restaurantRecyclerView);
-//    }
-
     private void configureRecyclerViewAdapter(View view, List<Restaurant> restaurants) {
         recyclerView = view.findViewById(R.id.fragment_list_restaurants_recycler_view);
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(this, /*restaurantsArrayList*/restaurants);
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(this,restaurants);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(restaurantAdapter);

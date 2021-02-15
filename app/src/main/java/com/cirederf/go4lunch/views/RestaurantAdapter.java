@@ -10,12 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.Fragments.ListRestaurantsFragment;
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.models.apiModels.Result;
 
 import java.util.List;
 
@@ -44,7 +42,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         }
     }
 
-    public RestaurantAdapter(ListRestaurantsFragment listRestaurantsFragment, /*List<Result> nearbyRestaurants*/ List<Restaurant> restaurants) {
+    public RestaurantAdapter(ListRestaurantsFragment listRestaurantsFragment,List<Restaurant> restaurants) {
         this.nearbyRestaurants = restaurants;
     }
 
@@ -60,7 +58,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         Restaurant nearbySearchRestaurants = nearbyRestaurants.get(position);
         holder.textViewName.setText(nearbySearchRestaurants.getName());
         holder.textViewDistance.setText("seem 100m");
-        holder.textViewAddress.setText(nearbySearchRestaurants./*getVicinity*/getAddress());
+        holder.textViewAddress.setText(nearbySearchRestaurants.getAddress());
         holder.textViewRating.setText(String.valueOf(nearbySearchRestaurants.getRating()));
 
         if(nearbySearchRestaurants.getOpenNow()) {
