@@ -47,7 +47,7 @@ public class RestaurantsRepository {
                         for(int i = 0; i < size; i ++) {
                             Restaurant restaurant = new Restaurant(setName(results, i)
                                     ,setAddress(results, i)
-                                    ,setPicture(results, i)
+                                    ,setPicture(results, i, apiKey)
                                     ,setPlaceId(results, i)
                                     ,setRating(results, i)
                                     ,setPhoneNumber(results, i)
@@ -68,15 +68,15 @@ public class RestaurantsRepository {
         return nearbyRestaurantsList;
     }
 
-    private String getPicture(String photoReference, int maxWidth, String key) {
+    private String getPicture(String photoReference, int maxWidth, String apiKey) {
         return "https://maps.googleapis.com/maps/api/place/photo?" + "photoreference=" + photoReference
-                + "&maxwidth=" + maxWidth + "&key=" + key;
+                + "&maxwidth=" + maxWidth + "&key=" + apiKey;
     }
 
-    private String setPicture(List<Result>results, int i) {
+    private String setPicture(List<Result>results, int i, String apiKey) {
         String picture = results.get(i).getPhotos() != null ?
                 getPicture(results.get(i).getPhotos().get(0).getPhotoReference(),
-                        250,"AIzaSyAQIMmBdFBM6kVUJ5HyC7tpUXKbkIow_lI")
+                        250,/*"AIzaSyAQIMmBdFBM6kVUJ5HyC7tpUXKbkIow_lI"*/apiKey)
                 : null;
         return picture;
     }

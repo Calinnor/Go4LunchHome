@@ -1,6 +1,5 @@
 package com.cirederf.go4lunch.viewmodels;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -16,9 +15,9 @@ public class SearchViewModel extends ViewModel {
     private RestaurantsRepository restaurantsRepository;
     private MutableLiveData<List<Restaurant>> restaurantsListLiveDataFromViewModelFromRestoRepo;
 
-//    public SearchViewModel(SearchRepository searchRepository) {
-//        this.searchRepository = searchRepository;
-//    }
+    public SearchViewModel(SearchRepository searchRepository) {
+        this.searchRepository = searchRepository;
+    }
 
     public SearchViewModel(RestaurantsRepository restaurantsRepository) {
         this.restaurantsRepository = restaurantsRepository;
@@ -27,9 +26,22 @@ public class SearchViewModel extends ViewModel {
     private MutableLiveData<List<Restaurant>> restosMutableLiveDataList = new MutableLiveData<>();
 
     public MutableLiveData<List<Restaurant>> getNearbyRestos(String location, int radius, String type, String apiKey) {
+        //these line make crash
         //this.restosMutableLiveDataList.setValue(this.searchRepository.getRestaurants(location, radius, type, apiKey));
-        this.restosMutableLiveDataList.setValue((List<Restaurant>) this.restaurantsRepository.getRestaurantsList(location, radius, type, apiKey));
+        //TODO find why it crash here
+        /**
+         * here getRestaurants return a List<Restaurant> so there isn't error in compile
+         *
+         * below here too is required List<Restaurant> but is provided MutableLiveData<List<Restaurant>>
+         *     cast to List is unchecked
+         */
+        //this.restosMutableLiveDataList.setValue((List<Restaurant>) this.restaurantsRepository.getRestaurantsList(location, radius, type, apiKey));
+
+        this.restosMutableLiveDataList = restaurantsRepository.getRestaurantsList(location, radius, type, apiKey);
         return this.restosMutableLiveDataList;
+        /**
+         * here was my error. Difficulty to find how to obtain the good list of mutablelivedata<restaurant> and not a list of restaurant
+         */
     }
 
     public void initRestoList(String location, int radius, String type, String apiKey) {

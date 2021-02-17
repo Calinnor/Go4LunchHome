@@ -42,17 +42,17 @@ public class ListRestaurantsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_restaurants, container, false);
         ButterKnife.bind(this, view);
-        this.configureNearbyRestaurantViewModel();
+        //this.configureNearbyRestaurantViewModel();
         return view;
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if (searchViewModel == null) {
-//            this.configureNearbyRestaurantViewModel();
-//        }
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (searchViewModel == null) {
+            this.configureNearbyRestaurantViewModel();
+        }
+    }
 
     private void configureNearbyRestaurantViewModel() {
         // TODO: Create an instance of viewmodel passing the repository as a param.
@@ -81,7 +81,7 @@ public class ListRestaurantsFragment extends Fragment {
 
         //create the method to get restaurantlist here : this.method
         //this.getRestautantsList();
-        this.getRestoListFromRestoRepo();
+       this.getRestoListFromRestoRepo();
 
     }
 
@@ -94,17 +94,17 @@ public class ListRestaurantsFragment extends Fragment {
         RecyclerView.LayoutManager restaurantRecyclerView = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(restaurantRecyclerView);
     }
-//
-//    private void getRestautantsList() {
-//        String location = "48.410692,2.738093";
-//        int radius = 15000;
-//        String type = "restaurant";
-//        String apiKey = getString(R.string.places_api_google_key);
-//        this.searchViewModel.getNearbyRestos(location, radius, type, apiKey)
-//                .observe(getViewLifecycleOwner(), restaurants -> {
-//                    configureRecyclerViewAdapter(getView(), restaurants);
-//                });
-//    }
+
+    private void getRestautantsList() {
+        String location = "48.410692,2.738093";
+        int radius = 15000;
+        String type = "restaurant";
+        String apiKey = getString(R.string.places_api_google_key);
+        this.searchViewModel.getNearbyRestos(location, radius, type, apiKey)
+                .observe(getViewLifecycleOwner(), restaurants -> {
+                    configureRecyclerViewAdapter(getView(), restaurants);
+                });
+    }
 
     private void getRestoListFromRestoRepo() {
         String location = "48.410692,2.738093";
@@ -112,11 +112,10 @@ public class ListRestaurantsFragment extends Fragment {
         String type = "restaurant";
         String apiKey = getString(R.string.places_api_google_key);
         this.searchViewModel.initRestoList(location, radius, type, apiKey);
-        this.searchViewModel.getRestaurantsFromRestoRepo().observe(getViewLifecycleOwner(), restaurants -> {
+        this.searchViewModel.getRestaurantsFromRestoRepo()
+                .observe(getViewLifecycleOwner(), restaurants -> {
             configureRecyclerViewAdapter(getView(), restaurants);
-                }
-                );
-
+                });
     }
 
 

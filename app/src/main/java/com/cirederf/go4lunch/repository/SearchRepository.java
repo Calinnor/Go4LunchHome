@@ -1,5 +1,7 @@
 package com.cirederf.go4lunch.repository;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.apiModels.Location;
 import com.cirederf.go4lunch.models.apiModels.PlacesSearchApi;
@@ -44,7 +46,6 @@ public class SearchRepository {
                     @Override
                     public void onFailure(Call<PlacesSearchApi> call, Throwable t) {
                     }
-
                 });
 
         return restaurants;
