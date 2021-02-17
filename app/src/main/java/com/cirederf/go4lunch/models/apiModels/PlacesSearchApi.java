@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class GoogleApiPlacesNearbySearchRestaurants {
+public class PlacesSearchApi {
 
     @SerializedName("html_attributions")
     @Expose

@@ -1,11 +1,13 @@
-package com.cirederf.go4lunch.networking;
+package com.cirederf.go4lunch.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.models.apiModels.GoogleApiPlacesNearbySearchRestaurants;
 import com.cirederf.go4lunch.models.apiModels.Location;
+import com.cirederf.go4lunch.models.apiModels.PlacesSearchApi;
 import com.cirederf.go4lunch.models.apiModels.Result;
+import com.cirederf.go4lunch.networking.NearbyPlacesApi;
+import com.cirederf.go4lunch.networking.RetrofitService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,32 +16,32 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NearbyPlacesRepository {
+public class RestaurantsRepository {
 
-    private static NearbyPlacesRepository nearbyPlacesRepository;
+    private static RestaurantsRepository restaurantsRepository;
 
-    public static NearbyPlacesRepository getInstance() {
-        if (nearbyPlacesRepository == null) {
-            nearbyPlacesRepository = new NearbyPlacesRepository();
+    public static RestaurantsRepository getInstance() {
+        if (restaurantsRepository == null) {
+            restaurantsRepository = new RestaurantsRepository();
         }
-        return nearbyPlacesRepository;
+        return restaurantsRepository;
     }
 
     private NearbyPlacesApi nearbyPlacesApi;
 
-    private NearbyPlacesRepository() {
+    public RestaurantsRepository() {
         nearbyPlacesApi = RetrofitService.createService(NearbyPlacesApi.class);
     }
 
-    public MutableLiveData<List<Restaurant>> getNearbyRestaurantsList(String location, int radius, String type, String key) {
+    public MutableLiveData<List<Restaurant>> getRestaurantsList(String location, int radius, String type, String apiKey){
 
         MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<>();
-
         List<Restaurant> restaurants = new ArrayList<>();
-        nearbyPlacesApi.getNearbyRestaurantsList(location, radius, type, key)
-                .enqueue(new Callback<GoogleApiPlacesNearbySearchRestaurants>() {
+
+        nearbyPlacesApi.getNearbyPlacesList(location, radius, type, apiKey)
+                .enqueue(new Callback<PlacesSearchApi>() {
                     @Override
-                    public void onResponse(Call<GoogleApiPlacesNearbySearchRestaurants> call, Response<GoogleApiPlacesNearbySearchRestaurants> response) {
+                    public void onResponse(Call<PlacesSearchApi> call, Response<PlacesSearchApi> response) {
                         List<Result> results = response.body().getResults();
                         int size = results.size();
                         for(int i = 0; i < size; i ++) {
@@ -58,14 +60,13 @@ public class NearbyPlacesRepository {
                     }
 
                     @Override
-                    public void onFailure(Call<GoogleApiPlacesNearbySearchRestaurants> call, Throwable t) {
+                    public void onFailure(Call<PlacesSearchApi> call, Throwable t) {
                         nearbyRestaurantsList.setValue(null);
                     }
                 });
 
         return nearbyRestaurantsList;
-
-        }
+    }
 
     private String getPicture(String photoReference, int maxWidth, String key) {
         return "https://maps.googleapis.com/maps/api/place/photo?" + "photoreference=" + photoReference
@@ -120,8 +121,4 @@ public class NearbyPlacesRepository {
         return location;
     }
 
-
-
-    }
-
-
+}

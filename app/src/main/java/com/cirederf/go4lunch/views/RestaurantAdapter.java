@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.cirederf.go4lunch.Fragments.ListRestaurantsFragment;
+import com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment;
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.models.Restaurant;
 

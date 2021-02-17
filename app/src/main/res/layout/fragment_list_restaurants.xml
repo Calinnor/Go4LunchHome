@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.ListRestaurantsFragment">
+    tools:context=".views.fragments.ListRestaurantsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_list_restaurants_constraint_layout"

@@ -17,7 +17,7 @@ public class Restaurant
     //////// CONSTRUCTORS ////////
 
     public Restaurant(String name, String address, String picture, String placeId, double rating,
-                      String phoneNumber, String website, Location location, Boolean openNow) {
+                      String phoneNumber, String website,Location location, Boolean openNow) {
         this.name = name;
         this.address = address;
         this.picture = picture;

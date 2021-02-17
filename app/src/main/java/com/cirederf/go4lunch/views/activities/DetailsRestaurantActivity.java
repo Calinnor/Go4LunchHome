@@ -1,4 +1,4 @@
-package com.cirederf.go4lunch.Activities;
+package com.cirederf.go4lunch.views.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 

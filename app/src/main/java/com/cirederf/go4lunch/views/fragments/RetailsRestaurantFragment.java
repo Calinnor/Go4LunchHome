@@ -1,4 +1,4 @@
-package com.cirederf.go4lunch.Fragments;
+package com.cirederf.go4lunch.views.fragments;
 
 import android.os.Bundle;
 

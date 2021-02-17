@@ -5,26 +5,24 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.models.apiModels.GoogleApiPlacesNearbySearchRestaurants;
-import com.cirederf.go4lunch.networking.NearbyPlacesRepository;
+import com.cirederf.go4lunch.repository.NearbyPlacesRepository;
 
 import java.util.List;
 
 public class NearbyRestaurantsViewModel extends ViewModel {
 
-    private MutableLiveData<GoogleApiPlacesNearbySearchRestaurants> mutableLiveData;
-    private MutableLiveData<List<Restaurant>> restaurantsListMutableLivedata;
+    private MutableLiveData<List<Restaurant>> restaurantsListMutableLiveData;
     private NearbyPlacesRepository nearbyPlacesRepository;
 
     public void initListRestaurants() {
-        if (mutableLiveData != null) {
+        if (restaurantsListMutableLiveData != null) {
             return;
         }
         nearbyPlacesRepository = NearbyPlacesRepository.getInstance();
-        restaurantsListMutableLivedata = nearbyPlacesRepository.getNearbyRestaurantsList("48.410692,2.738093", 15000, "restaurant", "AIzaSyAQIMmBdFBM6kVUJ5HyC7tpUXKbkIow_lI");
+        restaurantsListMutableLiveData = nearbyPlacesRepository.getNearbyRestaurantsList("48.410692,2.738093", 15000, "restaurant", "AIzaSyAQIMmBdFBM6kVUJ5HyC7tpUXKbkIow_lI");
     }
 
     public LiveData<List<Restaurant>> getRestaurants() {
-        return restaurantsListMutableLivedata;
+        return restaurantsListMutableLiveData;
     }
 }

@@ -1,4 +1,4 @@
-package com.cirederf.go4lunch.Fragments;
+package com.cirederf.go4lunch.views.fragments;
 
 import android.os.Bundle;
 
@@ -10,16 +10,16 @@ import android.view.ViewGroup;
 
 import com.cirederf.go4lunch.R;
 
-public class YourLunchFragment extends Fragment {
+public class SettingsFragment extends Fragment {
 
-    public static YourLunchFragment newInstance() {
-        return (new YourLunchFragment());
+    public static SettingsFragment newInstance() {
+        return (new SettingsFragment());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_your_lunch, container, false);
+        return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 }

@@ -1,6 +1,5 @@
-package com.cirederf.go4lunch.Activities;
+package com.cirederf.go4lunch.views.activities;
 
-import com.cirederf.go4lunch.Activities.BaseActivity;
 import com.cirederf.go4lunch.R;
 
 public class StartActivity extends BaseActivity {
