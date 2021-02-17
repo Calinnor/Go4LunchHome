@@ -6,27 +6,36 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.cirederf.go4lunch.repository.RestaurantsRepository;
 import com.cirederf.go4lunch.repository.SearchRepository;
-import com.cirederf.go4lunch.viewmodels.SearchViewModel;
+import com.cirederf.go4lunch.viewmodels.SearchRestaurantsViewModel;
 
-public class SearchViewFactory implements ViewModelProvider.Factory {
+import java.util.concurrent.Executor;
 
-    private SearchRepository searchRepository;
+/**
+ * gather ViewModels creation
+ */
+public class SearchRestaurantsViewModelFactory implements ViewModelProvider.Factory {
+
+//    private SearchRepository searchRepository;
     private RestaurantsRepository restaurantsRepository;
 
 //    public SearchViewFactory(SearchRepository searchRepository) {
 //        this.searchRepository = searchRepository;
 //    }
 
-    public SearchViewFactory(RestaurantsRepository restaurantsRepository) {
+    public SearchRestaurantsViewModelFactory(RestaurantsRepository restaurantsRepository) {
         this.restaurantsRepository = restaurantsRepository;
     }
 
+    /**
+     * create repository instance
+     * @param modelClass restaurantRepository
+     */
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(SearchViewModel.class)) {
+        if (modelClass.isAssignableFrom(SearchRestaurantsViewModel.class)) {
             //return (T) new SearchViewModel(searchRepository);
-            return (T) new SearchViewModel(restaurantsRepository);
+            return (T) new SearchRestaurantsViewModel(restaurantsRepository);
         }
         throw new IllegalArgumentException("Problem with ViewModelFactory");
     }

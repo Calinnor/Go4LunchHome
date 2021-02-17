@@ -14,11 +14,11 @@ import android.view.ViewGroup;
 
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.injections.SearchInjection;
-import com.cirederf.go4lunch.injections.SearchViewFactory;
+import com.cirederf.go4lunch.injections.SearchRestaurantsViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
 import com.cirederf.go4lunch.viewmodels.RestaurantsViewModel;
-import com.cirederf.go4lunch.viewmodels.SearchViewModel;
+import com.cirederf.go4lunch.viewmodels.SearchRestaurantsViewModel;
 import com.cirederf.go4lunch.views.RestaurantAdapter;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class ListRestaurantsFragment extends Fragment {
 
     private NearbyRestaurantsViewModel nearbyRestaurantsViewModel;
     private RestaurantsViewModel restaurantsViewModel;
-    private SearchViewModel searchViewModel;
+    private SearchRestaurantsViewModel searchRestaurantsViewModel;
 
     private RecyclerView recyclerView;
 
@@ -49,13 +49,12 @@ public class ListRestaurantsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (searchViewModel == null) {
+        if (searchRestaurantsViewModel == null) {
             this.configureNearbyRestaurantViewModel();
         }
     }
 
     private void configureNearbyRestaurantViewModel() {
-        // TODO: Create an instance of viewmodel passing the repository as a param.
 //        String location = "48.410692,2.738093";
 //        int radius = 15000;
 //        String type = "restaurant";
@@ -76,8 +75,8 @@ public class ListRestaurantsFragment extends Fragment {
 //            configureRecyclerViewAdapter(getView(), restaurants);
 //        });
 
-        SearchViewFactory searchViewFactory = SearchInjection.provideSearchFactory();
-        searchViewModel = ViewModelProviders.of(this, searchViewFactory).get(SearchViewModel.class);
+        SearchRestaurantsViewModelFactory searchRestaurantsViewModelFactory = SearchInjection.provideSearchFactory();
+        searchRestaurantsViewModel = ViewModelProviders.of(this, searchRestaurantsViewModelFactory).get(SearchRestaurantsViewModel.class);
 
         //create the method to get restaurantlist here : this.method
         //this.getRestautantsList();
@@ -95,24 +94,24 @@ public class ListRestaurantsFragment extends Fragment {
         recyclerView.setLayoutManager(restaurantRecyclerView);
     }
 
-    private void getRestautantsList() {
-        String location = "48.410692,2.738093";
-        int radius = 15000;
-        String type = "restaurant";
-        String apiKey = getString(R.string.places_api_google_key);
-        this.searchViewModel.getNearbyRestos(location, radius, type, apiKey)
-                .observe(getViewLifecycleOwner(), restaurants -> {
-                    configureRecyclerViewAdapter(getView(), restaurants);
-                });
-    }
+//    private void getRestautantsList() {
+//        String location = "48.410692,2.738093";
+//        int radius = 15000;
+//        String type = "restaurant";
+//        String apiKey = getString(R.string.places_api_google_key);
+//        this.searchRestaurantsViewModel.getNearbyRestos(location, radius, type, apiKey)
+//                .observe(getViewLifecycleOwner(), restaurants -> {
+//                    configureRecyclerViewAdapter(getView(), restaurants);
+//                });
+//    }
 
     private void getRestoListFromRestoRepo() {
         String location = "48.410692,2.738093";
         int radius = 15000;
         String type = "restaurant";
         String apiKey = getString(R.string.places_api_google_key);
-        this.searchViewModel.initRestoList(location, radius, type, apiKey);
-        this.searchViewModel.getRestaurantsFromRestoRepo()
+        this.searchRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
+        this.searchRestaurantsViewModel.getRestaurantsFromRestaurantsRepository(/*location, radius, type, apiKey*/)
                 .observe(getViewLifecycleOwner(), restaurants -> {
             configureRecyclerViewAdapter(getView(), restaurants);
                 });

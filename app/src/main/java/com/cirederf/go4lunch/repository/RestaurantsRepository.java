@@ -16,10 +16,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Get data from NearbyPlacesApi and fetch them with the public method RestaurantRepository()
+ */
 public class RestaurantsRepository {
 
     private static RestaurantsRepository restaurantsRepository;
 
+    /**
+     * singleton for RestaurantsRepository
+     * @return restaurantsRepository
+     */
     public static RestaurantsRepository getInstance() {
         if (restaurantsRepository == null) {
             restaurantsRepository = new RestaurantsRepository();
@@ -29,15 +36,26 @@ public class RestaurantsRepository {
 
     private NearbyPlacesApi nearbyPlacesApi;
 
+    /**
+     * create the retrofit request
+     */
     public RestaurantsRepository() {
         nearbyPlacesApi = RetrofitService.createService(NearbyPlacesApi.class);
     }
 
+    /**
+     * @param location use to calculate position from the indicated location
+     * @param radius use to calculate the search distance between location and max search range
+     * @param type use to declare type of search: restaurants
+     * @param apiKey use for access at GooglePlacesSearch api
+     * @return MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<List<Restaurant>>()
+     */
     public MutableLiveData<List<Restaurant>> getRestaurantsList(String location, int radius, String type, String apiKey){
 
         MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<>();
         List<Restaurant> restaurants = new ArrayList<>();
 
+        //create a list of places using PlacesSearchApi data
         nearbyPlacesApi.getNearbyPlacesList(location, radius, type, apiKey)
                 .enqueue(new Callback<PlacesSearchApi>() {
                     @Override
@@ -56,6 +74,7 @@ public class RestaurantsRepository {
                                     ,setOpenNow(results, i));
                             restaurants.add(restaurant);
                         }
+                        //set List of restaurants value in MutableLiveData
                         nearbyRestaurantsList.setValue(restaurants);
                     }
 
@@ -68,6 +87,7 @@ public class RestaurantsRepository {
         return nearbyRestaurantsList;
     }
 
+    //-------------METHODS FOR SET SEARCH VALUES IN OnResponse()-----------------
     private String getPicture(String photoReference, int maxWidth, String apiKey) {
         return "https://maps.googleapis.com/maps/api/place/photo?" + "photoreference=" + photoReference
                 + "&maxwidth=" + maxWidth + "&key=" + apiKey;
