@@ -1,5 +1,6 @@
 package com.cirederf.go4lunch.viewmodels;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -15,7 +16,9 @@ public class RestaurantsViewModel extends ViewModel {
     private final RestaurantsRepository restaurantsDataSource;
     private final Executor executor;
 
-    private MutableLiveData<List<Restaurant>> getRestaurants;
+    //private MutableLiveData<List<Restaurant>> getRestaurants;
+    private final MutableLiveData<List<Restaurant>> _restaurants = new MutableLiveData<>();
+    public LiveData<List<Restaurant>> restaurants = _restaurants;
 
     //constructor
     public RestaurantsViewModel(RestaurantsRepository restaurantsDataSource, Executor executor) {
@@ -24,13 +27,13 @@ public class RestaurantsViewModel extends ViewModel {
     }
 
     public void initRestaurantsList(String location, int radius, String type, String apiKey) {
-        if(getRestaurants != null) {
+        if(restaurants != null) {
             return;
         }
-        getRestaurants = restaurantsDataSource.getRestaurantsList(location, radius, type, apiKey);
+        restaurants = restaurantsDataSource.getRestaurantsList(location, radius, type, apiKey);
     }
 
-    public MutableLiveData<List<Restaurant>> getRestaurantsList (String location, int radius, String type, String apiKey) {
+    public LiveData<List<Restaurant>> getRestaurantsList (String location, int radius, String type, String apiKey) {
         return restaurantsDataSource.getRestaurantsList(location, radius, type, apiKey);
     }
 }

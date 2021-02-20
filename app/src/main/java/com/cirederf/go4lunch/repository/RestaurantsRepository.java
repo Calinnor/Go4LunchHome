@@ -1,5 +1,6 @@
 package com.cirederf.go4lunch.repository;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.cirederf.go4lunch.models.Restaurant;
@@ -54,7 +55,8 @@ public class RestaurantsRepository {
      *               onResponse(), onFailure() setValue List of restaurants or null to MutableLiveData<List<Restaurant>>
      * @return getRestaurantsList() return MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<List<Restaurant>>()
      */
-    public MutableLiveData<List<Restaurant>> getRestaurantsList(String location, int radius, String type, String apiKey){
+    //public MutableLiveData<List<Restaurant>> getRestaurantsList(String location, int radius, String type, String apiKey){
+    public LiveData<List<Restaurant>> getRestaurantsList(String location, int radius, String type, String apiKey){
 
         MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<>();
         List<Restaurant> restaurants = new ArrayList<>();

@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +17,17 @@ import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.injections.SearchInjection;
 import com.cirederf.go4lunch.injections.SearchRestaurantsViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.utils.ItemClickSupport;
 import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
 import com.cirederf.go4lunch.viewmodels.RestaurantsViewModel;
 import com.cirederf.go4lunch.viewmodels.SearchRestaurantsViewModel;
 import com.cirederf.go4lunch.views.RestaurantAdapter;
 import com.cirederf.go4lunch.views.activities.DetailsRestaurantActivity;
-import com.cirederf.go4lunch.views.activities.LoginActivity;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
 
-public class ListRestaurantsFragment extends Fragment implements RestaurantAdapter.OnItemClickRestaurantListerner{
+public class ListRestaurantsFragment extends Fragment implements RestaurantAdapter.OnItemRestaurantClickListerner {
 
     private NearbyRestaurantsViewModel nearbyRestaurantsViewModel;
     private RestaurantsViewModel restaurantsViewModel;
