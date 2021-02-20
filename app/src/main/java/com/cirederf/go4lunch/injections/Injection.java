@@ -2,7 +2,7 @@ package com.cirederf.go4lunch.injections;
 
 import android.content.Context;
 
-import com.cirederf.go4lunch.networking.NearbyPlacesApi;
+import com.cirederf.go4lunch.networking.NearbyPlacesApiRequests;
 import com.cirederf.go4lunch.networking.RetrofitService;
 import com.cirederf.go4lunch.repository.RestaurantsRepository;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 public class Injection {
 
     public static RestaurantsRepository provideRestaurantsDataSource(Context context, String location, int radius, String type, String apiKey) {
-        NearbyPlacesApi nearbyPlacesApi = RetrofitService.createService(NearbyPlacesApi.class);
+        NearbyPlacesApiRequests nearbyPlacesApiRequests = RetrofitService.createService(NearbyPlacesApiRequests.class);
         return new RestaurantsRepository();
     }
 

@@ -15,6 +15,7 @@ import java.util.concurrent.Executor;
  */
 public class SearchRestaurantsViewModelFactory implements ViewModelProvider.Factory {
 
+    //-----------REPOSITORY------------
 //    private SearchRepository searchRepository;
     private RestaurantsRepository restaurantsRepository;
 
@@ -22,13 +23,15 @@ public class SearchRestaurantsViewModelFactory implements ViewModelProvider.Fact
 //        this.searchRepository = searchRepository;
 //    }
 
+    //------------CONSTRUCTOR------------
     public SearchRestaurantsViewModelFactory(RestaurantsRepository restaurantsRepository) {
         this.restaurantsRepository = restaurantsRepository;
     }
 
     /**
-     * create repository instance
-     * @param modelClass restaurantRepository
+     * For create a ViewModel(repository) instance
+     * @param modelClass ViewModel = SearchRestaurantViewModel
+     * using ViewModel(restaurantRepository)
      */
     @NonNull
     @Override
@@ -37,6 +40,6 @@ public class SearchRestaurantsViewModelFactory implements ViewModelProvider.Fact
             //return (T) new SearchViewModel(searchRepository);
             return (T) new SearchRestaurantsViewModel(restaurantsRepository);
         }
-        throw new IllegalArgumentException("Problem with ViewModelFactory");
+        throw new IllegalArgumentException("Problem with unknown ViewModel");
     }
 }

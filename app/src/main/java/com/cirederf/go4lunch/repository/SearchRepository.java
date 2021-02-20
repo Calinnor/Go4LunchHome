@@ -1,12 +1,10 @@
 package com.cirederf.go4lunch.repository;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.apiModels.Location;
 import com.cirederf.go4lunch.models.apiModels.PlacesSearchApi;
 import com.cirederf.go4lunch.models.apiModels.Result;
-import com.cirederf.go4lunch.networking.NearbyPlacesApi;
+import com.cirederf.go4lunch.networking.NearbyPlacesApiRequests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +18,8 @@ public class SearchRepository {
     public List<Restaurant> getRestaurants(String location, int radius, String type, String apiKey){
 
         List<Restaurant> restaurants = new ArrayList<>();
-        NearbyPlacesApi nearbyPlacesApi = NearbyPlacesApi.retrofit.create(NearbyPlacesApi.class);
-        nearbyPlacesApi.getNearbyPlacesList(location, radius, type, apiKey)
+        NearbyPlacesApiRequests nearbyPlacesApiRequests = NearbyPlacesApiRequests.retrofit.create(NearbyPlacesApiRequests.class);
+        nearbyPlacesApiRequests.getNearbyPlacesList(location, radius, type, apiKey)
                 .enqueue(new Callback<PlacesSearchApi>() {
 
                     @Override

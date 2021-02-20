@@ -1,5 +1,6 @@
 package com.cirederf.go4lunch.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +18,19 @@ import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.injections.SearchInjection;
 import com.cirederf.go4lunch.injections.SearchRestaurantsViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
+import com.cirederf.go4lunch.utils.ItemClickSupport;
 import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
 import com.cirederf.go4lunch.viewmodels.RestaurantsViewModel;
 import com.cirederf.go4lunch.viewmodels.SearchRestaurantsViewModel;
 import com.cirederf.go4lunch.views.RestaurantAdapter;
+import com.cirederf.go4lunch.views.activities.DetailsRestaurantActivity;
+import com.cirederf.go4lunch.views.activities.LoginActivity;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
 
-public class ListRestaurantsFragment extends Fragment {
+public class ListRestaurantsFragment extends Fragment implements RestaurantAdapter.OnItemClickRestaurantListerner{
 
     private NearbyRestaurantsViewModel nearbyRestaurantsViewModel;
     private RestaurantsViewModel restaurantsViewModel;
@@ -51,6 +56,7 @@ public class ListRestaurantsFragment extends Fragment {
         super.onResume();
         if (searchRestaurantsViewModel == null) {
             this.configureNearbyRestaurantViewModel();
+
         }
     }
 
@@ -86,7 +92,7 @@ public class ListRestaurantsFragment extends Fragment {
 
     private void configureRecyclerViewAdapter(View view, List<Restaurant> restaurants) {
         recyclerView = view.findViewById(R.id.fragment_list_restaurants_recycler_view);
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(this,restaurants);
+        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(this,restaurants, this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(restaurantAdapter);
@@ -118,4 +124,11 @@ public class ListRestaurantsFragment extends Fragment {
     }
 
 
+    @Override
+    public void onItemClick(Restaurant restaurant) {
+        Intent intent = new Intent(getContext(), DetailsRestaurantActivity.class);
+        //intent.putExtra("Restaurants", (Parcelable) restaurant); have to put the parcelable in place ?
+        this.startActivity(intent);
+
+    }
 }

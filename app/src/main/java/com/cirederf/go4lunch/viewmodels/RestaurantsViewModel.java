@@ -11,11 +11,13 @@ import java.util.concurrent.Executor;
 
 public class RestaurantsViewModel extends ViewModel {
 
+    //repos
     private final RestaurantsRepository restaurantsDataSource;
     private final Executor executor;
 
     private MutableLiveData<List<Restaurant>> getRestaurants;
 
+    //constructor
     public RestaurantsViewModel(RestaurantsRepository restaurantsDataSource, Executor executor) {
         this.restaurantsDataSource = restaurantsDataSource;
         this.executor = executor;

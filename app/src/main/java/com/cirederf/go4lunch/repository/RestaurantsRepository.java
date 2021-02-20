@@ -6,7 +6,7 @@ import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.apiModels.Location;
 import com.cirederf.go4lunch.models.apiModels.PlacesSearchApi;
 import com.cirederf.go4lunch.models.apiModels.Result;
-import com.cirederf.go4lunch.networking.NearbyPlacesApi;
+import com.cirederf.go4lunch.networking.NearbyPlacesApiRequests;
 import com.cirederf.go4lunch.networking.RetrofitService;
 
 import java.util.ArrayList;
@@ -17,16 +17,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Get data from NearbyPlacesApi and fetch them with the public method RestaurantRepository()
+ * Get data from PlacesSearchApi using NearbyPlacesApiRequests and fetch them with the public method RestaurantRepository()
  */
 public class RestaurantsRepository {
 
-    private static RestaurantsRepository restaurantsRepository;
-
     /**
-     * singleton for RestaurantsRepository
+     * Singleton for RestaurantsRepository
      * @return restaurantsRepository
      */
+    private static RestaurantsRepository restaurantsRepository;
+
     public static RestaurantsRepository getInstance() {
         if (restaurantsRepository == null) {
             restaurantsRepository = new RestaurantsRepository();
@@ -34,29 +34,32 @@ public class RestaurantsRepository {
         return restaurantsRepository;
     }
 
-    private NearbyPlacesApi nearbyPlacesApi;
-
+    //---------FOR DATA REQUEST-------------
+    private NearbyPlacesApiRequests nearbyPlacesApiRequests;
     /**
-     * create the retrofit request
+     * Create the retrofit request
      */
     public RestaurantsRepository() {
-        nearbyPlacesApi = RetrofitService.createService(NearbyPlacesApi.class);
+        nearbyPlacesApiRequests = RetrofitService.createService(NearbyPlacesApiRequests.class);
     }
 
     /**
+     * Create a MutableLiveData list of restaurants
      * @param location use to calculate position from the indicated location
      * @param radius use to calculate the search distance between location and max search range
      * @param type use to declare type of search: restaurants
      * @param apiKey use for access at GooglePlacesSearch api
-     * @return MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<List<Restaurant>>()
+     *               request to PlacesSearchApi: nearbyPlacesApiRequests.getNearbyPlacesList(param).enqueue(CallBack)
+     *               onResponse() create a list of places (type = restaurant) using CallBack<PlacesSearchApi>()
+     *               onResponse(), onFailure() setValue List of restaurants or null to MutableLiveData<List<Restaurant>>
+     * @return getRestaurantsList() return MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<List<Restaurant>>()
      */
     public MutableLiveData<List<Restaurant>> getRestaurantsList(String location, int radius, String type, String apiKey){
 
         MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<>();
         List<Restaurant> restaurants = new ArrayList<>();
 
-        //create a list of places using PlacesSearchApi data
-        nearbyPlacesApi.getNearbyPlacesList(location, radius, type, apiKey)
+        nearbyPlacesApiRequests.getNearbyPlacesList(location, radius, type, apiKey)
                 .enqueue(new Callback<PlacesSearchApi>() {
                     @Override
                     public void onResponse(Call<PlacesSearchApi> call, Response<PlacesSearchApi> response) {
@@ -74,7 +77,6 @@ public class RestaurantsRepository {
                                     ,setOpenNow(results, i));
                             restaurants.add(restaurant);
                         }
-                        //set List of restaurants value in MutableLiveData
                         nearbyRestaurantsList.setValue(restaurants);
                     }
 

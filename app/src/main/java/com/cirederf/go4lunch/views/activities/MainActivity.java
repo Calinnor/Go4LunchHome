@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.cirederf.go4lunch.views.fragments.DetailsRestaurantFragment;
 import com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment;
 import com.cirederf.go4lunch.views.fragments.MapFragment;
 import com.cirederf.go4lunch.views.fragments.WorkmatesFragment;
@@ -136,7 +137,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      * LogoutClick
      * BottomNavigation
      * DrawerNavigation
-     * 
      */
     //Logout
     public void onClickLogoutButton() {
@@ -168,7 +168,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         showSelectedFragment(R.id.list, ListRestaurantsFragment.newInstance());
                         return true;
                     case R.id.workmates:
-                        showSelectedFragment(R.id.workmates, WorkmatesFragment.newInstance());
+                        showSelectedFragment(R.id.workmates,WorkmatesFragment.newInstance());
                         return true;
                 }
                 return false;
@@ -239,9 +239,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void configureNavigationDrawer() {
-        navigationView.setNavigationItemSelectedListener(this);//with setNavigation
+        navigationView.setNavigationItemSelectedListener(this);
     }
-    //TODO find the difference between set and setOnNavigation and try to merge the two method similare but not equals
+
 
     // Configure fragments view : selected (is default)
     private void startTransactionFragment(Fragment fragment) {

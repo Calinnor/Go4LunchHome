@@ -12,16 +12,19 @@ import java.util.concurrent.Executor;
 
 public class SearchRestaurantsViewModel extends ViewModel {
 
+    //---------FOR DATA-----------
+    private MutableLiveData<List<Restaurant>> liveDataListRestaurantsFromRestaurantsRepository;
+
     //---------REPOSITORY---------
     //private SearchRepository searchRepository;
     private RestaurantsRepository restaurantsRepository;
-    private MutableLiveData<List<Restaurant>> liveDataListRestaurantsFromRestaurantsRepository;
+
 
 //    public SearchRestaurantsViewModel(SearchRepository searchRepository) {
 //        this.searchRepository = searchRepository;
 //    }
 
-    //----------CONSTRUCTOR-----------
+    //----------CONSTRUCTOR CALL IN FACTORY-----------
     public SearchRestaurantsViewModel(RestaurantsRepository restaurantsRepository) {
         this.restaurantsRepository = restaurantsRepository;
     }
@@ -36,9 +39,10 @@ public class SearchRestaurantsViewModel extends ViewModel {
          * below here too is required List<Restaurant> but is provided MutableLiveData<List<Restaurant>>
          *     cast to List is unchecked
          */
-        //this.restosMutableLiveDataList.setValue((List<Restaurant>) this.restaurantsRepository.getRestaurantsList(location, radius, type, apiKey));
 
-        MutableLiveData<List<Restaurant>> restosMutableLiveDataList = restaurantsRepository.getRestaurantsList(location, radius, type, apiKey);
+        //this.restosMutableLiveDataList.setValue((List<Restaurant>) this.restaurantsRepository.getRestaurantsList(location, radius, type, apiKey));
+        MutableLiveData<List<Restaurant>> restosMutableLiveDataList;
+        restosMutableLiveDataList = restaurantsRepository.getRestaurantsList(location, radius, type, apiKey);
         return restosMutableLiveDataList;
         /**
          * here was my error. Difficulty to find how to obtain the good list of mutablelivedata<restaurant> and not a list of restaurant
@@ -46,7 +50,7 @@ public class SearchRestaurantsViewModel extends ViewModel {
     }
 
     /**
-     * init MutableLiveData<List<Restaurant>> with method from Repository and set them on variable
+     * Init a MutableLiveData<List<Restaurant>> with method from Repository
      */
     public void initRestaurantsList(String location, int radius, String type, String apiKey) {
         if (liveDataListRestaurantsFromRestaurantsRepository != null) {
@@ -58,7 +62,7 @@ public class SearchRestaurantsViewModel extends ViewModel {
 
     /**
      *
-     * @return MutableLiveData<List<Restaurant>> variable
+     * @return a MutableLiveData<List<Restaurant>> data value
      */
     public MutableLiveData<List<Restaurant>> getRestaurantsFromRestaurantsRepository() {
         return liveDataListRestaurantsFromRestaurantsRepository;

@@ -3,7 +3,7 @@ package com.cirederf.go4lunch.injections;
 import com.cirederf.go4lunch.repository.RestaurantsRepository;
 
 /**
- * centralize
+ * Centralize and fetch static method which return Factory
  */
 public class SearchInjection {
 

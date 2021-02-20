@@ -10,16 +10,20 @@ import android.view.ViewGroup;
 
 import com.cirederf.go4lunch.R;
 
-public class WorkmatesFragment extends Fragment {
+import butterknife.ButterKnife;
 
-    public static WorkmatesFragment newInstance() {
-        return (new WorkmatesFragment());
+public class DetailsRestaurantFragment extends Fragment {
+
+    public static DetailsRestaurantFragment newInstance() {
+        return (new DetailsRestaurantFragment());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_workmates, container, false);
+        return inflater.inflate(R.layout.fragment_details_restaurant, container, false);
     }
+
+
 }

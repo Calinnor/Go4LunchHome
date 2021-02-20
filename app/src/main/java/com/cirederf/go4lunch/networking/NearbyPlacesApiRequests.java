@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface NearbyPlacesApi {
+public interface NearbyPlacesApiRequests {
 
 
 //    @GET("nearbysearch/json?")

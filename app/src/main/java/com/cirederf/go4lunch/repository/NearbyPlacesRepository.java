@@ -6,7 +6,7 @@ import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.apiModels.PlacesSearchApi;
 import com.cirederf.go4lunch.models.apiModels.Location;
 import com.cirederf.go4lunch.models.apiModels.Result;
-import com.cirederf.go4lunch.networking.NearbyPlacesApi;
+import com.cirederf.go4lunch.networking.NearbyPlacesApiRequests;
 import com.cirederf.go4lunch.networking.RetrofitService;
 
 import java.util.ArrayList;
@@ -27,10 +27,10 @@ public class NearbyPlacesRepository {
         return nearbyPlacesRepository;
     }
 
-    private NearbyPlacesApi nearbyPlacesApi;
+    private NearbyPlacesApiRequests nearbyPlacesApiRequests;
 
     private NearbyPlacesRepository() {
-        nearbyPlacesApi = RetrofitService.createService(NearbyPlacesApi.class);
+        nearbyPlacesApiRequests = RetrofitService.createService(NearbyPlacesApiRequests.class);
     }
 
     public MutableLiveData<List<Restaurant>> getNearbyRestaurantsList(String location, int radius, String type, String key) {
@@ -38,7 +38,7 @@ public class NearbyPlacesRepository {
         MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<>();
         List<Restaurant> restaurants = new ArrayList<>();
 
-        nearbyPlacesApi.getNearbyPlacesList(location, radius, type, key)
+        nearbyPlacesApiRequests.getNearbyPlacesList(location, radius, type, key)
                 .enqueue(new Callback<PlacesSearchApi>() {
                     @Override
                     public void onResponse(Call<PlacesSearchApi> call, Response<PlacesSearchApi> response) {
