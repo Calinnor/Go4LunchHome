@@ -7,10 +7,6 @@ import com.cirederf.go4lunch.repository.RestaurantsRepository;
  */
 public class SearchInjection {
 
-//    private static SearchRepository provideSearchRepository() {
-//        return new SearchRepository();
-//    }
-
     public static RestaurantsRepository provideRestaurantRepository() {
         return new RestaurantsRepository();
     }
@@ -19,7 +15,6 @@ public class SearchInjection {
      * @return Factory with repository as param
      */
     public static SearchRestaurantsViewModelFactory provideSearchFactory() {
-        //return new SearchViewFactory(provideSearchRepository());
         RestaurantsRepository restaurantsRepository = provideRestaurantRepository();
         return new SearchRestaurantsViewModelFactory(restaurantsRepository);
     }

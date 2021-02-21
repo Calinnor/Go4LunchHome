@@ -20,7 +20,7 @@ import java.util.List;
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
 
     List<Restaurant> nearbyRestaurants;
-    private OnItemRestaurantClickListerner onItemRestaurantClickListerner;
+    private final OnItemRestaurantClickListerner onItemRestaurantClickListerner;
 
     public static class RestaurantViewHolder extends RecyclerView.ViewHolder {
 
@@ -43,7 +43,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         }
     }
 
-    public RestaurantAdapter(ListRestaurantsFragment listRestaurantsFragment,List<Restaurant> restaurants, OnItemRestaurantClickListerner onItemRestaurantClickListerner) {
+    public RestaurantAdapter(/*ListRestaurantsFragment listRestaurantsFragment,*/List<Restaurant> restaurants, OnItemRestaurantClickListerner onItemRestaurantClickListerner) {
         this.nearbyRestaurants = restaurants;
         this.onItemRestaurantClickListerner = onItemRestaurantClickListerner;
     }
@@ -78,11 +78,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 .apply(RequestOptions.centerCropTransform())
                 .into(holder.imageView);
 
-
-        holder.itemView.setOnClickListener(v -> {
-            onItemRestaurantClickListerner.onItemClick(nearbySearchRestaurants);
-
-        });
+        holder.itemView.setOnClickListener(v -> onItemRestaurantClickListerner.onItemClick(nearbySearchRestaurants));
     }
 
     @Override
@@ -93,6 +89,5 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     public interface OnItemRestaurantClickListerner {
         void onItemClick(Restaurant restaurant);
     }
-
 
 }

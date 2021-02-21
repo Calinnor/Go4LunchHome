@@ -5,8 +5,6 @@ import com.cirederf.go4lunch.views.fragments.DetailsRestaurantFragment;
 
 public class DetailsRestaurantActivity extends BaseActivity {
 
-    private DetailsRestaurantFragment detailsRestaurantFragment;
-
     @Override
     public int getActivityLayout() {
         return R.layout.activity_details_restaurant;
@@ -19,7 +17,7 @@ public class DetailsRestaurantActivity extends BaseActivity {
     }
 
     private void configureAndShowDetailsFragment(){
-        detailsRestaurantFragment = (DetailsRestaurantFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout_details);
+        DetailsRestaurantFragment detailsRestaurantFragment = (DetailsRestaurantFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout_details);
         if (detailsRestaurantFragment == null) {
             detailsRestaurantFragment = new DetailsRestaurantFragment();
             getSupportFragmentManager().beginTransaction()

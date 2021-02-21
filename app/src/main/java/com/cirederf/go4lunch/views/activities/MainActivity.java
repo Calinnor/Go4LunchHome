@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.cirederf.go4lunch.views.fragments.DetailsRestaurantFragment;
 import com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment;
 import com.cirederf.go4lunch.views.fragments.MapFragment;
 import com.cirederf.go4lunch.views.fragments.WorkmatesFragment;
@@ -101,20 +100,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void signOutCurrentUserFromFirebase(){
         AuthUI.getInstance()
                 .signOut(this)
-                .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted(SIGN_OUT_TASK));
+                .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted());
     }
 
-    private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted(final int origin){
-        return new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                switch (origin){
-                    case SIGN_OUT_TASK:
-                        finish();
-                        break;
-                    default:
-                        break;
-                }
+    private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted(){
+        return aVoid -> {
+            if (MainActivity.SIGN_OUT_TASK == SIGN_OUT_TASK) {
+                finish();
             }
         };
     }
@@ -142,12 +134,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void onClickLogoutButton() {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.popup_message_confirmation_logout_account)
-                .setPositiveButton(R.string.popup_message_choice_yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        signOutCurrentUserFromFirebase();
-                    }
-                })
+                .setPositiveButton(R.string.popup_message_choice_yes, (dialogInterface, i) -> signOutCurrentUserFromFirebase())
                 .setNegativeButton(R.string.popup_message_choice_no, null)
                 .show();
     }
@@ -157,22 +144,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      */
 
     private void configureBottomNavigationView() {
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {//new bottomnavigationview with setOn
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.map:
-                        showSelectedFragment(R.id.map, MapFragment.newInstance());
-                        return true;
-                    case R.id.list:
-                        showSelectedFragment(R.id.list, ListRestaurantsFragment.newInstance());
-                        return true;
-                    case R.id.workmates:
-                        showSelectedFragment(R.id.workmates,WorkmatesFragment.newInstance());
-                        return true;
-                }
-                return false;
+        //new bottomnavigationview with setOn
+        mBottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.map:
+                    showSelectedFragment(R.id.map, MapFragment.newInstance());
+                    return true;
+                case R.id.list:
+                    showSelectedFragment(R.id.list, ListRestaurantsFragment.newInstance());
+                    return true;
+                case R.id.workmates:
+                    showSelectedFragment(R.id.workmates,WorkmatesFragment.newInstance());
+                    return true;
             }
+            return false;
         });
     }
 

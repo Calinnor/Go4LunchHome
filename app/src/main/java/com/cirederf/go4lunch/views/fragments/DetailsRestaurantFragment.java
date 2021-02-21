@@ -1,16 +1,13 @@
 package com.cirederf.go4lunch.views.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cirederf.go4lunch.R;
+import androidx.fragment.app.Fragment;
 
-import butterknife.ButterKnife;
+import com.cirederf.go4lunch.R;
 
 public class DetailsRestaurantFragment extends Fragment {
 

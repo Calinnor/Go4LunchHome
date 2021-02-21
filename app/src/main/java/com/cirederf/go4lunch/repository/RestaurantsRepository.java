@@ -22,6 +22,9 @@ import retrofit2.Response;
  */
 public class RestaurantsRepository {
 
+    private final MutableLiveData<List<Restaurant>> _restaurants = new MutableLiveData<>();
+    public LiveData<List<Restaurant>> restaurantsList = _restaurants;
+
     /**
      * Singleton for RestaurantsRepository
      * @return restaurantsRepository
@@ -36,16 +39,15 @@ public class RestaurantsRepository {
     }
 
     //---------FOR DATA REQUEST-------------
-    private NearbyPlacesApiRequests nearbyPlacesApiRequests;
+    private final NearbyPlacesApiRequests nearbyPlacesApiRequests = RetrofitService.createService(NearbyPlacesApiRequests.class);
     /**
      * Create the retrofit request
      */
     public RestaurantsRepository() {
-        nearbyPlacesApiRequests = RetrofitService.createService(NearbyPlacesApiRequests.class);
-    }
+          }
 
     /**
-     * Create a MutableLiveData list of restaurants
+     * Create a public LiveData list of restaurants using a private MutableLiceData list
      * @param location use to calculate position from the indicated location
      * @param radius use to calculate the search distance between location and max search range
      * @param type use to declare type of search: restaurants
@@ -55,10 +57,8 @@ public class RestaurantsRepository {
      *               onResponse(), onFailure() setValue List of restaurants or null to MutableLiveData<List<Restaurant>>
      * @return getRestaurantsList() return MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<List<Restaurant>>()
      */
-    //public MutableLiveData<List<Restaurant>> getRestaurantsList(String location, int radius, String type, String apiKey){
-    public LiveData<List<Restaurant>> getRestaurantsList(String location, int radius, String type, String apiKey){
+     public LiveData<List<Restaurant>> getRestaurantsList(String location, int radius, String type, String apiKey){
 
-        MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<>();
         List<Restaurant> restaurants = new ArrayList<>();
 
         nearbyPlacesApiRequests.getNearbyPlacesList(location, radius, type, apiKey)
@@ -79,70 +79,61 @@ public class RestaurantsRepository {
                                     ,setOpenNow(results, i));
                             restaurants.add(restaurant);
                         }
-                        nearbyRestaurantsList.setValue(restaurants);
+                        _restaurants.setValue(restaurants);
                     }
 
                     @Override
                     public void onFailure(Call<PlacesSearchApi> call, Throwable t) {
-                        nearbyRestaurantsList.setValue(null);
+                        _restaurants.setValue(null);
                     }
                 });
 
-        return nearbyRestaurantsList;
+        return restaurantsList;
     }
 
     //-------------METHODS FOR SET SEARCH VALUES IN OnResponse()-----------------
-    private String getPicture(String photoReference, int maxWidth, String apiKey) {
+    private String getPicture(String photoReference, String apiKey) {
         return "https://maps.googleapis.com/maps/api/place/photo?" + "photoreference=" + photoReference
-                + "&maxwidth=" + maxWidth + "&key=" + apiKey;
+                + "&maxwidth=" + 250 + "&key=" + apiKey;
     }
 
     private String setPicture(List<Result>results, int i, String apiKey) {
-        String picture = results.get(i).getPhotos() != null ?
+        return results.get(i).getPhotos() != null ?
                 getPicture(results.get(i).getPhotos().get(0).getPhotoReference(),
-                        250,/*"AIzaSyAQIMmBdFBM6kVUJ5HyC7tpUXKbkIow_lI"*/apiKey)
+                        apiKey)
                 : null;
-        return picture;
     }
 
     private String setPlaceId(List<Result>results, int i) {
-        String placeId = results.get(i).getPlaceId() != null ? results.get(i).getPlaceId() : "";
-        return placeId;
+        return results.get(i).getPlaceId() != null ? results.get(i).getPlaceId() : "";
     }
 
     private String setPhoneNumber(List<Result>results, int i) {
-        String phoneNumber = results.get(i).getBusinessStatus() != null ? results.get(i).getBusinessStatus() : "";
-        return phoneNumber;
+        return results.get(i).getBusinessStatus() != null ? results.get(i).getBusinessStatus() : "";
     }
 
     private String setWebSite(List<Result>results, int i) {
-        String webSite = results.get(i).getBusinessStatus() != null ? results.get(i).getBusinessStatus() : "";
-        return webSite;
+        return results.get(i).getBusinessStatus() != null ? results.get(i).getBusinessStatus() : "";
     }
 
     private String setName(List<Result>results, int i) {
-        String name = results.get(i).getName() != null ? results.get(i).getName() : "";
-        return name;
+        return results.get(i).getName() != null ? results.get(i).getName() : "";
     }
 
     private String setAddress(List<Result>results, int i) {
-        String address = results.get(i).getVicinity() != null ? results.get(i).getVicinity() : "";
-        return address;
+        return results.get(i).getVicinity() != null ? results.get(i).getVicinity() : "";
     }
 
     private double setRating(List<Result>results, int i) {
-        double rating = results.get(i).getRating() != null ? results.get(i).getRating() : 0;
-        return rating;
+        return results.get(i).getRating() != null ? results.get(i).getRating() : 0;
     }
 
     private Boolean setOpenNow(List<Result>results, int i) {
-        Boolean openNow = results.get(i).getOpeningHours() != null ? results.get(i).getOpeningHours().getOpenNow() : false;
-        return openNow;
+        return results.get(i).getOpeningHours() != null ? results.get(i).getOpeningHours().getOpenNow() : false;
     }
 
     private Location setLocation(List<Result>results, int i) {
-        Location location = results.get(i).getGeometry().getLocation();
-        return location;
+        return results.get(i).getGeometry().getLocation();
     }
 
 }
