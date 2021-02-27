@@ -4,7 +4,6 @@ import com.cirederf.go4lunch.R;
 
 public class StartActivity extends BaseActivity {
 
-
     @Override
     public int getActivityLayout() {
         return R.layout.activity_start;

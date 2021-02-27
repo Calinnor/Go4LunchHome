@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.models.apiModels.Location;
-import com.cirederf.go4lunch.models.apiModels.PlacesSearchApi;
-import com.cirederf.go4lunch.models.apiModels.Result;
+import com.cirederf.go4lunch.models.apiNearbyModels.Location;
+import com.cirederf.go4lunch.models.apiNearbyModels.PlacesSearchApi;
+import com.cirederf.go4lunch.models.apiNearbyModels.Result;
 import com.cirederf.go4lunch.networking.NearbyPlacesApiRequests;
 import com.cirederf.go4lunch.networking.RetrofitService;
+import com.cirederf.go4lunch.services.NearbyPlaceInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import retrofit2.Response;
 /**
  * Get data from PlacesSearchApi using NearbyPlacesApiRequests and fetch them with the public method RestaurantRepository()
  */
-public class RestaurantsRepository {
+public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
 
     private final MutableLiveData<List<Restaurant>> _restaurants = new MutableLiveData<>();
     public LiveData<List<Restaurant>> restaurantsList = _restaurants;
@@ -29,39 +30,37 @@ public class RestaurantsRepository {
      * Singleton for RestaurantsRepository
      * @return restaurantsRepository
      */
-    private static RestaurantsRepository restaurantsRepository;
+    private static RestaurantsNearbySearchRepository restaurantsNearbySearchRepository;
 
-    public static RestaurantsRepository getInstance() {
-        if (restaurantsRepository == null) {
-            restaurantsRepository = new RestaurantsRepository();
+    public static RestaurantsNearbySearchRepository getInstance() {
+        if (restaurantsNearbySearchRepository == null) {
+            restaurantsNearbySearchRepository = new RestaurantsNearbySearchRepository();
         }
-        return restaurantsRepository;
+        return restaurantsNearbySearchRepository;
     }
 
     //---------FOR DATA REQUEST-------------
-    private final NearbyPlacesApiRequests nearbyPlacesApiRequests = RetrofitService.createService(NearbyPlacesApiRequests.class);
+    private final NearbyPlacesApiRequests apiDataSource = RetrofitService.createService(NearbyPlacesApiRequests.class);
     /**
      * Create the retrofit request
      */
-    public RestaurantsRepository() {
+    public RestaurantsNearbySearchRepository() {
           }
 
     /**
      * Create a public LiveData list of restaurants using a private MutableLiceData list
-     * @param location use to calculate position from the indicated location
-     * @param radius use to calculate the search distance between location and max search range
-     * @param type use to declare type of search: restaurants
-     * @param apiKey use for access at GooglePlacesSearch api
      *               request to PlacesSearchApi: nearbyPlacesApiRequests.getNearbyPlacesList(param).enqueue(CallBack)
      *               onResponse() create a list of places (type = restaurant) using CallBack<PlacesSearchApi>()
      *               onResponse(), onFailure() setValue List of restaurants or null to MutableLiveData<List<Restaurant>>
-     * @return getRestaurantsList() return MutableLiveData<List<Restaurant>> nearbyRestaurantsList = new MutableLiveData<List<Restaurant>>()
+     * @return LiveData<List<Restaurant>> restaurantsList = MutableLiveData<List<Restaurant>> _restaurants;
      */
-     public LiveData<List<Restaurant>> getRestaurantsList(String location, int radius, String type, String apiKey){
+
+    @Override
+     public LiveData<List<Restaurant>> getListRestaurantsLiveData(String location, int radius, String type, String apiKey){
 
         List<Restaurant> restaurants = new ArrayList<>();
 
-        nearbyPlacesApiRequests.getNearbyPlacesList(location, radius, type, apiKey)
+        apiDataSource.getNearbyPlacesList(location, radius, type, apiKey)
                 .enqueue(new Callback<PlacesSearchApi>() {
                     @Override
                     public void onResponse(Call<PlacesSearchApi> call, Response<PlacesSearchApi> response) {

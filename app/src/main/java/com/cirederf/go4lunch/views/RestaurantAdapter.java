@@ -23,7 +23,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private final OnItemRestaurantClickListerner onItemRestaurantClickListerner;
 
     public static class RestaurantViewHolder extends RecyclerView.ViewHolder {
-
         TextView textViewName;
         TextView textViewAddress;
         TextView textViewOpeningHours;
@@ -33,7 +32,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
         public RestaurantViewHolder(@NonNull View itemRestaurantView) {
             super(itemRestaurantView);
-
             textViewName = itemRestaurantView.findViewById(R.id.item_list_restaurant_name_txt);
             textViewAddress = itemRestaurantView.findViewById(R.id.item_list_restaurant_address_txt);
             textViewOpeningHours = itemRestaurantView.findViewById(R.id.item_list_restaurant_hours_txt);
@@ -43,7 +41,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         }
     }
 
-    public RestaurantAdapter(/*ListRestaurantsFragment listRestaurantsFragment,*/List<Restaurant> restaurants, OnItemRestaurantClickListerner onItemRestaurantClickListerner) {
+    public RestaurantAdapter(List<Restaurant> restaurants, OnItemRestaurantClickListerner onItemRestaurantClickListerner) {
         this.nearbyRestaurants = restaurants;
         this.onItemRestaurantClickListerner = onItemRestaurantClickListerner;
     }

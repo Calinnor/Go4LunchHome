@@ -1,10 +1,9 @@
 package com.cirederf.go4lunch.networking;
 
-import com.cirederf.go4lunch.models.apiModels.PlacesSearchApi;
+import com.cirederf.go4lunch.models.apiDetailModels.RestaurantDetailsApi;
+import com.cirederf.go4lunch.models.apiNearbyModels.PlacesSearchApi;
 
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -15,5 +14,9 @@ public interface NearbyPlacesApiRequests {
                                                      @Query("radius") int radius,
                                                      @Query("type") String type,
                                                      @Query("key") String key);
+
+    @GET("details/json?")
+    Call<RestaurantDetailsApi> getRestaurantDetails(@Query("placeId") String placeId,
+                                                    @Query("key") String key);
 
 }

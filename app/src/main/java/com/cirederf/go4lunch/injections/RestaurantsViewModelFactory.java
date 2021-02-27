@@ -4,20 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.cirederf.go4lunch.repository.RestaurantsRepository;
-import com.cirederf.go4lunch.viewmodels.SearchRestaurantsViewModel;
+import com.cirederf.go4lunch.repository.RestaurantsNearbySearchRepository;
+import com.cirederf.go4lunch.viewmodels.RestaurantsViewModel;
 
 /**
  * gather ViewModels creation
  */
-public class SearchRestaurantsViewModelFactory implements ViewModelProvider.Factory {
+public class RestaurantsViewModelFactory implements ViewModelProvider.Factory {
 
     //-----------REPOSITORY------------
-    private final RestaurantsRepository restaurantsRepository;
+    private final RestaurantsNearbySearchRepository restaurantsDataSource;
 
     //------------CONSTRUCTOR------------
-    public SearchRestaurantsViewModelFactory(RestaurantsRepository restaurantsRepository) {
-        this.restaurantsRepository = restaurantsRepository;
+    public RestaurantsViewModelFactory(RestaurantsNearbySearchRepository restaurantsDataSource) {
+        this.restaurantsDataSource = restaurantsDataSource;
     }
 
     /**
@@ -28,8 +28,8 @@ public class SearchRestaurantsViewModelFactory implements ViewModelProvider.Fact
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(SearchRestaurantsViewModel.class)) {
-            return (T) new SearchRestaurantsViewModel(restaurantsRepository);
+        if (modelClass.isAssignableFrom(RestaurantsViewModel.class)) {
+            return (T) new RestaurantsViewModel(restaurantsDataSource);
         }
         throw new IllegalArgumentException("Problem with unknown ViewModel");
     }

@@ -40,11 +40,15 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        if(isCurrentUserLogged()) {
-//            this.startMain();
-//        }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.getResponseAfterSignInClose(requestCode, resultCode, data);
+    }
+
+    //----------ACTIONS---------
     @OnClick({R.id.button_login_with_google, R.id.button_login_with_facebook, R.id.button_login_with_twitter })
     public void onItemClicked(View view){
         int providerIdChoice = -1;
@@ -65,13 +69,13 @@ public class LoginActivity extends BaseActivity {
         this.startSignInActivity(providerId);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        this.getResponseAfterSignInClose(requestCode, resultCode, data);
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        this.getResponseAfterSignInClose(requestCode, resultCode, data);
+//    }
 
-    //Requests Firebase
+    //---------------FIREBASE REQUEST-----------
     private void startSignInActivity(AuthUI.IdpConfig providerId){
         startActivityForResult(
                 AuthUI.getInstance()
@@ -88,7 +92,22 @@ public class LoginActivity extends BaseActivity {
         );
     }
 
-    //Utils
+    private AuthUI.IdpConfig getProviderId(int providerIdChoice) {
+        AuthUI.IdpConfig providerId = null;
+
+        if(providerIdChoice == GOOGLE_PROVIDER_CHOICE){
+            providerId = new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build();
+        }
+        if(providerIdChoice == FACEBOOK_PROVIDER_CHOICE){
+            providerId = new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build();
+        }
+        if(providerIdChoice == TWITTER_PROVIDER_CHOICE){
+            providerId = new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build();
+        }
+        return providerId;
+    }
+
+    //--------------RESULT REQUEST NOTIFICATIONS-----------
     private void getResponseAfterSignInClose(int requestCode, int resultCode, Intent data) {
         IdpResponse response = IdpResponse.fromResultIntent(data);
 
@@ -108,26 +127,24 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    //UI
+    //-----------UI UTIL--------------
     private void toastShowLoginResult(Context context, String response){
         Toast toast = Toast.makeText(context, response, Toast.LENGTH_LONG );
         toast.show();
     }
 
-    private AuthUI.IdpConfig getProviderId(int providerIdChoice) {
-        AuthUI.IdpConfig providerId = null;
-
-        if(providerIdChoice == GOOGLE_PROVIDER_CHOICE){
-            providerId = new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build();
-        }
-        if(providerIdChoice == FACEBOOK_PROVIDER_CHOICE){
-            providerId = new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build();
-        }
-        if(providerIdChoice == TWITTER_PROVIDER_CHOICE){
-            providerId = new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build();
-        }
-        return providerId;
-    }
-
-
+//    private AuthUI.IdpConfig getProviderId(int providerIdChoice) {
+//        AuthUI.IdpConfig providerId = null;
+//
+//        if(providerIdChoice == GOOGLE_PROVIDER_CHOICE){
+//            providerId = new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build();
+//        }
+//        if(providerIdChoice == FACEBOOK_PROVIDER_CHOICE){
+//            providerId = new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build();
+//        }
+//        if(providerIdChoice == TWITTER_PROVIDER_CHOICE){
+//            providerId = new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build();
+//        }
+//        return providerId;
+//    }
 }

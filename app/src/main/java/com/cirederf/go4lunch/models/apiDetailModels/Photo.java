@@ -1,9 +1,8 @@
-package com.cirederf.go4lunch.models.apiModels;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package com.cirederf.go4lunch.models.apiDetailModels;
 
 import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Photo {
 
@@ -51,5 +50,4 @@ public class Photo {
     public void setWidth(Integer width) {
         this.width = width;
     }
-
 }

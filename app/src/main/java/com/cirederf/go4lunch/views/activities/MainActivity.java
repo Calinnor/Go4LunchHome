@@ -65,7 +65,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
     }
 
-
     /**
      *  FIREBASE REQUESTS
      *  GetInstance
@@ -73,12 +72,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      *  Logout
      *  UpdateUi
      */
-
-    //Get instance
+    //---------GET FIREBASE USER----------
     @Nullable
     protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
 
-    //Get data
+    //-----------GET USER DATA-----------
     private void updateCurrentUsername(TextView textViewUsernameToUpdate){
         String username = TextUtils.isEmpty(this.getCurrentUser().getDisplayName()) ? getString(R.string.info_no_username_found) : this.getCurrentUser().getDisplayName();
         textViewUsernameToUpdate.setText(username);
@@ -96,7 +94,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 .into(imageViewUserPictureToUpdate);
     }
 
-    //Logout
+    //---------FIREBASE USER LOGOUT---------------
     private void signOutCurrentUserFromFirebase(){
         AuthUI.getInstance()
                 .signOut(this)
@@ -111,7 +109,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         };
     }
 
-    //Update UI
+    //---------UPDATE UI WITH FIREBASE DATA IN NAV HEADER-----------
     private void updateCurrentUserUi(){
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
         View headerView = navigationView.getHeaderView(0);
@@ -130,7 +128,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      * BottomNavigation
      * DrawerNavigation
      */
-    //Logout
+    //-------------USER LOGOUT ACTIONS-------------
     public void onClickLogoutButton() {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.popup_message_confirmation_logout_account)
@@ -139,12 +137,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 .show();
     }
 
-    /**
-     * Configure BottomNavigation
-     */
-
+    //-----------BOTTOM NAVIGATION-------------
     private void configureBottomNavigationView() {
-        //new bottomnavigationview with setOn
         mBottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.map:
@@ -161,10 +155,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
     }
 
-    /**
-     * Configure DrawerNavigation
-     */
-
+    //------------NAVIGATION DRAWER-----------
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -211,24 +202,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     /**
      * CONFIGURATION
+     * toolbar
+     * drawers
+     * fragment views
      */
-
+    //-----------TOOLBAR---------
     protected void configureToolbar(){
         setSupportActionBar(toolbar);
     }
 
+    //---------DRAWERS-----------
     private void configureDrawerLayout() {
-        ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toogle);
-        toogle.syncState();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     private void configureNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-
-    // Configure fragments view : selected (is default)
+    //---------FRAGMENTS-----------
     private void startTransactionFragment(Fragment fragment) {
         if (!fragment.isVisible()) {
             getSupportFragmentManager().beginTransaction()

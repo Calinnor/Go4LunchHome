@@ -1,4 +1,5 @@
-package com.cirederf.go4lunch.models.apiModels;
+package com.cirederf.go4lunch.models.apiDetailModels;
+
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -27,6 +28,4 @@ public class Location {
     public void setLng(Double lng) {
         this.lng = lng;
     }
-
 }
-

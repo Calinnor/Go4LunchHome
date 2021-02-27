@@ -1,9 +1,11 @@
 package com.cirederf.go4lunch.models;
 
-import com.cirederf.go4lunch.models.apiModels.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Restaurant
-{
+import com.cirederf.go4lunch.models.apiNearbyModels.Location;
+
+public class Restaurant implements Parcelable {
     private String name;
     private String address;
     private double rating;
@@ -32,6 +34,30 @@ public class Restaurant
     //Empty constructor for Firebase
     public Restaurant () {}
 
+
+//    protected Restaurant(Parcel in) {
+//        name = in.readString();
+//        address = in.readString();
+//        rating = in.readDouble();
+//        picture = in.readString();
+//        placeId = in.readString();
+//        phoneNumber = in.readString();
+//        website = in.readString();
+//        byte tmpOpenNow = in.readByte();
+//        openNow = tmpOpenNow == 0 ? null : tmpOpenNow == 1;
+//    }
+//
+//    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+//        @Override
+//        public Restaurant createFromParcel(Parcel in) {
+//            return new Restaurant(in);
+//        }
+//
+//        @Override
+//        public Restaurant[] newArray(int size) {
+//            return new Restaurant[size];
+//        }
+//    };
 
     //////// GETTERS ////////
     public String getName() {
@@ -91,4 +117,40 @@ public class Restaurant
         this.location = location;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(placeId);
+        parcel.writeString(picture);
+        parcel.writeString(name);
+        parcel.writeDouble(rating);
+        parcel.writeString(address);
+        parcel.writeString(phoneNumber);
+        parcel.writeString(website);
+    }
+    public Restaurant(Parcel in) {
+        placeId = in.readString();
+        picture = in.readString();
+        name = in.readString();
+        rating = in.readDouble();
+        address = in.readString();
+        phoneNumber = in.readString();
+        website = in.readString();
+    }
+
+    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+        @Override
+        public Restaurant createFromParcel(Parcel in) {
+            return new Restaurant(in);
+        }
+
+        @Override
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[size];
+        }
+    };
 }
