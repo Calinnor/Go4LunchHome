@@ -7,7 +7,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface NearbyPlacesApiRequests {
+public interface PlacesApiRequests {
 
     @GET("nearbysearch/json?")
     Call<PlacesSearchApi> getNearbyPlacesList(@Query("location") String location,

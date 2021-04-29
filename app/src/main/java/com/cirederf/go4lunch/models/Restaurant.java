@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.cirederf.go4lunch.models.apiNearbyModels.Location;
+import com.cirederf.go4lunch.models.apiNearbyModels.PlusCode;
 
 public class Restaurant implements Parcelable {
     private String name;
@@ -15,8 +16,29 @@ public class Restaurant implements Parcelable {
     private String website;
     private Boolean openNow;
     private Location location;
+    private PlusCode plusCode;
+    private Integer priceLevel;
+    private String reference;
+    private String scope;
+    private String type;
 
-    //////// CONSTRUCTORS ////////
+    public Restaurant(String name, String address,  String picture, String placeId, double rating, String phoneNumber, String website, Location location, Boolean openNow, PlusCode plusCode, Integer priceLevel, String reference, String scope, String type) {
+        this.name = name;
+        this.address = address;
+        this.rating = rating;
+        this.picture = picture;
+        this.placeId = placeId;
+        this.phoneNumber = phoneNumber;
+        this.website = website;
+        this.openNow = openNow;
+        this.location = location;
+        this.plusCode = plusCode;
+        this.priceLevel = priceLevel;
+        this.reference = reference;
+        this.scope = scope;
+        this.type = type;
+    }
+//////// CONSTRUCTORS ////////
 
     public Restaurant(String name, String address, String picture, String placeId, double rating,
                       String phoneNumber, String website,Location location, Boolean openNow) {
@@ -34,30 +56,13 @@ public class Restaurant implements Parcelable {
     //Empty constructor for Firebase
     public Restaurant () {}
 
-
-//    protected Restaurant(Parcel in) {
-//        name = in.readString();
-//        address = in.readString();
-//        rating = in.readDouble();
-//        picture = in.readString();
-//        placeId = in.readString();
-//        phoneNumber = in.readString();
-//        website = in.readString();
-//        byte tmpOpenNow = in.readByte();
-//        openNow = tmpOpenNow == 0 ? null : tmpOpenNow == 1;
-//    }
-//
-//    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
-//        @Override
-//        public Restaurant createFromParcel(Parcel in) {
-//            return new Restaurant(in);
-//        }
-//
-//        @Override
-//        public Restaurant[] newArray(int size) {
-//            return new Restaurant[size];
-//        }
-//    };
+    //constructor for details
+    public Restaurant(String setDetailName, String setDetailsAddress, String setDetailsPicture, String setDetailsType) {
+        this.name = setDetailName;
+        this.address = setDetailsAddress;
+        this.picture = setDetailsPicture;
+        this.type = setDetailsType;
+    }
 
     //////// GETTERS ////////
     public String getName() {
@@ -96,6 +101,26 @@ public class Restaurant implements Parcelable {
         return location;
     }
 
+    public PlusCode getPlusCode() {
+        return plusCode;
+    }
+
+    public Integer getPriceLevel() {
+        return priceLevel;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public String getType() {
+        return type;
+    }
+
     //////// SETTERS ////////
     public void setName(String name) {
         this.name = name;
@@ -115,6 +140,42 @@ public class Restaurant implements Parcelable {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public void setOpenNow(Boolean openNow) {
+        this.openNow = openNow;
+    }
+
+    public void setPlusCode(PlusCode plusCode) {
+        this.plusCode = plusCode;
+    }
+
+    public void setPriceLevel(Integer priceLevel) {
+        this.priceLevel = priceLevel;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

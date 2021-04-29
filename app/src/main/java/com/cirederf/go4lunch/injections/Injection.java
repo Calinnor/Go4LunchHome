@@ -1,5 +1,6 @@
 package com.cirederf.go4lunch.injections;
 
+import com.cirederf.go4lunch.repository.RestaurantDetailsRepository;
 import com.cirederf.go4lunch.repository.RestaurantsNearbySearchRepository;
 
 /**
@@ -7,15 +8,25 @@ import com.cirederf.go4lunch.repository.RestaurantsNearbySearchRepository;
  */
 public class Injection {
 
-    public static RestaurantsNearbySearchRepository provideRestaurantRepository() {
+    public static RestaurantsNearbySearchRepository provideNearbyRestaurantsRepository() {
         return new RestaurantsNearbySearchRepository();
     }
 
+    public static RestaurantDetailsRepository provideRestaurantDetailsRepository() {
+        return new RestaurantDetailsRepository();
+    }
+
     /**
-     * @return Factory with repository as param
+     * @return Factories with associated repository as param
+     * to use in fragment associated
      */
-    public static RestaurantsViewModelFactory provideSearchFactory() {
-        RestaurantsNearbySearchRepository restaurantsNearbySearchRepository = provideRestaurantRepository();
-        return new RestaurantsViewModelFactory(restaurantsNearbySearchRepository);
+    public static NearbyRestaurantsViewModelFactory provideNearbySearchFactory() {
+        RestaurantsNearbySearchRepository restaurantsNearbySearchRepository = provideNearbyRestaurantsRepository();
+        return new NearbyRestaurantsViewModelFactory(restaurantsNearbySearchRepository);
+    }
+
+    public static DetailsRestaurantViewModelFactory provideDetailsFactory() {
+        RestaurantDetailsRepository restaurantDetailsRepository = provideRestaurantDetailsRepository();
+        return new DetailsRestaurantViewModelFactory(restaurantDetailsRepository);
     }
 }

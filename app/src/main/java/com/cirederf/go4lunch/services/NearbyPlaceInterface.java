@@ -16,5 +16,5 @@ public interface NearbyPlaceInterface {
      * @param apiKey : key to access api places
      * @return a list of restaurants liveData
      */
-    LiveData<List<Restaurant>> getListRestaurantsLiveData(String location, int radius, String type, String apiKey);
+    LiveData<List<Restaurant>> getRestaurantsListLiveData(String location, int radius, String type, String apiKey);
 }

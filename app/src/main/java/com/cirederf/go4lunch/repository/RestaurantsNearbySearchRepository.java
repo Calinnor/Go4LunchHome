@@ -6,8 +6,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.apiNearbyModels.Location;
 import com.cirederf.go4lunch.models.apiNearbyModels.PlacesSearchApi;
+import com.cirederf.go4lunch.models.apiNearbyModels.PlusCode;
 import com.cirederf.go4lunch.models.apiNearbyModels.Result;
-import com.cirederf.go4lunch.networking.NearbyPlacesApiRequests;
+import com.cirederf.go4lunch.networking.PlacesApiRequests;
 import com.cirederf.go4lunch.networking.RetrofitService;
 import com.cirederf.go4lunch.services.NearbyPlaceInterface;
 
@@ -40,7 +41,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
     }
 
     //---------FOR DATA REQUEST-------------
-    private final NearbyPlacesApiRequests apiDataSource = RetrofitService.createService(NearbyPlacesApiRequests.class);
+    private final PlacesApiRequests apiDataSource = RetrofitService.createService(PlacesApiRequests.class);
     /**
      * Create the retrofit request
      */
@@ -56,7 +57,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
      */
 
     @Override
-     public LiveData<List<Restaurant>> getListRestaurantsLiveData(String location, int radius, String type, String apiKey){
+     public LiveData<List<Restaurant>> getRestaurantsListLiveData(String location, int radius, String type, String apiKey){
 
         List<Restaurant> restaurants = new ArrayList<>();
 
@@ -67,7 +68,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                         List<Result> results = response.body().getResults();
                         int size = results.size();
                         for(int i = 0; i < size; i ++) {
-                            Restaurant restaurant = new Restaurant(setName(results, i)
+                            Restaurant nearbySearchRestaurant = new Restaurant(setName(results, i)
                                     ,setAddress(results, i)
                                     ,setPicture(results, i, apiKey)
                                     ,setPlaceId(results, i)
@@ -75,8 +76,15 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                                     ,setPhoneNumber(results, i)
                                     ,setWebSite(results, i)
                                     ,setLocation(results, i)
-                                    ,setOpenNow(results, i));
-                            restaurants.add(restaurant);
+                                    ,setOpenNow(results, i)
+                                    ,setPlusCode(results, i)
+                                    ,setPriceLevel(results, i)
+                                    ,setReference(results, i)
+                                    ,setScope(results, i)
+                                    ,setType(results, i)
+                            );
+
+                            restaurants.add(nearbySearchRestaurant);
                         }
                         _restaurants.setValue(restaurants);
                     }
@@ -134,5 +142,21 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
     private Location setLocation(List<Result>results, int i) {
         return results.get(i).getGeometry().getLocation();
     }
+
+    private PlusCode setPlusCode(List<Result>results, int i){
+        return results.get(i).getPlusCode();}
+
+    private Integer setPriceLevel(List<Result>results, int i){
+        return results.get(i).getPriceLevel();}
+
+    private String setReference(List<Result>results, int i){
+        return results.get(i).getReference() != null ? results.get(i).getReference() : "";}
+
+    private String setScope(List<Result>results, int i){
+        return results.get(i).getScope() != null ? results.get(i).getScope() : "";}
+
+    private String setType(List<Result>results, int i){
+        return results.get(i).getTypes() != null ? results.get(i).getTypes().get(0) : null;}
+
 
 }

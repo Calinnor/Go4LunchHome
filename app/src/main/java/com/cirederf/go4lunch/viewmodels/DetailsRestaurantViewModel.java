@@ -1,0 +1,39 @@
+package com.cirederf.go4lunch.viewmodels;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+
+import com.cirederf.go4lunch.models.Restaurant;
+import com.cirederf.go4lunch.repository.RestaurantDetailsRepository;
+
+public class DetailsRestaurantViewModel extends ViewModel {
+
+    //----------FOR DATA-------------
+    private LiveData<Restaurant> restaurantDetails;
+
+    //----------REPOSITORY----------
+    private RestaurantDetailsRepository restaurantDetailsDataSource;
+
+    //----------CONSTRUCTOR CALL IN FACTORY-----------
+    public DetailsRestaurantViewModel(RestaurantDetailsRepository restaurantDetailsDataSource) {
+        this.restaurantDetailsDataSource = restaurantDetailsDataSource;
+    }
+
+    /**
+     * Init a LiveData<Restaurant> with method from repository to use in DetailsRestaurantsFragment
+     */
+    public void initRestaurantDetails(String placeId, String apiKey) {
+        if(restaurantDetails != null) {
+            return;
+        }
+        restaurantDetailsDataSource = RestaurantDetailsRepository.getInstance();
+        restaurantDetails = restaurantDetailsDataSource.getRestaurantDetailsLiveData(placeId, apiKey);
+    }
+
+    /**
+     * return a LiveData<Restaurant> details to use in DetailsRestaurantsFragment
+     */
+    public LiveData<Restaurant> getRestaurantDetails() {
+    return restaurantDetails;
+    }
+}

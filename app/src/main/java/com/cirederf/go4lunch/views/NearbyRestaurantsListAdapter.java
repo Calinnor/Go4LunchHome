@@ -11,13 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment;
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.models.Restaurant;
 
 import java.util.List;
 
-public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
+public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRestaurantsListAdapter.RestaurantViewHolder> {
 
     List<Restaurant> nearbyRestaurants;
     private final OnItemRestaurantClickListerner onItemRestaurantClickListerner;
@@ -41,7 +40,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         }
     }
 
-    public RestaurantAdapter(List<Restaurant> restaurants, OnItemRestaurantClickListerner onItemRestaurantClickListerner) {
+    public NearbyRestaurantsListAdapter(List<Restaurant> restaurants, OnItemRestaurantClickListerner onItemRestaurantClickListerner) {
         this.nearbyRestaurants = restaurants;
         this.onItemRestaurantClickListerner = onItemRestaurantClickListerner;
     }

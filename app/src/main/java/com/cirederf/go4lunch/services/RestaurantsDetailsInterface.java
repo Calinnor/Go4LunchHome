@@ -14,5 +14,5 @@ public interface RestaurantsDetailsInterface {
      * @param apiKey : key to access api places
      * @return a list of restaurants liveData
      */
-    LiveData<List<Restaurant>> getRestaurantsDetailsLiveData(String placeId, String apiKey);
+    LiveData<Restaurant> getRestaurantDetailsLiveData(String placeId, String apiKey);
 }
