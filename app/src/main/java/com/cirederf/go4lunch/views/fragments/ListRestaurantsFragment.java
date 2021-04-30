@@ -67,7 +67,7 @@ public class ListRestaurantsFragment extends Fragment implements RestaurantAdapt
 
     private void getRestoListFromRestoRepo() {
         String location = "48.410692,2.738093";
-        int radius = 15000;
+        int radius = 25000;
         String type = "restaurant";
         String apiKey = getString(R.string.places_api_google_key);
         this.searchRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
