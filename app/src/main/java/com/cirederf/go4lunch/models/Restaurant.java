@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.cirederf.go4lunch.models.apiNearbyModels.Location;
 import com.cirederf.go4lunch.models.apiNearbyModels.PlusCode;
 
-public class Restaurant implements Parcelable {
+public class Restaurant/* implements Parcelable*/ {
     private String name;
     private String address;
     private double rating;
@@ -61,6 +61,12 @@ public class Restaurant implements Parcelable {
         this.name = setDetailName;
         this.address = setDetailsAddress;
         this.picture = setDetailsPicture;
+        this.type = setDetailsType;
+    }
+
+    public Restaurant(String setDetailName, String setDetailsAddress, String setDetailsType) {
+        this.name = setDetailName;
+        this.address = setDetailsAddress;
         this.type = setDetailsType;
     }
 
@@ -178,40 +184,40 @@ public class Restaurant implements Parcelable {
         this.type = type;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeString(placeId);
-        parcel.writeString(picture);
-        parcel.writeString(name);
-        parcel.writeDouble(rating);
-        parcel.writeString(address);
-        parcel.writeString(phoneNumber);
-        parcel.writeString(website);
-    }
-    public Restaurant(Parcel in) {
-        placeId = in.readString();
-        picture = in.readString();
-        name = in.readString();
-        rating = in.readDouble();
-        address = in.readString();
-        phoneNumber = in.readString();
-        website = in.readString();
-    }
-
-    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
-        @Override
-        public Restaurant createFromParcel(Parcel in) {
-            return new Restaurant(in);
-        }
-
-        @Override
-        public Restaurant[] newArray(int size) {
-            return new Restaurant[size];
-        }
-    };
+//    @Override
+//    public void writeToParcel(Parcel parcel, int flags) {
+//        parcel.writeString(placeId);
+//        parcel.writeString(picture);
+//        parcel.writeString(name);
+//        parcel.writeDouble(rating);
+//        parcel.writeString(address);
+//        parcel.writeString(phoneNumber);
+//        parcel.writeString(website);
+//    }
+//    public Restaurant(Parcel in) {
+//        placeId = in.readString();
+//        picture = in.readString();
+//        name = in.readString();
+//        rating = in.readDouble();
+//        address = in.readString();
+//        phoneNumber = in.readString();
+//        website = in.readString();
+//    }
+//
+//    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+//        @Override
+//        public Restaurant createFromParcel(Parcel in) {
+//            return new Restaurant(in);
+//        }
+//
+//        @Override
+//        public Restaurant[] newArray(int size) {
+//            return new Restaurant[size];
+//        }
+//    };
 }

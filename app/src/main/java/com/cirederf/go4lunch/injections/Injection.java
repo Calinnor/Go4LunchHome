@@ -25,8 +25,8 @@ public class Injection {
         return new NearbyRestaurantsViewModelFactory(restaurantsNearbySearchRepository);
     }
 
-    public static DetailsRestaurantViewModelFactory provideDetailsFactory() {
+    public static RestaurantDetailsViewModelFactory provideDetailsFactory() {
         RestaurantDetailsRepository restaurantDetailsRepository = provideRestaurantDetailsRepository();
-        return new DetailsRestaurantViewModelFactory(restaurantDetailsRepository);
+        return new RestaurantDetailsViewModelFactory(restaurantDetailsRepository);
     }
 }

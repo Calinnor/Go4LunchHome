@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.repository.RestaurantDetailsRepository;
 
-public class DetailsRestaurantViewModel extends ViewModel {
+public class RestaurantDetailsViewModel extends ViewModel {
 
     //----------FOR DATA-------------
     private LiveData<Restaurant> restaurantDetails;
@@ -15,7 +15,7 @@ public class DetailsRestaurantViewModel extends ViewModel {
     private RestaurantDetailsRepository restaurantDetailsDataSource;
 
     //----------CONSTRUCTOR CALL IN FACTORY-----------
-    public DetailsRestaurantViewModel(RestaurantDetailsRepository restaurantDetailsDataSource) {
+    public RestaurantDetailsViewModel(RestaurantDetailsRepository restaurantDetailsDataSource) {
         this.restaurantDetailsDataSource = restaurantDetailsDataSource;
     }
 
@@ -23,7 +23,7 @@ public class DetailsRestaurantViewModel extends ViewModel {
      * Init a LiveData<Restaurant> with method from repository to use in DetailsRestaurantsFragment
      */
     public void initRestaurantDetails(String placeId, String apiKey) {
-        if(restaurantDetails != null) {
+        if(this.restaurantDetails != null) {
             return;
         }
         restaurantDetailsDataSource = RestaurantDetailsRepository.getInstance();
@@ -31,9 +31,10 @@ public class DetailsRestaurantViewModel extends ViewModel {
     }
 
     /**
-     * return a LiveData<Restaurant> details to use in DetailsRestaurantsFragment
+     * return a LiveData<Restaurant> details to use in DetailsRestaurants
      */
-    public LiveData<Restaurant> getRestaurantDetails() {
-    return restaurantDetails;
+    //public LiveData<Restaurant> getRestaurantDetailsLiveData(String placeId,String apiKey) {
+    public LiveData<Restaurant> getRestaurantDetailsLiveData() {
+    return this.restaurantDetails;
     }
 }

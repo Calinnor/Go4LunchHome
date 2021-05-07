@@ -8,13 +8,13 @@ import com.cirederf.go4lunch.models.apiDetailModels.RestaurantDetailsApi;
 import com.cirederf.go4lunch.models.apiDetailModels.Result;
 import com.cirederf.go4lunch.networking.PlacesApiRequests;
 import com.cirederf.go4lunch.networking.RetrofitService;
-import com.cirederf.go4lunch.services.RestaurantsDetailsInterface;
+import com.cirederf.go4lunch.services.RestaurantDetailsInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RestaurantDetailsRepository implements RestaurantsDetailsInterface {
+public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
 
     private final MutableLiveData<Restaurant> _detailsRestaurant = new MutableLiveData<>();
     public LiveData<Restaurant> restaurantDetails = _detailsRestaurant;
@@ -43,7 +43,7 @@ public class RestaurantDetailsRepository implements RestaurantsDetailsInterface 
 
     /**
      * Create a public LiveData restaurant
-     * @param placeId : restaurant Id in api
+     * @param placeId : restaurant Id (place_id from search) in api
      * @param apiKey : key to access api places
      * @return
      */
@@ -57,7 +57,8 @@ public class RestaurantDetailsRepository implements RestaurantsDetailsInterface 
                     @Override
                     public void onResponse(Call<RestaurantDetailsApi> call, Response<RestaurantDetailsApi> response) {
                         Result result = response.body().getResult();
-                        Restaurant detailsRestaurant = new Restaurant(setDetailName(result)
+                        Restaurant detailsRestaurant = new Restaurant(
+                                setDetailName(result)
                                 ,setDetailsAddress(result)
                                 ,setDetailsPicture(result, apiKey)
                                 ,setDetailsType(result)
@@ -95,6 +96,12 @@ public class RestaurantDetailsRepository implements RestaurantsDetailsInterface 
     }
 
     private String setDetailName(Result result) {
-        return result.getName() != null ? result.getName() : "no name";
+        if (result.getName() == null) {
+            //return result.getName();
+            return "no name";
+        } else {
+            //return "no name";
+            return result.getName();
+        }
     }
 }

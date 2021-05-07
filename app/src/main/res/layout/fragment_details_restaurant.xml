@@ -7,203 +7,203 @@
     android:layout_height="match_parent"
     tools:context=".views.fragments.DetailsRestaurantFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="#E68FAD"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/main_detail_restaurant_fragment_constraint_layout">
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:background="#E68FAD"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:id="@+id/main_detail_restaurant_fragment_constraint_layout">-->
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/detail_restaurant_bottom_constraint_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/google"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/restaurant_detail_picture"
-                style="@style/item_list_restaurant_illustration_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/picture_star_rating"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                app:layout_constraintStart_toEndOf="@+id/restaurant_detail_name"
-                app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_picture" />
-
-            <TextView
-                android:id="@+id/restaurant_detail_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/restaurant_name"
-                android:textColor="@color/white"
-                android:textSize="25sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_picture" />
-
-            <TextView
-                android:id="@+id/type_and_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/type_and_address"
-                android:textColor="@color/white"
-                android:textSize="25sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_name" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="200dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/ic_baseline_check_circle_outline_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ImageView
-            android:id="@+id/call_picture"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/ic_baseline_phone_24"
-            app:layout_constraintEnd_toStartOf="@+id/rating_star_picture"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_bottom_constraint_layout" />
-
-        <ImageView
-            android:id="@+id/rating_star_picture"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/ic_baseline_star_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_bottom_constraint_layout" />
-
-        <ImageView
-            android:id="@+id/website_picture"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/ic_baseline_earth_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/rating_star_picture"
-            app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_bottom_constraint_layout" />
-
-        <TextView
-            android:id="@+id/restaurant_telephone_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/call"
-            android:textSize="25sp"
-            android:textColor="@color/google"
-            app:layout_constraintEnd_toEndOf="@+id/call_picture"
-            app:layout_constraintStart_toStartOf="@+id/call_picture"
-            app:layout_constraintTop_toBottomOf="@+id/call_picture" />
-
-        <TextView
-            android:id="@+id/restaurant_rating_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/like"
-            android:textColor="@color/google"
-            android:textSize="25sp"
-            app:layout_constraintEnd_toEndOf="@+id/rating_star_picture"
-            app:layout_constraintStart_toStartOf="@+id/rating_star_picture"
-            app:layout_constraintTop_toBottomOf="@+id/rating_star_picture" />
-
-        <TextView
-            android:id="@+id/restaurant_website_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/website"
-            android:textColor="@color/google"
-            android:textSize="25sp"
-            app:layout_constraintEnd_toEndOf="@+id/website_picture"
-            app:layout_constraintStart_toStartOf="@+id/website_picture"
-            app:layout_constraintTop_toBottomOf="@+id/website_picture" />
-
-        <TextView
-            android:background="#E68FAD"
-            android:id="@+id/phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="phonetext"
-            android:textColor="@color/google"
-            android:textSize="25sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/restaurant_telephone_text" />
-
-        <TextView
-            android:background="#E68FAD"
-            android:id="@+id/pluscode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="pluscode"
-            android:textColor="@color/google"
-            android:textSize="25sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phone" />
-
-        <TextView
-            android:background="#E68FAD"
-            android:id="@+id/pricelevel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="privelevel"
-            android:textColor="@color/google"
-            android:textSize="25sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pluscode" />
-
-        <TextView
-            android:background="#E68FAD"
-            android:id="@+id/reference"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="reference"
-            android:textColor="@color/google"
-            android:textSize="25sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pricelevel" />
-
-        <TextView
-            android:background="#E68FAD"
-            android:id="@+id/scope"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="scope"
-            android:textColor="@color/google"
-            android:textSize="25sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reference" />
-
-        <TextView
-            android:background="#E68FAD"
-            android:id="@+id/type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="type"
-            android:textColor="@color/google"
-            android:textSize="25sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scope" />
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/fragment_list_workmates_in_this_restaurant_recycler_view"-->
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/detail_restaurant_bottom_constraint_layout"-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="25dp"-->
-<!--            android:scrollbars="vertical"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/restaurant_rating_text"-->
-<!--            tools:listitem="@layout/item_workmates_view"/>-->
+<!--            android:background="@color/google"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            <ImageView-->
+<!--                android:id="@+id/restaurant_detail_picture"-->
+<!--                style="@style/item_list_restaurant_illustration_image"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/picture_star_rating"-->
+<!--                android:layout_width="25dp"-->
+<!--                android:layout_height="25dp"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/restaurant_detail_name"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_picture" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/restaurant_detail_name"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/restaurant_name"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="25sp"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_picture" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/type_and_address"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/type_and_address"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="25sp"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_name" />-->
+
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="200dp"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:background="@drawable/ic_baseline_check_circle_outline_24"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/call_picture"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:background="@drawable/ic_baseline_phone_24"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/rating_star_picture"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_bottom_constraint_layout" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/rating_star_picture"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:background="@drawable/ic_baseline_star_24"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_bottom_constraint_layout" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/website_picture"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:background="@drawable/ic_baseline_earth_24"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/rating_star_picture"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_bottom_constraint_layout" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/restaurant_telephone_text"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/call"-->
+<!--            android:textSize="25sp"-->
+<!--            android:textColor="@color/google"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/call_picture"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/call_picture"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/call_picture" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/restaurant_rating_text"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/like"-->
+<!--            android:textColor="@color/google"-->
+<!--            android:textSize="25sp"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/rating_star_picture"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/rating_star_picture"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/rating_star_picture" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/restaurant_website_text"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/website"-->
+<!--            android:textColor="@color/google"-->
+<!--            android:textSize="25sp"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/website_picture"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/website_picture"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/website_picture" />-->
+
+<!--        <TextView-->
+<!--            android:background="#E68FAD"-->
+<!--            android:id="@+id/phone"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="phonetext"-->
+<!--            android:textColor="@color/google"-->
+<!--            android:textSize="25sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/restaurant_telephone_text" />-->
+
+<!--        <TextView-->
+<!--            android:background="#E68FAD"-->
+<!--            android:id="@+id/pluscode"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="pluscode"-->
+<!--            android:textColor="@color/google"-->
+<!--            android:textSize="25sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/phone" />-->
+
+<!--        <TextView-->
+<!--            android:background="#E68FAD"-->
+<!--            android:id="@+id/pricelevel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="privelevel"-->
+<!--            android:textColor="@color/google"-->
+<!--            android:textSize="25sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/pluscode" />-->
+
+<!--        <TextView-->
+<!--            android:background="#E68FAD"-->
+<!--            android:id="@+id/reference"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="reference"-->
+<!--            android:textColor="@color/google"-->
+<!--            android:textSize="25sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/pricelevel" />-->
+
+<!--        <TextView-->
+<!--            android:background="#E68FAD"-->
+<!--            android:id="@+id/scope"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="scope"-->
+<!--            android:textColor="@color/google"-->
+<!--            android:textSize="25sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/reference" />-->
+
+<!--        <TextView-->
+<!--            android:background="#E68FAD"-->
+<!--            android:id="@+id/type"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="type"-->
+<!--            android:textColor="@color/google"-->
+<!--            android:textSize="25sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/scope" />-->
+
+<!--&lt;!&ndash;        <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
+<!--&lt;!&ndash;            android:id="@+id/fragment_list_workmates_in_this_restaurant_recycler_view"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_marginTop="25dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:scrollbars="vertical"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:layout_constraintTop_toBottomOf="@+id/restaurant_rating_text"&ndash;&gt;-->
+<!--&lt;!&ndash;            tools:listitem="@layout/item_workmates_view"/>&ndash;&gt;-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 </FrameLayout>

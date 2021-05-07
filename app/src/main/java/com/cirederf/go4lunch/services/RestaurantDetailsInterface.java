@@ -6,7 +6,7 @@ import com.cirederf.go4lunch.models.Restaurant;
 
 import java.util.List;
 
-public interface RestaurantsDetailsInterface {
+public interface RestaurantDetailsInterface {
 
     /**
      * get a PlaceSearch result
