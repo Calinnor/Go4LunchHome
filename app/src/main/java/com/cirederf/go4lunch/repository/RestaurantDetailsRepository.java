@@ -62,6 +62,8 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
                                 ,setDetailsAddress(result)
                                 ,setDetailsPicture(result, apiKey)
                                 ,setDetailsType(result)
+                                ,setWebSite(result)
+                                ,setPhoneNumber(result)
                         );
                         _detailsRestaurant.setValue(detailsRestaurant);
                     }
@@ -74,6 +76,8 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
 
         return restaurantDetails;
     }
+
+
 
     //----------------METHODS FOR SET DETAILS VALUES IN onResponse()-------------
     private String getPicture(String photoReference, String apiKey) {
@@ -96,12 +100,18 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
     }
 
     private String setDetailName(Result result) {
-        if (result.getName() == null) {
-            //return result.getName();
-            return "no name";
-        } else {
-            //return "no name";
-            return result.getName();
-        }
+//        if (result.getName() == null) return "no name";
+//        else {
+//            return result.getName();
+//        }
+        return result.getName() != null ? result.getName() : "no name";
+    }
+
+    private String setPhoneNumber(Result result) {
+        return result.getFormattedPhoneNumber() != null ? result.getFormattedPhoneNumber() : "no phone";
+    }
+
+    private String setWebSite(Result result) {
+        return result.getWebsite() != null ? result.getWebsite() : "no webSite";
     }
 }

@@ -68,14 +68,15 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                         List<Result> results = response.body().getResults();
                         int size = results.size();
                         for(int i = 0; i < size; i ++) {
-                            Restaurant nearbySearchRestaurant = new Restaurant(setName(results, i)
+                            Restaurant nearbySearchRestaurant = new Restaurant(
+                                    setName(results, i)
                                     ,setAddress(results, i)
                                     ,setPicture(results, i, apiKey)
                                     ,setPlaceId(results, i)
                                     ,setRating(results, i)
                                     ,setPhoneNumber(results, i)
                                     ,setWebSite(results, i)
-                                    ,setLocation(results, i)
+                                    //,setLocation(results, i)
                                     ,setOpenNow(results, i)
                                     ,setPlusCode(results, i)
                                     ,setPriceLevel(results, i)

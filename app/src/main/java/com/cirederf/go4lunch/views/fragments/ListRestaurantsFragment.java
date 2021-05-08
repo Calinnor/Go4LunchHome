@@ -20,7 +20,6 @@ import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
 import com.cirederf.go4lunch.views.NearbyRestaurantsListAdapter;
 import com.cirederf.go4lunch.views.activities.FetchRestaurantDetailsActivity;
-//import com.cirederf.go4lunch.views.activities.TryDetails;
 
 import java.util.List;
 
@@ -29,7 +28,6 @@ import butterknife.ButterKnife;
 public class ListRestaurantsFragment extends Fragment implements NearbyRestaurantsListAdapter.OnItemRestaurantClickListerner {
 
     private NearbyRestaurantsViewModel nearbyRestaurantsViewModel;
-    public static final String INTENT_RESTAURANT_PARAM = "Restaurant";
     public static final String RESTAURANT_PLACE_ID_PARAM = "placeId";
 
     public static ListRestaurantsFragment newInstance() {
@@ -52,19 +50,6 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
         }
     }
 
-    private void getRestaurantsList() {
-        String location = "48.410692,2.738093";
-        int radius = 15000;
-        String type = "restaurant";
-        String apiKey = getString(R.string.places_api_google_key);
-        this.nearbyRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
-        this.nearbyRestaurantsViewModel.getListRestaurantsLiveData()
-                .observe(getViewLifecycleOwner(),
-                        (List<Restaurant> restaurants) -> {
-                            configureRecyclerViewAdapter(requireView(), restaurants);
-                        });
-    }
-
     //------------CONFIGURATIONS---------------
     private void configureNearbyRestaurantsViewModel() {
         NearbyRestaurantsViewModelFactory nearbyRestaurantsViewModelFactory = Injection.provideNearbySearchFactory();
@@ -82,19 +67,28 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
         recyclerView.setLayoutManager(restaurantRecyclerView);
     }
 
+    //-----------FOR NEARBY RESTAURANTS LIST------------
+    private void getRestaurantsList() {
+        String location = "48.410692,2.738093";
+        int radius = 15000;
+        String type = "restaurant";
+        String apiKey = getString(R.string.places_api_google_key);
+        this.nearbyRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
+        this.nearbyRestaurantsViewModel.getListRestaurantsLiveData()
+                .observe(getViewLifecycleOwner(),
+                        (List<Restaurant> restaurants) -> {
+                            configureRecyclerViewAdapter(requireView(), restaurants);
+                        });
+    }
 
     //---------ACTION-----------
     @Override
     public void onItemClick(Restaurant restaurant) {
-        //this.startDetailRestaurantActivity(restaurant);
         this.startDetailRestaurantActivity(restaurant);
     }
 
     private void startDetailRestaurantActivity(Restaurant restaurant){
-        //Intent intent = new Intent(getContext(), DetailsRestaurantActivity.class);
         Intent intent = new Intent(getContext(), FetchRestaurantDetailsActivity.class);
-        //Intent intent = new Intent(getContext(), TryDetails.class);
-        //intent.putExtra(INTENT_RESTAURANT_PARAM, restaurant);
         intent.putExtra(RESTAURANT_PLACE_ID_PARAM, restaurant.getPlaceId());
         this.startActivity(intent);
     }

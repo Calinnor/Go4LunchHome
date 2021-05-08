@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.cirederf.go4lunch.models.apiNearbyModels.Location;
 import com.cirederf.go4lunch.models.apiNearbyModels.PlusCode;
 
-public class Restaurant/* implements Parcelable*/ {
+public class Restaurant {
     private String name;
     private String address;
     private double rating;
@@ -15,14 +15,14 @@ public class Restaurant/* implements Parcelable*/ {
     private String phoneNumber;
     private String website;
     private Boolean openNow;
-    private Location location;
+    //private Location location;
     private PlusCode plusCode;
     private Integer priceLevel;
     private String reference;
     private String scope;
     private String type;
 
-    public Restaurant(String name, String address,  String picture, String placeId, double rating, String phoneNumber, String website, Location location, Boolean openNow, PlusCode plusCode, Integer priceLevel, String reference, String scope, String type) {
+    public Restaurant(String name, String address,  String picture, String placeId, double rating, String phoneNumber, String website,/* Location location,*/ Boolean openNow, PlusCode plusCode, Integer priceLevel, String reference, String scope, String type) {
         this.name = name;
         this.address = address;
         this.rating = rating;
@@ -31,7 +31,7 @@ public class Restaurant/* implements Parcelable*/ {
         this.phoneNumber = phoneNumber;
         this.website = website;
         this.openNow = openNow;
-        this.location = location;
+        //this.location = location;
         this.plusCode = plusCode;
         this.priceLevel = priceLevel;
         this.reference = reference;
@@ -41,7 +41,7 @@ public class Restaurant/* implements Parcelable*/ {
 //////// CONSTRUCTORS ////////
 
     public Restaurant(String name, String address, String picture, String placeId, double rating,
-                      String phoneNumber, String website,Location location, Boolean openNow) {
+                      String phoneNumber, String website,/*Location location, */Boolean openNow) {
         this.name = name;
         this.address = address;
         this.picture = picture;
@@ -49,7 +49,7 @@ public class Restaurant/* implements Parcelable*/ {
         this.rating = rating;
         this.phoneNumber = phoneNumber;
         this.website = website;
-        this.location = location;
+        //this.location = location;
         this.openNow = openNow;
     }
 
@@ -57,17 +57,13 @@ public class Restaurant/* implements Parcelable*/ {
     public Restaurant () {}
 
     //constructor for details
-    public Restaurant(String setDetailName, String setDetailsAddress, String setDetailsPicture, String setDetailsType) {
+    public Restaurant(String setDetailName, String setDetailsAddress, String setDetailsPicture, String setDetailsType, String website, String phoneNumber) {
         this.name = setDetailName;
         this.address = setDetailsAddress;
         this.picture = setDetailsPicture;
         this.type = setDetailsType;
-    }
-
-    public Restaurant(String setDetailName, String setDetailsAddress, String setDetailsType) {
-        this.name = setDetailName;
-        this.address = setDetailsAddress;
-        this.type = setDetailsType;
+        this.website = website;
+        this.phoneNumber = phoneNumber;
     }
 
     //////// GETTERS ////////
@@ -103,9 +99,9 @@ public class Restaurant/* implements Parcelable*/ {
         return openNow;
     }
 
-    public Location getLocation() {
-        return location;
-    }
+//    public Location getLocation() {
+//        return location;
+//    }
 
     public PlusCode getPlusCode() {
         return plusCode;
@@ -144,80 +140,44 @@ public class Restaurant/* implements Parcelable*/ {
         this.address = address;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
+//    public void setLocation(Location location) {
+//        this.location = location;
+//    }
 
     public void setPicture(String picture) {
         this.picture = picture;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
+//    public void setPhoneNumber(String phoneNumber) {
+//        this.phoneNumber = phoneNumber;
+//    }
+//
+//    public void setWebsite(String website) {
+//        this.website = website;
+//    }
 
     public void setOpenNow(Boolean openNow) {
         this.openNow = openNow;
     }
 
-    public void setPlusCode(PlusCode plusCode) {
-        this.plusCode = plusCode;
-    }
-
-    public void setPriceLevel(Integer priceLevel) {
-        this.priceLevel = priceLevel;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-//    @Override
-//    public int describeContents() {
-//        return 0;
-//    }
-
-//    @Override
-//    public void writeToParcel(Parcel parcel, int flags) {
-//        parcel.writeString(placeId);
-//        parcel.writeString(picture);
-//        parcel.writeString(name);
-//        parcel.writeDouble(rating);
-//        parcel.writeString(address);
-//        parcel.writeString(phoneNumber);
-//        parcel.writeString(website);
-//    }
-//    public Restaurant(Parcel in) {
-//        placeId = in.readString();
-//        picture = in.readString();
-//        name = in.readString();
-//        rating = in.readDouble();
-//        address = in.readString();
-//        phoneNumber = in.readString();
-//        website = in.readString();
+//    public void setPlusCode(PlusCode plusCode) {
+//        this.plusCode = plusCode;
 //    }
 //
-//    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
-//        @Override
-//        public Restaurant createFromParcel(Parcel in) {
-//            return new Restaurant(in);
-//        }
+//    public void setPriceLevel(Integer priceLevel) {
+//        this.priceLevel = priceLevel;
+//    }
 //
-//        @Override
-//        public Restaurant[] newArray(int size) {
-//            return new Restaurant[size];
-//        }
-//    };
+//    public void setReference(String reference) {
+//        this.reference = reference;
+//    }
+//
+//    public void setScope(String scope) {
+//        this.scope = scope;
+//    }
+//
+//    public void setType(String type) {
+//        this.type = type;
+//    }
+
 }

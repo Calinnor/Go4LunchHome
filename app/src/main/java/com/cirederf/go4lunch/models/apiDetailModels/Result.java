@@ -16,15 +16,18 @@ public class Result {
     @SerializedName("formatted_address")
     @Expose
     private String formattedAddress;
+    @SerializedName("formatted_phone_number")
+    @Expose
+    private String formattedPhoneNumber;
     @SerializedName("geometry")
     @Expose
     private Geometry geometry;
     @SerializedName("icon")
     @Expose
     private String icon;
-    @SerializedName("id")
+    @SerializedName("international_phone_number")
     @Expose
-    private String id;
+    private String internationalPhoneNumber;
     @SerializedName("name")
     @Expose
     private String name;
@@ -34,12 +37,15 @@ public class Result {
     @SerializedName("place_id")
     @Expose
     private String placeId;
+    @SerializedName("rating")
+    @Expose
+    private Double rating;
     @SerializedName("reference")
     @Expose
     private String reference;
-    @SerializedName("scope")
+    @SerializedName("reviews")
     @Expose
-    private String scope;
+    private List<Review> reviews = null;
     @SerializedName("types")
     @Expose
     private List<String> types = null;
@@ -52,6 +58,9 @@ public class Result {
     @SerializedName("vicinity")
     @Expose
     private String vicinity;
+    @SerializedName("website")
+    @Expose
+    private String website;
 
     public List<AddressComponent> getAddressComponents() {
         return addressComponents;
@@ -77,6 +86,14 @@ public class Result {
         this.formattedAddress = formattedAddress;
     }
 
+    public String getFormattedPhoneNumber() {
+        return formattedPhoneNumber;
+    }
+
+    public void setFormattedPhoneNumber(String formattedPhoneNumber) {
+        this.formattedPhoneNumber = formattedPhoneNumber;
+    }
+
     public Geometry getGeometry() {
         return geometry;
     }
@@ -93,12 +110,12 @@ public class Result {
         this.icon = icon;
     }
 
-    public String getId() {
-        return id;
+    public String getInternationalPhoneNumber() {
+        return internationalPhoneNumber;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setInternationalPhoneNumber(String internationalPhoneNumber) {
+        this.internationalPhoneNumber = internationalPhoneNumber;
     }
 
     public String getName() {
@@ -125,6 +142,14 @@ public class Result {
         this.placeId = placeId;
     }
 
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
     public String getReference() {
         return reference;
     }
@@ -133,12 +158,12 @@ public class Result {
         this.reference = reference;
     }
 
-    public String getScope() {
-        return scope;
+    public List<Review> getReviews() {
+        return reviews;
     }
 
-    public void setScope(String scope) {
-        this.scope = scope;
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public List<String> getTypes() {
@@ -171,6 +196,14 @@ public class Result {
 
     public void setVicinity(String vicinity) {
         this.vicinity = vicinity;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
 }
