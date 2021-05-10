@@ -58,12 +58,18 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
                     public void onResponse(Call<RestaurantDetailsApi> call, Response<RestaurantDetailsApi> response) {
                         Result result = response.body().getResult();
                         Restaurant detailsRestaurant = new Restaurant(
-                                setDetailName(result)
-                                ,setDetailsAddress(result)
+                                result.getName()
+                                //setDetailName(result)
+                                ,result.getFormattedAddress()
+                                //,setDetailsAddress(result)
+                                //,result.getPhotos().get(0)
                                 ,setDetailsPicture(result, apiKey)
-                                ,setDetailsType(result)
-                                ,setWebSite(result)
-                                ,setPhoneNumber(result)
+                                ,result.getTypes().get(0)
+                                //,setDetailsType(result)
+                                ,result.getWebsite()
+                                //,setWebSite(result)
+                                ,result.getFormattedPhoneNumber()
+                                //,setPhoneNumber(result)
                         );
                         _detailsRestaurant.setValue(detailsRestaurant);
                     }
@@ -100,10 +106,6 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
     }
 
     private String setDetailName(Result result) {
-//        if (result.getName() == null) return "no name";
-//        else {
-//            return result.getName();
-//        }
         return result.getName() != null ? result.getName() : "no name";
     }
 

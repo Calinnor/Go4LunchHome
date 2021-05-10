@@ -68,20 +68,22 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                         List<Result> results = response.body().getResults();
                         int size = results.size();
                         for(int i = 0; i < size; i ++) {
+                            String name = results.get(i).getName() != null ? results.get(i).getName() : "";
+                            String address = results.get(i).getVicinity() != null ? results.get(i).getVicinity() : "";
+                            String placeId = results.get(i).getPlaceId() != null ? results.get(i).getPlaceId() : "";
+
                             Restaurant nearbySearchRestaurant = new Restaurant(
-                                    setName(results, i)
-                                    ,setAddress(results, i)
-                                    ,setPicture(results, i, apiKey)
-                                    ,setPlaceId(results, i)
+                                    //setName(results, i)
+                                    //name
+                                    results.get(i).getName()
+                                    //,setAddress(results, i)
+                                    ,address
                                     ,setRating(results, i)
-                                    ,setPhoneNumber(results, i)
-                                    ,setWebSite(results, i)
+                                    ,setPicture(results, i, apiKey)
+                                    //,setPlaceId(results, i)
+                                    ,placeId
                                     //,setLocation(results, i)
                                     ,setOpenNow(results, i)
-                                    ,setPlusCode(results, i)
-                                    ,setPriceLevel(results, i)
-                                    ,setReference(results, i)
-                                    ,setScope(results, i)
                                     ,setType(results, i)
                             );
 
@@ -158,6 +160,12 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
 
     private String setType(List<Result>results, int i){
         return results.get(i).getTypes() != null ? results.get(i).getTypes().get(0) : null;}
+
+    private void refreshNearbyRestaurantValues(List<Result>results, int i) {
+         String name = results.get(i).getName();
+
+    }
+
 
 
 }

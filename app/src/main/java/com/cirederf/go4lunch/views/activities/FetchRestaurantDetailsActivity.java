@@ -1,13 +1,15 @@
 package com.cirederf.go4lunch.views.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
@@ -16,7 +18,7 @@ import com.cirederf.go4lunch.injections.RestaurantDetailsViewModelFactory;
 import com.cirederf.go4lunch.injections.Injection;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.viewmodels.RestaurantDetailsViewModel;
-import com.firebase.ui.auth.AuthUI;
+
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -25,6 +27,7 @@ import static com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment.REST
 
 public class FetchRestaurantDetailsActivity extends BaseActivity {
 
+    private static final int REQUEST_CODE_CALL = 100 ;
     @BindView(R.id.restaurant_details_type_and_address)
     TextView typeAndAddress;
     @BindView(R.id.restaurant_details_name)
@@ -33,10 +36,10 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     ImageView imageView;
     @BindView(R.id.restaurant_details_type)
     TextView textType;
-    @BindView(R.id.restaurant_details_phone)
-    TextView textPhone;
-    @BindView(R.id.restaurant_details_website)
-    TextView textWebSide;
+    //    @BindView(R.id.restaurant_details_phone)
+//    TextView textPhone;
+//    @BindView(R.id.restaurant_details_website)
+//    TextView textWebSide;
     @BindView(R.id.restaurant_details_pluscode)
     TextView textPlusCode;
     @BindView(R.id.restaurant_details_priceLevel)
@@ -48,8 +51,6 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
 
     private String placeId;
     private RestaurantDetailsViewModel restaurantDetailsViewModel;
-    private static final int PHONE_CALL_BUTTON = 100;
-    private static final int WEBSITE_BUTTON = 200;
 
     @Override
     public int getActivityLayout() {
@@ -64,6 +65,7 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     }
 
     //----------CONFIGURATION-----------
+
     private void configureRestaurantDetailsViewModel() {
         RestaurantDetailsViewModelFactory detailsRestaurantViewModelFactory = Injection.provideDetailsFactory();
         this.restaurantDetailsViewModel = ViewModelProviders.of(this, detailsRestaurantViewModelFactory).get(RestaurantDetailsViewModel.class);
@@ -71,15 +73,12 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     }
 
     //-------------FOR RESTAURANT DETAILS VALUES----------------
+
     private void getDetailsRestaurant() {
         String apiKey = getString(R.string.places_api_google_key);
         this.restaurantDetailsViewModel.initRestaurantDetails(placeId, apiKey);
         this.restaurantDetailsViewModel.getRestaurantDetailsLiveData()
-                .observe(
-                        this,
-                        (Restaurant restaurant) -> {
-                            refreshRestaurantDetails(restaurant);
-                        });
+                .observe(this, this::refreshRestaurantDetails);
     }
 //    explication de la methodologie de observe
 
@@ -96,32 +95,41 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
 
     private void refreshRestaurantDetails(Restaurant restaurant) {
         name.setText(restaurant.getName());
-        typeAndAddress.setText(restaurant.getAddress()+", "+restaurant.getType());
+        typeAndAddress.setText(restaurant.getType() + ", " + restaurant.getAddress());
         textType.setText(restaurant.getType());
         Glide.with(imageView.getContext()).load(restaurant.getPicture()).into(imageView);
-        textPhone.setText(restaurant.getPhoneNumber());
-        textWebSide.setText(restaurant.getWebsite());
+        //textPhone.setText(restaurant.getPhoneNumber());
+        //textWebSide.setText(restaurant.getWebsite());
         //textPlusCode.setText((CharSequence) restaurant.getPlusCode());
         //textprice.setText(restaurant.getPriceLevel());
-        textreference.setText(restaurant.getReference());
-        textscope.setText(restaurant.getScope());
+//        textreference.setText(restaurant.getReference());
+//        textscope.setText(restaurant.getScope());
     }
 
     //------------UTILS METHODS-------------
+
     //-----PHONE-----
     private String getRestaurantPhoneNumber() {
         Restaurant restaurant = this.restaurantDetailsViewModel.getRestaurantDetailsLiveData().getValue();
-        if (restaurant == null) return null;
+        if (restaurant == null) return "no restaurant to display" /*null*/;
         return restaurant.getPhoneNumber();
     }
 
     private void startPhoneCall() {
-        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(getRestaurantPhoneNumber())));
+        if (getRestaurantPhoneNumber() == null) {
+            toastShowActionNullResult(getApplicationContext(), "No phone");
+        } else {
+            startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + getRestaurantPhoneNumber())));
+            }
     }
 
     //--------WEBSITE-----------
     private void launchWebView() {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getRestaurantWebSiteUri())));
+        if(getRestaurantWebSiteUri() == null) {
+            toastShowActionNullResult(getApplicationContext(), "No website");
+        } else {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getRestaurantWebSiteUri())));
+        }
     }
 
     private String getRestaurantWebSiteUri() {
@@ -130,7 +138,14 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
         return restaurant.getWebsite();
     }
 
+    //-----------UI UTIL--------------
+    private void toastShowActionNullResult(Context context, String response){
+        Toast toast = Toast.makeText(context, response, Toast.LENGTH_LONG );
+        toast.show();
+    }
+
     //----------ACTIONS---------
+
     @OnClick({R.id.button_phone_call, R.id.button_web_site_launcher})
     public void onRestaurantDetailsACTIONClick(View view){
         switch (view.getId()) {
@@ -138,9 +153,11 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
             case R.id.button_phone_call:
                 startPhoneCall();
                 break;
+
             case R.id.button_web_site_launcher:
                 launchWebView();
                 break;
+
             default:
                 break;
         }

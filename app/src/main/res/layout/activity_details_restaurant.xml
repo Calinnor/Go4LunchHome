@@ -163,6 +163,7 @@
         android:id="@+id/restaurant_details_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="164dp"
         android:background="#E68FAD"
         android:text="phonetext"
         android:textColor="@color/google"

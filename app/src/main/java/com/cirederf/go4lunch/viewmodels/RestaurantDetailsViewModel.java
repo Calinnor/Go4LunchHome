@@ -33,7 +33,6 @@ public class RestaurantDetailsViewModel extends ViewModel {
     /**
      * return a LiveData<Restaurant> details to use in DetailsRestaurants
      */
-    //public LiveData<Restaurant> getRestaurantDetailsLiveData(String placeId,String apiKey) {
     public LiveData<Restaurant> getRestaurantDetailsLiveData() {
     return this.restaurantDetails;
     }
