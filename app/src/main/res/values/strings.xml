@@ -48,7 +48,7 @@
     <string name="restaurant_address">address</string>
     <string name="item_list_restaurants_hours">opening hours</string>
     <string name="restaurant_name">name</string>
-    <string name="item_list_restaurants_number_workmates">workmates number</string>
+    <string name="item_list_restaurants_number_workmates">(0)</string>
     <string name="Downloading">Downloading…</string>
     <string name="places_api_google_key" translatable="false">AIzaSyAQIMmBdFBM6kVUJ5HyC7tpUXKbkIow_lI</string>
     <string name="an_error">An error happened !</string>

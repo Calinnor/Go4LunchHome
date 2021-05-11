@@ -2,10 +2,8 @@ package com.cirederf.go4lunch.views.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,27 +25,12 @@ import static com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment.REST
 
 public class FetchRestaurantDetailsActivity extends BaseActivity {
 
-    private static final int REQUEST_CODE_CALL = 100 ;
     @BindView(R.id.restaurant_details_type_and_address)
     TextView typeAndAddress;
     @BindView(R.id.restaurant_details_name)
     TextView name;
     @BindView(R.id.restaurant_detail_picture)
     ImageView imageView;
-    @BindView(R.id.restaurant_details_type)
-    TextView textType;
-    //    @BindView(R.id.restaurant_details_phone)
-//    TextView textPhone;
-//    @BindView(R.id.restaurant_details_website)
-//    TextView textWebSide;
-    @BindView(R.id.restaurant_details_pluscode)
-    TextView textPlusCode;
-    @BindView(R.id.restaurant_details_priceLevel)
-    TextView textprice;
-    @BindView(R.id.restaurant_details_reference)
-    TextView textreference;
-    @BindView(R.id.restaurant_details_scope)
-    TextView textscope;
 
     private String placeId;
     private RestaurantDetailsViewModel restaurantDetailsViewModel;
@@ -65,7 +48,6 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     }
 
     //----------CONFIGURATION-----------
-
     private void configureRestaurantDetailsViewModel() {
         RestaurantDetailsViewModelFactory detailsRestaurantViewModelFactory = Injection.provideDetailsFactory();
         this.restaurantDetailsViewModel = ViewModelProviders.of(this, detailsRestaurantViewModelFactory).get(RestaurantDetailsViewModel.class);
@@ -73,7 +55,6 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     }
 
     //-------------FOR RESTAURANT DETAILS VALUES----------------
-
     private void getDetailsRestaurant() {
         String apiKey = getString(R.string.places_api_google_key);
         this.restaurantDetailsViewModel.initRestaurantDetails(placeId, apiKey);
@@ -96,18 +77,10 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     private void refreshRestaurantDetails(Restaurant restaurant) {
         name.setText(restaurant.getName());
         typeAndAddress.setText(restaurant.getType() + ", " + restaurant.getAddress());
-        textType.setText(restaurant.getType());
         Glide.with(imageView.getContext()).load(restaurant.getPicture()).into(imageView);
-        //textPhone.setText(restaurant.getPhoneNumber());
-        //textWebSide.setText(restaurant.getWebsite());
-        //textPlusCode.setText((CharSequence) restaurant.getPlusCode());
-        //textprice.setText(restaurant.getPriceLevel());
-//        textreference.setText(restaurant.getReference());
-//        textscope.setText(restaurant.getScope());
     }
 
     //------------UTILS METHODS-------------
-
     //-----PHONE-----
     private String getRestaurantPhoneNumber() {
         Restaurant restaurant = this.restaurantDetailsViewModel.getRestaurantDetailsLiveData().getValue();
@@ -116,11 +89,11 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     }
 
     private void startPhoneCall() {
-        if (getRestaurantPhoneNumber() == null) {
-            toastShowActionNullResult(getApplicationContext(), "No phone");
+        if(getRestaurantPhoneNumber() == null) {
+            toastShowActionNullResult(getApplicationContext(), "No phone number");
         } else {
             startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + getRestaurantPhoneNumber())));
-            }
+        }
     }
 
     //--------WEBSITE-----------

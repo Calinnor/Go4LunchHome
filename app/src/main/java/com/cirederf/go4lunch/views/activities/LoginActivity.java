@@ -14,6 +14,7 @@ import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 
 import java.util.Collections;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -96,13 +97,16 @@ public class LoginActivity extends BaseActivity {
         AuthUI.IdpConfig providerId = null;
 
         if(providerIdChoice == GOOGLE_PROVIDER_CHOICE){
-            providerId = new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build();
+            //providerId = new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build();
+            providerId = new AuthUI.IdpConfig.GoogleBuilder().build();
         }
         if(providerIdChoice == FACEBOOK_PROVIDER_CHOICE){
-            providerId = new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build();
+            //providerId = new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build();
+            providerId = new AuthUI.IdpConfig.FacebookBuilder().build();
         }
         if(providerIdChoice == TWITTER_PROVIDER_CHOICE){
-            providerId = new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build();
+            //providerId = new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build();
+            providerId = new AuthUI.IdpConfig.TwitterBuilder().build();
         }
         return providerId;
     }
@@ -118,9 +122,9 @@ public class LoginActivity extends BaseActivity {
             } else {
                 if (response == null) {
                     toastShowLoginResult(getApplicationContext(), getString(R.string.error_authentication_canceled));
-                } else if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                } else if (Objects.requireNonNull(response.getError()).getErrorCode() == ErrorCodes.NO_NETWORK) {
                     toastShowLoginResult(getApplicationContext(), getString(R.string.error_no_internet));
-                } else if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                } else if (response.getError().getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
                     toastShowLoginResult(getApplicationContext(), getString(R.string.error_unknown_error));
                 }
             }

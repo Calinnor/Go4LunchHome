@@ -3,7 +3,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#E68FAD"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main_detail_restaurant_fragment_constraint_layout">
@@ -12,7 +12,7 @@
         android:id="@+id/detail_restaurant_bottom_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/google"
+        android:background="@color/orange_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -36,6 +36,7 @@
             android:id="@+id/restaurant_details_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
             android:text="@string/restaurant_name"
             android:textColor="@color/white"
             android:textSize="25sp"
@@ -48,7 +49,8 @@
             android:layout_height="wrap_content"
             android:text="@string/type_and_address"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:paddingLeft="5dp"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/restaurant_details_name" />
 
@@ -78,9 +80,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_baseline_phone_24" />
-        <!--        app:layout_constraintEnd_toStartOf="@+id/rating_star_picture"-->
-        <!--        app:layout_constraintStart_toStartOf="parent"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_bottom_constraint_layout" />-->
+
 
         <TextView
             android:id="@+id/restaurant_details_telephone_text"
@@ -88,11 +88,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/call"
-            android:textColor="@color/google"
+            android:textColor="@color/orange_light"
             android:textSize="25sp" />
-        <!--        app:layout_constraintEnd_toEndOf="@+id/call_picture"-->
-        <!--        app:layout_constraintStart_toStartOf="@+id/call_picture"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/call_picture" />-->
+
     </LinearLayout>
 
     <LinearLayout
@@ -110,9 +108,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_baseline_star_24" />
-        <!--        app:layout_constraintEnd_toEndOf="parent"-->
-        <!--        app:layout_constraintStart_toStartOf="parent"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_bottom_constraint_layout" />-->
+
 
         <TextView
             android:id="@+id/restaurant_details_rating_text"
@@ -120,11 +116,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/like"
-            android:textColor="@color/google"
+            android:textColor="@color/orange_light"
             android:textSize="25sp" />
-        <!--        app:layout_constraintEnd_toEndOf="@+id/rating_star_picture"-->
-        <!--        app:layout_constraintStart_toStartOf="@+id/rating_star_picture"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/rating_star_picture" />-->
+
     </LinearLayout>
 
     <LinearLayout
@@ -142,9 +136,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_baseline_earth_24" />
-        <!--        app:layout_constraintEnd_toEndOf="parent"-->
-        <!--        app:layout_constraintStart_toEndOf="@+id/rating_star_picture"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_bottom_constraint_layout" />-->
+
 
         <TextView
             android:id="@+id/restaurant_details_website"
@@ -152,78 +144,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/website"
-            android:textColor="@color/google"
+            android:textColor="@color/orange_light"
             android:textSize="25sp" />
-        <!--        app:layout_constraintEnd_toEndOf="@+id/website_picture"-->
-        <!--        app:layout_constraintStart_toStartOf="@+id/website_picture"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/website_picture" />-->
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/restaurant_details_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="164dp"
-        android:background="#E68FAD"
-        android:text="phonetext"
-        android:textColor="@color/google"
-        android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_phone_call" />
-
-    <TextView
-        android:background="#E68FAD"
-        android:id="@+id/restaurant_details_pluscode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="pluscode"
-        android:textColor="@color/google"
-        android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restaurant_details_phone" />
-
-    <TextView
-        android:background="#E68FAD"
-        android:id="@+id/restaurant_details_priceLevel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="privelevel"
-        android:textColor="@color/google"
-        android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restaurant_details_pluscode" />
-
-    <TextView
-        android:background="#E68FAD"
-        android:id="@+id/restaurant_details_reference"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="reference"
-        android:textColor="@color/google"
-        android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restaurant_details_priceLevel" />
-
-    <TextView
-        android:background="#E68FAD"
-        android:id="@+id/restaurant_details_scope"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="scope"
-        android:textColor="@color/google"
-        android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restaurant_details_reference" />
-
-    <TextView
-        android:background="#E68FAD"
-        android:id="@+id/restaurant_details_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="type"
-        android:textColor="@color/google"
-        android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restaurant_details_scope" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
