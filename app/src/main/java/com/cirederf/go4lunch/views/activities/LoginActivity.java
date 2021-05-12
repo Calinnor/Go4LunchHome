@@ -136,19 +136,4 @@ public class LoginActivity extends BaseActivity {
         Toast toast = Toast.makeText(context, response, Toast.LENGTH_LONG );
         toast.show();
     }
-
-//    private AuthUI.IdpConfig getProviderId(int providerIdChoice) {
-//        AuthUI.IdpConfig providerId = null;
-//
-//        if(providerIdChoice == GOOGLE_PROVIDER_CHOICE){
-//            providerId = new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build();
-//        }
-//        if(providerIdChoice == FACEBOOK_PROVIDER_CHOICE){
-//            providerId = new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build();
-//        }
-//        if(providerIdChoice == TWITTER_PROVIDER_CHOICE){
-//            providerId = new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build();
-//        }
-//        return providerId;
-//    }
 }

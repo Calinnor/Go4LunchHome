@@ -75,7 +75,7 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
 //}
 
     private void refreshRestaurantDetails(Restaurant restaurant) {
-        name.setText(restaurant.getName());
+        name.setText(restaurant.getRestaurantName());
         typeAndAddress.setText(restaurant.getType() + ", " + restaurant.getAddress());
         Glide.with(imageView.getContext()).load(restaurant.getPicture()).into(imageView);
     }

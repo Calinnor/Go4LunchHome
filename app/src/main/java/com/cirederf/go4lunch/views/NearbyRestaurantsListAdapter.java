@@ -55,7 +55,7 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
     @Override
     public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position) {
         Restaurant nearbySearchRestaurants = nearbyRestaurants.get(position);
-        holder.textViewName.setText(nearbySearchRestaurants.getName());
+        holder.textViewName.setText(nearbySearchRestaurants.getRestaurantName());
         holder.textViewDistance.setText("seem 100m");
         holder.textViewAddress.setText(nearbySearchRestaurants.getAddress());
         holder.textViewRating.setText(String.valueOf(nearbySearchRestaurants.getRating()));

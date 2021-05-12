@@ -8,9 +8,9 @@ import com.cirederf.go4lunch.models.apiNearbyModels.Location;
 import com.cirederf.go4lunch.models.apiNearbyModels.PlacesSearchApi;
 import com.cirederf.go4lunch.models.apiNearbyModels.PlusCode;
 import com.cirederf.go4lunch.models.apiNearbyModels.Result;
-import com.cirederf.go4lunch.networking.PlacesApiRequests;
-import com.cirederf.go4lunch.networking.RetrofitService;
-import com.cirederf.go4lunch.services.NearbyPlaceInterface;
+import com.cirederf.go4lunch.api.PlacesApiRequests;
+import com.cirederf.go4lunch.api.RetrofitService;
+import com.cirederf.go4lunch.apiServices.placesInterfaces.NearbyPlaceInterface;
 
 import java.util.ArrayList;
 import java.util.List;

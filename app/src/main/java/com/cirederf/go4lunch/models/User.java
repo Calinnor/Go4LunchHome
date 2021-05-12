@@ -10,18 +10,22 @@ public class User {
     private String username;
     @Nullable
     private String urlPicture;
-    private Restaurant chosenRestaurant;
-    private Boolean isChosenRestaurant;
+    private String chosenRestaurant;
+    private Boolean isTheChoiceRestaurant;
+    private String restaurantType;
+    private String rating;
 
     public User() { }
 
     //------------FIREBASE CONSTRUCTOR-----------
-    public User(String uid, String username, @Nullable String urlPicture, Restaurant chosenRestaurant, Boolean isChosenRestaurant) {
+    public User(String uid, String username, @Nullable String urlPicture, String chosenRestaurant, Boolean isTheChoiceRestaurant, String restaurantType, String rating ) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
         this.chosenRestaurant = chosenRestaurant;
-        this.isChosenRestaurant = isChosenRestaurant;
+        this.isTheChoiceRestaurant = isTheChoiceRestaurant;
+        this.restaurantType = restaurantType;
+        this.rating = rating;
     }
 
     //---------GETTERS----------
@@ -38,12 +42,12 @@ public class User {
         return urlPicture;
     }
 
-    public Restaurant getChosenRestaurant() {
+    public String getChosenRestaurant() {
         return chosenRestaurant;
     }
 
-    public Boolean getIsChosenRestaurant() {
-        return isChosenRestaurant;
+    public Boolean getIsTheChoiceRestaurant() {
+        return isTheChoiceRestaurant;
     }
 
     //------------SETTERS-----------
@@ -59,11 +63,11 @@ public class User {
         this.urlPicture = urlPicture;
     }
 
-    public void setChosenRestaurant(Restaurant chosenRestaurant) {
+    public void setChosenRestaurant(String chosenRestaurant) {
         this.chosenRestaurant = chosenRestaurant;
     }
 
-    public void setIsChosenRestaurant(Boolean isChosenRestaurant) {
-        this.isChosenRestaurant = isChosenRestaurant;
+    public void setIsTheChoiceRestaurant(Boolean isTheChoiceRestaurant) {
+        this.isTheChoiceRestaurant = isTheChoiceRestaurant;
     }
 }

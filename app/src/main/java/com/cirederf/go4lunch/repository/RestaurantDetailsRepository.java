@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.apiDetailModels.RestaurantDetailsApi;
 import com.cirederf.go4lunch.models.apiDetailModels.Result;
-import com.cirederf.go4lunch.networking.PlacesApiRequests;
-import com.cirederf.go4lunch.networking.RetrofitService;
-import com.cirederf.go4lunch.services.RestaurantDetailsInterface;
+import com.cirederf.go4lunch.api.PlacesApiRequests;
+import com.cirederf.go4lunch.api.RetrofitService;
+import com.cirederf.go4lunch.apiServices.placesInterfaces.RestaurantDetailsInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;

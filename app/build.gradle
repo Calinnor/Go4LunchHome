@@ -37,16 +37,15 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.drawerlayout:drawerlayout:1.0.0'
-    implementation 'androidx.navigation:navigation-fragment:2.3.2'
-    implementation 'androidx.navigation:navigation-ui:2.3.2'
+    implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
+    implementation 'androidx.navigation:navigation-fragment:2.3.5'
+    implementation 'androidx.navigation:navigation-ui:2.3.5'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.recyclerview:recyclerview:1.2.0"
 
-
-    //location
+    //LOCATION
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     //GLIDE
@@ -57,37 +56,39 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 
+    //FOR FIREBASE
     //Firebase
-    //mofify line below because of that error : Cannot fit requested classes in a single dex file (# methods: 121347 > 65536 ; # fields: 77049 > 65536)
+    //mofify line below because analytics is a part of core which has no class
     //implementation "com.google.firebase:firebase-core:18.0.3"
-    implementation 'com.google.firebase:firebase-analytics:17.4.0'
-
+    implementation 'com.google.firebase:firebase-analytics:18.0.3'
     // FirebaseUI
-    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
-
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
     //Firestore
-    implementation 'com.firebaseui:firebase-ui-firestore:5.0.0'
+    implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'
 
+    //SOCIAL NETWORK
     //Facebook
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
-
-    //twitter
+    implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
+    //Twitter
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
     implementation 'org.twitter4j:twitter4j-core:4.0.+'
 
     //Gson
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    //retrofit
+    //RETROFIT
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
-    //viewmodel + livedata
+    //VIEWMODEL AND LIVEDATA
     implementation 'android.arch.lifecycle:viewmodel:1.1.1'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
-    annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
+    //annotationProcessor 'android.arch.lifecycle:compiler:1.1.1' must be replace by
+    implementation "android.arch.lifecycle:common-java8:1.1.1"
 
     //add line because of that error : Cannot fit requested classes in a single dex file (# methods: 121347 > 65536 ; # fields: 77049 > 65536)
     implementation 'androidx.multidex:multidex:2.0.1'
+
 }
+
 apply plugin: 'com.google.gms.google-services'
