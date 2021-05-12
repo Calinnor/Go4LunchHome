@@ -19,4 +19,7 @@ public class StartActivity extends BaseActivity {
             startLogin();
         }
     }
+    //todo determine if this.createUserInFirestore(); may be used here
+    // or in isCurrentUserLogged in baseactivity
+    // or in mainactivity
 }
