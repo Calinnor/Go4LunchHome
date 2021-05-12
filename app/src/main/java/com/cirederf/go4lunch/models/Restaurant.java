@@ -27,10 +27,11 @@ public class Restaurant {
     }
 
     //---------CONSTRUCTOR FOR DETAILS-----------
-    public Restaurant(String setDetailName, String setDetailsAddress, String setDetailsPicture,
+    public Restaurant(String setDetailName, String setDetailsAddress, double rating, String setDetailsPicture,
                       String setDetailsType, String website, String phoneNumber) {
         this.restaurantName = setDetailName;
         this.address = setDetailsAddress;
+        this.rating = rating;
         this.picture = setDetailsPicture;
         this.type = setDetailsType;
         this.website = website;

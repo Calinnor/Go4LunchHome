@@ -63,9 +63,10 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
                                 //setDetailName(result)
                                 ,result.getFormattedAddress()
                                 //,setDetailsAddress(result)
+                                ,result.getRating()
                                 //,result.getPhotos().get(0)
-                                //,setDetailsPicture(result, apiKey)
-                                ,result.getTypes().get(0)
+                                ,setDetailsPicture(result, apiKey)
+                                //,result.getTypes().get(0)
                                 ,setDetailsType(result)
                                 ,result.getWebsite()
                                 //,setWebSite(result)
@@ -109,6 +110,7 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
         for (int i = 0; i < typesSize; i++) {
             if (types.get(i).equals("restaurant")) {
                 restaurantType = "Restaurant";
+                break;
             } else {
                 restaurantType = result.getTypes().get(0);
             }
