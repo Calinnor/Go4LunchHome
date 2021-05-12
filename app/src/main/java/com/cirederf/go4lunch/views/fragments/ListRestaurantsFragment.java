@@ -14,20 +14,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cirederf.go4lunch.R;
-import com.cirederf.go4lunch.injections.SearchInjection;
-import com.cirederf.go4lunch.injections.SearchRestaurantsViewModelFactory;
+import com.cirederf.go4lunch.injections.Injection;
+import com.cirederf.go4lunch.injections.NearbyRestaurantsViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.viewmodels.SearchRestaurantsViewModel;
-import com.cirederf.go4lunch.views.RestaurantAdapter;
-import com.cirederf.go4lunch.views.activities.DetailsRestaurantActivity;
+import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
+import com.cirederf.go4lunch.views.NearbyRestaurantsListAdapter;
+import com.cirederf.go4lunch.views.activities.FetchRestaurantDetailsActivity;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
 
-public class ListRestaurantsFragment extends Fragment implements RestaurantAdapter.OnItemRestaurantClickListerner {
+public class ListRestaurantsFragment extends Fragment implements NearbyRestaurantsListAdapter.OnItemRestaurantClickListerner {
 
-    private SearchRestaurantsViewModel searchRestaurantsViewModel;
+    private NearbyRestaurantsViewModel nearbyRestaurantsViewModel;
+    public static final String RESTAURANT_PLACE_ID_PARAM = "placeId";
 
     public static ListRestaurantsFragment newInstance() {
         return (new ListRestaurantsFragment());
@@ -44,41 +45,52 @@ public class ListRestaurantsFragment extends Fragment implements RestaurantAdapt
     @Override
     public void onResume() {
         super.onResume();
-        if (searchRestaurantsViewModel == null) {
-            this.configureNearbyRestaurantViewModel();
+        if (nearbyRestaurantsViewModel == null) {
+            this.configureNearbyRestaurantsViewModel();
         }
     }
 
-    private void configureNearbyRestaurantViewModel() {
-        SearchRestaurantsViewModelFactory searchRestaurantsViewModelFactory = SearchInjection.provideSearchFactory();
-        searchRestaurantsViewModel = ViewModelProviders.of(this, searchRestaurantsViewModelFactory).get(SearchRestaurantsViewModel.class);
-       this.getRestoListFromRestoRepo();
+    //------------CONFIGURATIONS---------------
+    private void configureNearbyRestaurantsViewModel() {
+        NearbyRestaurantsViewModelFactory nearbyRestaurantsViewModelFactory = Injection.provideNearbySearchFactory();
+        nearbyRestaurantsViewModel = ViewModelProviders.of(this, nearbyRestaurantsViewModelFactory).get(NearbyRestaurantsViewModel.class);
+        this.getRestaurantsList();
     }
 
     private void configureRecyclerViewAdapter(View view, List<Restaurant> restaurants) {
         RecyclerView recyclerView = view.findViewById(R.id.fragment_list_restaurants_recycler_view);
-        RestaurantAdapter restaurantAdapter = new RestaurantAdapter(/*this,*/restaurants, this);
+        NearbyRestaurantsListAdapter nearbyRestaurantsListAdapter = new NearbyRestaurantsListAdapter(restaurants, this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setAdapter(restaurantAdapter);
+        recyclerView.setAdapter(nearbyRestaurantsListAdapter);
         RecyclerView.LayoutManager restaurantRecyclerView = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(restaurantRecyclerView);
     }
 
-    private void getRestoListFromRestoRepo() {
+    //-----------FOR NEARBY RESTAURANTS LIST------------
+    private void getRestaurantsList() {
         String location = "48.410692,2.738093";
         int radius = 25000;
         String type = "restaurant";
         String apiKey = getString(R.string.places_api_google_key);
-        this.searchRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
-        this.searchRestaurantsViewModel.getRestaurantsFromRestaurantsRepository()
-                .observe(getViewLifecycleOwner(), restaurants -> configureRecyclerViewAdapter(getView(), restaurants));
+        this.nearbyRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
+        this.nearbyRestaurantsViewModel.getListRestaurantsLiveData()
+                .observe(getViewLifecycleOwner(),
+                        (List<Restaurant> restaurants) -> {
+                            configureRecyclerViewAdapter(requireView(), restaurants);
+                        });
     }
 
+    //---------ACTION-----------
     @Override
     public void onItemClick(Restaurant restaurant) {
-        Intent intent = new Intent(getContext(), DetailsRestaurantActivity.class);
-        //intent.putExtra("Restaurants", (Parcelable) restaurant); have to put the parcelable in place ?
+        this.startDetailRestaurantActivity(restaurant);
+    }
+
+    private void startDetailRestaurantActivity(Restaurant restaurant){
+        Intent intent = new Intent(getContext(), FetchRestaurantDetailsActivity.class);
+        intent.putExtra(RESTAURANT_PLACE_ID_PARAM, restaurant.getPlaceId());
         this.startActivity(intent);
     }
+
 }

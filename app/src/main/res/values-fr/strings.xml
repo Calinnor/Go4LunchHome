@@ -27,12 +27,19 @@
     <string name="bottom_navigation_menu_workmate">Collègues</string>
     <string name="bottom_navigation_menu_list">Liste</string>
     <string name="item_list_restaurants_distance">distance du</string>
-    <string name="item_list_restaurants_address">adresse</string>
+    <string name="restaurant_address">adresse</string>
     <string name="item_list_restaurants_hours">horaires d\'ouverture</string>
-    <string name="item_list_restaurants_restaurant">nom</string>
-    <string name="item_list_restaurants_number_workmates">participants</string>
+    <string name="restaurant_name">nom</string>
+    <string name="item_list_restaurants_number_workmates">(0)</string>
     <string name="Downloading">Telechargement...</string>
     <string name="an_error">Une erreur est survenue !</string>
     <string name="open">Ouvert</string>
     <string name="closed">Fermé</string>
+    <string name="workmates_is_joining">Un collègue y sera !</string>
+    <string name="call">Appeler</string>
+    <string name="website">Web</string>
+    <string name="like">Liker</string>
+    <string name="type_and_address">type et adresse</string>
+    <string name="navigation_drawer_open">Ouvrir</string>
+    <string name="navigation_drawer_close">Fermer</string>
 </resources>

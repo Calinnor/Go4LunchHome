@@ -70,4 +70,5 @@
         <item name="android:layout_marginEnd">@dimen/item_list_restaurant_margin_end_illustration</item>
     </style>
 
+    <dimen name="item_list_restaurant_margin_default">1dp</dimen>
 </resources>

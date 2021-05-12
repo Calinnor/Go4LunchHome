@@ -1,10 +1,9 @@
 package com.cirederf.go4lunch.models;
 
-import com.cirederf.go4lunch.models.apiModels.Location;
+import java.util.List;
 
-public class Restaurant
-{
-    private String name;
+public class Restaurant {
+    private String restaurantName;
     private String address;
     private double rating;
     private String picture;
@@ -12,30 +11,61 @@ public class Restaurant
     private String phoneNumber;
     private String website;
     private Boolean openNow;
-    private Location location;
+    private String type;
+    private List<User> workmatesUserList;
 
     //////// CONSTRUCTORS ////////
-
-    public Restaurant(String name, String address, String picture, String placeId, double rating,
-                      String phoneNumber, String website,Location location, Boolean openNow) {
-        this.name = name;
+    //-------CONSTRUCTOR FOR SEARCH PLACES--------
+    public Restaurant(String restaurantName, String address, double rating, String picture, String placeId, Boolean openNow, String type) {
+        this.restaurantName = restaurantName;
         this.address = address;
+        this.rating = rating;
         this.picture = picture;
         this.placeId = placeId;
-        this.rating = rating;
-        this.phoneNumber = phoneNumber;
-        this.website = website;
-        this.location = location;
         this.openNow = openNow;
+        this.type = type;
+    }
+//    //////// CONSTRUCTORS ////////
+//    //-------CONSTRUCTOR FOR SEARCH PLACES--------
+//    public Restaurant(String name, String address, String picture, String placeId, double rating,
+//                      /*String phoneNumber, String website,*/ Boolean openNow) {
+//        this.name = name;
+//        this.address = address;
+//        this.picture = picture;
+//        this.placeId = placeId;
+//        this.rating = rating;
+//        //this.phoneNumber = phoneNumber;
+//        //this.website = website;
+//        this.openNow = openNow;
+//    }
+
+    //---------CONSTRUCTOR FOR DETAILS-----------
+    public Restaurant(String setDetailName, String setDetailsAddress, String setDetailsPicture,
+                      String setDetailsType, String website, String phoneNumber) {
+        this.restaurantName = setDetailName;
+        this.address = setDetailsAddress;
+        this.picture = setDetailsPicture;
+        this.type = setDetailsType;
+        this.website = website;
+        this.phoneNumber = phoneNumber;
     }
 
-    //Empty constructor for Firebase
-    public Restaurant () {}
-
+    //-------FIREBASE CONSTRUCTOR--------
+    /**
+     * @param workmatesUserList: list of workmates using the app and having selected this restaurant
+     * @param placeId: id for each restaurant
+     */
+    public Restaurant (List<User> workmatesUserList, String restaurantName, String placeId) {
+        this.workmatesUserList = workmatesUserList;
+        this.restaurantName = restaurantName;
+        this.placeId = placeId;
+        //todo resolve this question :
+        // add the name param for firestore search and organisation or just the id is ok ?
+    }
 
     //////// GETTERS ////////
-    public String getName() {
-        return name;
+    public String getRestaurantName() {
+        return restaurantName;
     }
 
     public String getAddress() {
@@ -66,29 +96,21 @@ public class Restaurant
         return openNow;
     }
 
-    public Location getLocation() {
-        return location;
+    public String getType() {
+        return type;
     }
 
     //////// SETTERS ////////
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 
     public void setPlaceId(String placeId) {
         this.placeId = placeId;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
 }

@@ -4,7 +4,6 @@ import com.cirederf.go4lunch.R;
 
 public class StartActivity extends BaseActivity {
 
-
     @Override
     public int getActivityLayout() {
         return R.layout.activity_start;
@@ -14,6 +13,7 @@ public class StartActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if(isCurrentUserLogged()) {
+            this.createUserInFirestore();
             this.startMain();
         } else {
             startLogin();

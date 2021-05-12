@@ -7,7 +7,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +18,8 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.cirederf.go4lunch.apiServices.firestoreUtils.UserHelper;
+import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment;
 import com.cirederf.go4lunch.views.fragments.MapFragment;
 import com.cirederf.go4lunch.views.fragments.WorkmatesFragment;
@@ -30,6 +31,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 
@@ -49,6 +54,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int FRAGMENT_YOUR_LUNCH = 2;
     private static final int SIGN_OUT_TASK = 10;
 
+//    private List<User> userList = new ArrayList<>();
+
     @Override
     public int getActivityLayout() {
         return R.layout.activity_main;
@@ -62,9 +69,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         this.configureNavigationDrawer();
         this.configureDrawerLayout();
         this.updateCurrentUserUi();
+        //this.createUserInFirestore();
         this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
     }
-
 
     /**
      *  FIREBASE REQUESTS
@@ -73,30 +80,29 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      *  Logout
      *  UpdateUi
      */
-
-    //Get instance
+    //---------GET FIREBASE USER----------
     @Nullable
     protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
 
-    //Get data
+    //-----------GET USER DATA-----------
     private void updateCurrentUsername(TextView textViewUsernameToUpdate){
-        String username = TextUtils.isEmpty(this.getCurrentUser().getDisplayName()) ? getString(R.string.info_no_username_found) : this.getCurrentUser().getDisplayName();
+        String username = TextUtils.isEmpty(Objects.requireNonNull(this.getCurrentUser()).getDisplayName()) ? getString(R.string.info_no_username_found) : this.getCurrentUser().getDisplayName();
         textViewUsernameToUpdate.setText(username);
     }
 
     private void updateCurrentUserMail(TextView textViewUserMailToUpdate){
-        String email = TextUtils.isEmpty(this.getCurrentUser().getEmail()) ? getString(R.string.info_no_email_found) : this.getCurrentUser().getEmail();
+        String email = TextUtils.isEmpty(Objects.requireNonNull(this.getCurrentUser()).getEmail()) ? getString(R.string.info_no_email_found) : this.getCurrentUser().getEmail();
         textViewUserMailToUpdate.setText(email);
     }
 
     private void updateCurrentUserPicture(ImageView imageViewUserPictureToUpdate){
         Glide.with(this)
-                .load(this.getCurrentUser().getPhotoUrl())
+                .load(Objects.requireNonNull(this.getCurrentUser()).getPhotoUrl())
                 .apply(RequestOptions.circleCropTransform())
                 .into(imageViewUserPictureToUpdate);
     }
 
-    //Logout
+    //---------FIREBASE USER LOGOUT---------------
     private void signOutCurrentUserFromFirebase(){
         AuthUI.getInstance()
                 .signOut(this)
@@ -111,7 +117,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         };
     }
 
-    //Update UI
+    //---------UPDATE UI WITH FIREBASE DATA IN NAV HEADER-----------
     private void updateCurrentUserUi(){
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
         View headerView = navigationView.getHeaderView(0);
@@ -130,7 +136,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      * BottomNavigation
      * DrawerNavigation
      */
-    //Logout
+    //-------------USER LOGOUT ACTIONS-------------
     public void onClickLogoutButton() {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.popup_message_confirmation_logout_account)
@@ -139,12 +145,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 .show();
     }
 
-    /**
-     * Configure BottomNavigation
-     */
-
+    //-----------BOTTOM NAVIGATION-------------
     private void configureBottomNavigationView() {
-        //new bottomnavigationview with setOn
         mBottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.map:
@@ -161,10 +163,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
     }
 
-    /**
-     * Configure DrawerNavigation
-     */
-
+    //------------NAVIGATION DRAWER-----------
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -211,24 +210,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     /**
      * CONFIGURATION
+     * toolbar
+     * drawers
+     * fragment views
      */
-
+    //-----------TOOLBAR---------
     protected void configureToolbar(){
         setSupportActionBar(toolbar);
     }
 
+    //---------DRAWERS-----------
     private void configureDrawerLayout() {
-        ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toogle);
-        toogle.syncState();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     private void configureNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-
-    // Configure fragments view : selected (is default)
+    //---------FRAGMENTS-----------
     private void startTransactionFragment(Fragment fragment) {
         if (!fragment.isVisible()) {
             getSupportFragmentManager().beginTransaction()
@@ -242,5 +244,23 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             this.startTransactionFragment(fragment);
         }
     }
+
+//    //firestore
+//    public Boolean isFirestoreUser(){
+//        FirebaseUser currentUser = this.getCurrentUser();//FirebaseAuth.getInstance().getCurrentUser();
+//        for (User user : userList){
+//            if (user.getUid().equals(currentUser.getUid())) return true;
+//        }
+//        return false;
+//    }
+//
+//    private void createUserInFirestore(){
+//        if (!isFirestoreUser()){
+//            String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+//            String username = this.getCurrentUser().getDisplayName();
+//            String uid = this.getCurrentUser().getUid();
+//            UserHelper.createUser(uid, username, urlPicture, null, null,null ,null).addOnFailureListener(this.onFailureListener());
+//        }
+//    }
 
 }
