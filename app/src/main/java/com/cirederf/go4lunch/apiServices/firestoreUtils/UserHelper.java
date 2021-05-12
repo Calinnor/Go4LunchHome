@@ -2,7 +2,6 @@ package com.cirederf.go4lunch.apiServices.firestoreUtils;
 
 import androidx.annotation.Nullable;
 
-import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -19,7 +18,7 @@ public class UserHelper {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
-    // --- CREATE A USER AS A DOCUMENT IN USER-COLLECTION---
+    // --- CREATE A USER AS A DOCUMENT IN USERS-COLLECTION---
     /**
      * @param uid: id for the user
      * @param username: name/pseudo for the user
@@ -27,7 +26,7 @@ public class UserHelper {
      * @param chosenRestaurant: the name of the chosen restaurant to use in the call to create a user list for the restaurant
      * @param isTheChoiceRestaurant: boolean for the active restaurant show
      * @param restaurantType: the type of the restaurant for ordering search
-     * @return
+     * @return document(uid).set(userToCreate)
      */
 
     public static Task<Void> createUser(String uid, String username, @Nullable String urlPicture

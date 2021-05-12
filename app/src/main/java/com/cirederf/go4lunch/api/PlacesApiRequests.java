@@ -14,7 +14,6 @@ public interface PlacesApiRequests {
      * @param radius: radius from the position call in google api
      * @param type: search type call in google api
      * @param key: call to google api key
-     * @return
      */
     @GET("nearbysearch/json?")
     Call<PlacesSearchApi> getNearbyPlacesList(@Query("location") String location,
@@ -26,7 +25,6 @@ public interface PlacesApiRequests {
      * @param placeId: "place_id" call in google place detail
      *                ------!!! place_id != placeId !!!!------
      * @param key: call to google api key
-     * @return
      */
     @GET("details/json?")
     Call<RestaurantDetailsApi> getRestaurantDetails(@Query("place_id") String placeId,

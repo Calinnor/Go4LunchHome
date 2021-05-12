@@ -10,6 +10,8 @@ import com.cirederf.go4lunch.api.PlacesApiRequests;
 import com.cirederf.go4lunch.api.RetrofitService;
 import com.cirederf.go4lunch.apiServices.placesInterfaces.RestaurantDetailsInterface;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,9 +47,8 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
      * Create a public LiveData restaurant
      * @param placeId : restaurant Id (place_id from search) in api
      * @param apiKey : key to access api places
-     * @return
+     * @return a livedata restaurant with name, address, picture, type, website, phone
      */
-
     @Override
     public LiveData<Restaurant> getRestaurantDetailsLiveData(String placeId, String apiKey) {
 
@@ -63,9 +64,9 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
                                 ,result.getFormattedAddress()
                                 //,setDetailsAddress(result)
                                 //,result.getPhotos().get(0)
-                                ,setDetailsPicture(result, apiKey)
+                                //,setDetailsPicture(result, apiKey)
                                 ,result.getTypes().get(0)
-                                //,setDetailsType(result)
+                                ,setDetailsType(result)
                                 ,result.getWebsite()
                                 //,setWebSite(result)
                                 ,result.getFormattedPhoneNumber()
@@ -102,7 +103,17 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
     }
 
     private String setDetailsType(Result result) {
-        return result.getTypes().get(0) != null ? result.getTypes().get(0) : "no type";
+        List<String> types = result.getTypes();
+        String restaurantType = null;
+        int typesSize = types.size();
+        for (int i = 0; i < typesSize; i++) {
+            if (types.get(i).equals("restaurant")) {
+                restaurantType = "Restaurant";
+            } else {
+                restaurantType = result.getTypes().get(0);
+            }
+        }
+        return restaurantType;
     }
 
     private String setDetailName(Result result) {

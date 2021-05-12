@@ -25,19 +25,6 @@ public class Restaurant {
         this.openNow = openNow;
         this.type = type;
     }
-//    //////// CONSTRUCTORS ////////
-//    //-------CONSTRUCTOR FOR SEARCH PLACES--------
-//    public Restaurant(String name, String address, String picture, String placeId, double rating,
-//                      /*String phoneNumber, String website,*/ Boolean openNow) {
-//        this.name = name;
-//        this.address = address;
-//        this.picture = picture;
-//        this.placeId = placeId;
-//        this.rating = rating;
-//        //this.phoneNumber = phoneNumber;
-//        //this.website = website;
-//        this.openNow = openNow;
-//    }
 
     //---------CONSTRUCTOR FOR DETAILS-----------
     public Restaurant(String setDetailName, String setDetailsAddress, String setDetailsPicture,
@@ -59,8 +46,8 @@ public class Restaurant {
         this.workmatesUserList = workmatesUserList;
         this.restaurantName = restaurantName;
         this.placeId = placeId;
-        //todo resolve this question :
-        // add the name param for firestore search and organisation or just the id is ok ?
+        //todo resolve this question : is a restaurant for firestore util ?
+        // if yes, add the name param for firestore search and organisation or just the id is ok ?
     }
 
     //////// GETTERS ////////
