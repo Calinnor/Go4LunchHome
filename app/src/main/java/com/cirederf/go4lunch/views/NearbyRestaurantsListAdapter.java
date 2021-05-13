@@ -12,14 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.R;
+import com.cirederf.go4lunch.apiServices.firestoreUtils.UserHelper;
 import com.cirederf.go4lunch.models.Restaurant;
+import com.cirederf.go4lunch.models.User;
+import com.google.firebase.firestore.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRestaurantsListAdapter.RestaurantViewHolder> {
 
     List<Restaurant> nearbyRestaurants;
     private final OnItemRestaurantClickListerner onItemRestaurantClickListerner;
+    private List<User> userList = new ArrayList<>();
 
     public static class RestaurantViewHolder extends RecyclerView.ViewHolder {
         TextView textViewName;
@@ -28,6 +33,7 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
         TextView textViewDistance;
         TextView textViewRating;
         ImageView imageView;
+        TextView textWorkmatesNumber;
 
         public RestaurantViewHolder(@NonNull View itemRestaurantView) {
             super(itemRestaurantView);
@@ -35,8 +41,9 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
             textViewAddress = itemRestaurantView.findViewById(R.id.item_list_restaurant_address_txt);
             textViewOpeningHours = itemRestaurantView.findViewById(R.id.item_list_restaurant_hours_txt);
             textViewDistance = itemRestaurantView.findViewById(R.id.item_list_restaurant_distance_txt);
-            textViewRating = itemRestaurantView.findViewById(R.id.item_list_restaurant_number_rating_txt);
+            textViewRating = itemRestaurantView.findViewById(R.id.item_list_restaurant_number_workmates_txt);
             imageView = itemRestaurantView.findViewById(R.id.item_list_restaurant_illustration_image);
+            textWorkmatesNumber = itemRestaurantView.findViewById(R.id.item_list_restaurant_number_workmates_txt);
         }
     }
 
@@ -59,6 +66,9 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
         holder.textViewDistance.setText("seem 100m");
         holder.textViewAddress.setText(nearbySearchRestaurants.getAddress());
         holder.textViewRating.setText(String.valueOf(nearbySearchRestaurants.getRating()));
+       // holder.textWorkmatesNumber.setText(nearbySearchRestaurants.getWorkmatesNumber());
+        //holder.textWorkmatesNumber.setText((CharSequence) UserHelper.getUsersByRestaurant(nearbySearchRestaurants.getRestaurantName()));
+        holder.textWorkmatesNumber.setText(workmatesNumberByRestaurant(nearbySearchRestaurants.getRestaurantName()));
 
         if(nearbySearchRestaurants.getOpenNow()) {
             holder.textViewOpeningHours.setText(R.string.open);
@@ -85,6 +95,23 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
 
     public interface OnItemRestaurantClickListerner {
         void onItemClick(Restaurant restaurant);
+    }
+
+//    private String setWorkmatesNumber() {
+//
+//        (CharSequence) UserHelper.getUsersByRestaurant(nearbySearchRestaurants.getRestaurantName()));
+//    }
+
+    private List<User> getNumberWorkmatesFromFirebase(String chosenRestaurant) {
+        Query workmatesNumber = UserHelper.getUsersByRestaurant(chosenRestaurant);
+        userList = (List<User>) workmatesNumber;
+        return userList;
+    }
+
+    private int workmatesNumberByRestaurant(String chosenRestaurant) {
+        getNumberWorkmatesFromFirebase(chosenRestaurant);
+        int number = userList.size();
+        return number;
     }
 
 }

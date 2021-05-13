@@ -70,12 +70,6 @@ public class LoginActivity extends BaseActivity {
         this.startSignInActivity(providerId);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        this.getResponseAfterSignInClose(requestCode, resultCode, data);
-//    }
-
     //---------------FIREBASE REQUEST-----------
     private void startSignInActivity(AuthUI.IdpConfig providerId){
         startActivityForResult(
@@ -118,6 +112,7 @@ public class LoginActivity extends BaseActivity {
         if (requestCode == RC_SIGNIN) {
             if (resultCode == RESULT_OK) {
                 toastShowLoginResult(getApplicationContext(), getString(R.string.connection_succeed));
+                this.createUserInFirestore();
                 this.startMain();
             } else {
                 if (response == null) {

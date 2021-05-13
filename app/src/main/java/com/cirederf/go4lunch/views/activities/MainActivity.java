@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.apiServices.firestoreUtils.UserHelper;
-import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment;
 import com.cirederf.go4lunch.views.fragments.MapFragment;
 import com.cirederf.go4lunch.views.fragments.WorkmatesFragment;
@@ -32,8 +31,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -69,7 +66,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         this.configureNavigationDrawer();
         this.configureDrawerLayout();
         this.updateCurrentUserUi();
-        //this.createUserInFirestore();
         this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
     }
 
@@ -102,14 +98,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 .into(imageViewUserPictureToUpdate);
     }
 
-    //---------FIREBASE USER LOGOUT---------------
-    private void signOutCurrentUserFromFirebase(){
+    //---------FIREBASE AND FIRESTORE USER LOGOUT---------------
+    private void signOutCurrentUserFromFirebaseAndFirestore(){
         AuthUI.getInstance()
                 .signOut(this)
-                .addOnSuccessListener(this, this.updateUIAfterRESTRequestsCompleted());
+                .addOnSuccessListener(this, this.updateUIAndFirestoreAfterRESTRequestsCompleted());
     }
 
-    private OnSuccessListener<Void> updateUIAfterRESTRequestsCompleted(){
+    private OnSuccessListener<Void> updateUIAndFirestoreAfterRESTRequestsCompleted(){
+        UserHelper.deleteUser(Objects.requireNonNull(getCurrentUser()).getUid());
         return aVoid -> {
             if (MainActivity.SIGN_OUT_TASK == SIGN_OUT_TASK) {
                 finish();
@@ -140,7 +137,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void onClickLogoutButton() {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.popup_message_confirmation_logout_account)
-                .setPositiveButton(R.string.popup_message_choice_yes, (dialogInterface, i) -> signOutCurrentUserFromFirebase())
+                .setPositiveButton(R.string.popup_message_choice_yes, (dialogInterface, i) -> signOutCurrentUserFromFirebaseAndFirestore())
                 .setNegativeButton(R.string.popup_message_choice_no, null)
                 .show();
     }

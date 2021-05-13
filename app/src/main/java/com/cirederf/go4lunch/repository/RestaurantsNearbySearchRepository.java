@@ -1,9 +1,12 @@
 package com.cirederf.go4lunch.repository;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.cirederf.go4lunch.apiServices.firestoreUtils.UserHelper;
 import com.cirederf.go4lunch.models.Restaurant;
+import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.models.apiNearbyModels.Location;
 import com.cirederf.go4lunch.models.apiNearbyModels.PlacesSearchApi;
 import com.cirederf.go4lunch.models.apiNearbyModels.PlusCode;
@@ -11,6 +14,7 @@ import com.cirederf.go4lunch.models.apiNearbyModels.Result;
 import com.cirederf.go4lunch.api.PlacesApiRequests;
 import com.cirederf.go4lunch.api.RetrofitService;
 import com.cirederf.go4lunch.apiServices.placesInterfaces.NearbyPlaceInterface;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
 
     private final MutableLiveData<List<Restaurant>> _restaurants = new MutableLiveData<>();
     public LiveData<List<Restaurant>> restaurantsList = _restaurants;
+    private List<User> userList = new ArrayList<>();
 
     /**
      * Singleton for RestaurantsRepository
@@ -85,6 +90,8 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                                     //,setLocation(results, i)
                                     ,setOpenNow(results, i)
                                     ,setType(results, i)
+                                    //,workmatesNumberByRestaurant(results.get(i).getName())
+                                    //,UserHelper.getUsersByRestaurant(results.get(i).getName())
                             );
 
                             restaurants.add(nearbySearchRestaurant);
@@ -165,6 +172,18 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
          String name = results.get(i).getName();
 
     }
+
+//    private List<User> getNumberWorkmatesFromFirebase(String chosenRestaurant) {
+//        Query workmatesNumber = UserHelper.getUsersByRestaurant(chosenRestaurant);
+//        userList = (List<User>) workmatesNumber;
+//        return userList;
+//    }
+//
+//    private int workmatesNumberByRestaurant(String chosenRestaurant) {
+//        getNumberWorkmatesFromFirebase(chosenRestaurant);
+//        int number = userList.size();
+//        return number;
+//    }
 
 
 

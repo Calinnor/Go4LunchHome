@@ -54,12 +54,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
 
     protected Boolean isCurrentUserLogged(){ return (
-            //this.createUserInFirestore();
             this.getCurrentUser() != null); }
 
     //FIRESTORE USER VERIFICATION
     protected Boolean isFirestoreUser(){
-        FirebaseUser currentUser = this.getCurrentUser();//FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = this.getCurrentUser();
         for (User user : userList){
             if (user.getUid().equals(currentUser.getUid())) return true;
         }

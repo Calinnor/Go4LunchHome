@@ -12,11 +12,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.cirederf.go4lunch.R;
+import com.cirederf.go4lunch.apiServices.firestoreUtils.UserHelper;
 import com.cirederf.go4lunch.injections.RestaurantDetailsViewModelFactory;
 import com.cirederf.go4lunch.injections.Injection;
 import com.cirederf.go4lunch.models.Restaurant;
+import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.viewmodels.RestaurantDetailsViewModel;
+import com.google.firebase.firestore.Query;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -78,6 +84,7 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
         name.setText(restaurant.getRestaurantName());
         typeAndAddress.setText(restaurant.getType() + ", " + restaurant.getAddress());
         Glide.with(imageView.getContext()).load(restaurant.getPicture()).into(imageView);
+        //workmatesNumber.setText(workmatesNumberByRestaurant(restaurant.getRestaurantName()));
     }
 
     //------------UTILS METHODS-------------

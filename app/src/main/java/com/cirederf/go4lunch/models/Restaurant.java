@@ -1,5 +1,9 @@
 package com.cirederf.go4lunch.models;
 
+import androidx.annotation.Nullable;
+
+import com.google.firebase.firestore.Query;
+
 import java.util.List;
 
 public class Restaurant {
@@ -12,11 +16,12 @@ public class Restaurant {
     private String website;
     private Boolean openNow;
     private String type;
+    private Query workmatesNumber;
     private List<User> workmatesUserList;
 
     //////// CONSTRUCTORS ////////
     //-------CONSTRUCTOR FOR SEARCH PLACES--------
-    public Restaurant(String restaurantName, String address, double rating, String picture, String placeId, Boolean openNow, String type) {
+    public Restaurant(String restaurantName, String address, double rating, String picture, String placeId, Boolean openNow, String type/*, @Nullable Query workmatesNumber*/) {
         this.restaurantName = restaurantName;
         this.address = address;
         this.rating = rating;
@@ -24,6 +29,7 @@ public class Restaurant {
         this.placeId = placeId;
         this.openNow = openNow;
         this.type = type;
+        //this.workmatesNumber = workmatesNumber;
     }
 
     //---------CONSTRUCTOR FOR DETAILS-----------
@@ -86,6 +92,10 @@ public class Restaurant {
 
     public String getType() {
         return type;
+    }
+
+    public Query getWorkmatesNumber() {
+        return workmatesNumber;
     }
 
     //////// SETTERS ////////
