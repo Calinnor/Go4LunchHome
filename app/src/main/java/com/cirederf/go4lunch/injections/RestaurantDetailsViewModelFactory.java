@@ -12,7 +12,7 @@ public class RestaurantDetailsViewModelFactory implements ViewModelProvider.Fact
     //-----------REPOSITORY------------
     private final RestaurantDetailsRepository restaurantDetailsDataSource;
 
-    //------------CONSTRUCTOR------------
+    //------------CONSTRUCTOR use in factory------------
     public RestaurantDetailsViewModelFactory(RestaurantDetailsRepository restaurantDetailsDataSource) {
         this.restaurantDetailsDataSource = restaurantDetailsDataSource;
     }
@@ -20,7 +20,7 @@ public class RestaurantDetailsViewModelFactory implements ViewModelProvider.Fact
     /**
      * For create a ViewModel(repository) instance
      * @param modelClass ViewModel = RestaurantDetailsViewModel
-     * using ViewModel(restaurantDetailsRepository)
+     * using ViewModel(restaurantDetailsDataSource)
      */
     @NonNull
     @Override

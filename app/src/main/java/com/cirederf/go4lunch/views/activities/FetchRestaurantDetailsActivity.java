@@ -9,19 +9,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cirederf.go4lunch.R;
-import com.cirederf.go4lunch.apiServices.firestoreUtils.UserHelper;
 import com.cirederf.go4lunch.injections.RestaurantDetailsViewModelFactory;
 import com.cirederf.go4lunch.injections.Injection;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.viewmodels.RestaurantDetailsViewModel;
-import com.google.firebase.firestore.Query;
+import com.cirederf.go4lunch.views.WorkmatesListAdapter;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,7 +40,8 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     ImageView imageView;
 
     private String placeId;
-    private RestaurantDetailsViewModel restaurantDetailsViewModel;
+    //private RestaurantDetailsViewModel restaurantDetailsViewModel;
+    private RecyclerView workmatesRecyclerView;
 
     @Override
     public int getActivityLayout() {
@@ -50,18 +52,36 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         placeId = getIntent().getStringExtra(RESTAURANT_PLACE_ID_PARAM);
-        this.configureRestaurantDetailsViewModel();
+        //this.configureRestaurantDetailsViewModel();
+        this.getDetailsRestaurant();
+        this.configureWorkmatesListRecyclerView();
     }
 
-    //----------CONFIGURATION-----------
-    private void configureRestaurantDetailsViewModel() {
-        RestaurantDetailsViewModelFactory detailsRestaurantViewModelFactory = Injection.provideDetailsFactory();
-        this.restaurantDetailsViewModel = ViewModelProviders.of(this, detailsRestaurantViewModelFactory).get(RestaurantDetailsViewModel.class);
-        this.getDetailsRestaurant();
+//    //----------CONFIGURATION-----------put in baseactivity
+//    private void configureRestaurantDetailsViewModel() {
+//        RestaurantDetailsViewModelFactory detailsRestaurantViewModelFactory = Injection.provideRestaurantDetailsFactory();
+//        this.restaurantDetailsViewModel = ViewModelProviders.of(this, detailsRestaurantViewModelFactory).get(RestaurantDetailsViewModel.class);
+//        this.getDetailsRestaurant();
+//    }
+
+    private void configureWorkmatesListRecyclerView() {
+        workmatesRecyclerView = findViewById(R.id.workmates_recyclerView);
+        RecyclerView.LayoutManager workmatesListLayoutManager = new LinearLayoutManager(this);
+        workmatesRecyclerView.setLayoutManager(workmatesListLayoutManager);
     }
+
+//    private void configureWorkmatesListRecyclerViewAdapter(View view, List<User>workmates) {
+//        RecyclerView workmatesRecyclerView = view.findViewById(R.id.workmates_recyclerView);
+//        WorkmatesListAdapter workmatesListAdapter = new WorkmatesListAdapter(workmates);
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(workmatesRecyclerView.getContext(),
+//                LinearLayoutManager.VERTICAL);
+//        workmatesRecyclerView.addItemDecoration(dividerItemDecoration);
+//        workmatesRecyclerView.setAdapter(workmatesListAdapter);
+//    }
 
     //-------------FOR RESTAURANT DETAILS VALUES----------------
     private void getDetailsRestaurant() {
+        this.configureRestaurantDetailsViewModel();
         String apiKey = getString(R.string.places_api_google_key);
         this.restaurantDetailsViewModel.initRestaurantDetails(placeId, apiKey);
         this.restaurantDetailsViewModel.getRestaurantDetailsLiveData()
@@ -84,7 +104,6 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
         name.setText(restaurant.getRestaurantName());
         typeAndAddress.setText(restaurant.getType() + ", " + restaurant.getAddress());
         Glide.with(imageView.getContext()).load(restaurant.getPicture()).into(imageView);
-        //workmatesNumber.setText(workmatesNumberByRestaurant(restaurant.getRestaurantName()));
     }
 
     //------------UTILS METHODS-------------

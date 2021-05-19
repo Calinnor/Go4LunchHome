@@ -18,10 +18,9 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.cirederf.go4lunch.apiServices.firestoreUtils.UserHelper;
 import com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment;
 import com.cirederf.go4lunch.views.fragments.MapFragment;
-import com.cirederf.go4lunch.views.fragments.WorkmatesFragment;
+import com.cirederf.go4lunch.views.fragments.ListWorkmatesFragment;
 import com.cirederf.go4lunch.views.fragments.YourLunchFragment;
 import com.cirederf.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
@@ -49,9 +48,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int ITEM_MENU_LOGOUT = 0;
     private static final int FRAGMENT_SETTINGS = 1;
     private static final int FRAGMENT_YOUR_LUNCH = 2;
-    private static final int SIGN_OUT_TASK = 10;
-
-//    private List<User> userList = new ArrayList<>();
+    //private static final int SIGN_OUT_TASK = 10;
 
     @Override
     public int getActivityLayout() {
@@ -66,7 +63,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         this.configureNavigationDrawer();
         this.configureDrawerLayout();
         this.updateCurrentUserUi();
-        this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
+
+        //this line is the line asked at the starting view for the project asked in p7
+        //this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
+
+        //this one is for test with woklist
+        this.showSelectedFragment(R.id.main_content, ListWorkmatesFragment.newInstance());
     }
 
     /**
@@ -102,20 +104,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void signOutCurrentUserFromFirebaseAndFirestore(){
         AuthUI.getInstance()
                 .signOut(this)
-                .addOnSuccessListener(this, this.updateUIAndFirestoreAfterRESTRequestsCompleted());
+                .addOnSuccessListener(this,
+                        this.updateUIAndFirestoreAndFirebaseAfterRESTRequestsCompleted())
+                .addOnFailureListener(this.onFailureListener());
     }
 
-    private OnSuccessListener<Void> updateUIAndFirestoreAfterRESTRequestsCompleted(){
-        UserHelper.deleteUser(Objects.requireNonNull(getCurrentUser()).getUid());
+    private OnSuccessListener<Void> updateUIAndFirestoreAndFirebaseAfterRESTRequestsCompleted(){
+        this.configureUserViewModel();
+        if (this.getCurrentUser() != null) {
+        this.userViewModel.deleteFirestoreUser(getCurrentUser().getUid());
+        AuthUI.getInstance().delete(this);
+        }
         return aVoid -> {
-            if (MainActivity.SIGN_OUT_TASK == SIGN_OUT_TASK) {
-                finish();
-            }
+            finish();
         };
     }
 
     //---------UPDATE UI WITH FIREBASE DATA IN NAV HEADER-----------
     private void updateCurrentUserUi(){
+        //todo determine if the user data may be cast from firestore (may introduce some values like email) or if firebase is sufficient
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = headerView.findViewById(R.id.nav_header_username_txt);
@@ -153,7 +160,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     showSelectedFragment(R.id.list, ListRestaurantsFragment.newInstance());
                     return true;
                 case R.id.workmates:
-                    showSelectedFragment(R.id.workmates,WorkmatesFragment.newInstance());
+                    showSelectedFragment(R.id.workmates, ListWorkmatesFragment.newInstance());
                     return true;
             }
             return false;
@@ -241,23 +248,5 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             this.startTransactionFragment(fragment);
         }
     }
-
-//    //firestore
-//    public Boolean isFirestoreUser(){
-//        FirebaseUser currentUser = this.getCurrentUser();//FirebaseAuth.getInstance().getCurrentUser();
-//        for (User user : userList){
-//            if (user.getUid().equals(currentUser.getUid())) return true;
-//        }
-//        return false;
-//    }
-//
-//    private void createUserInFirestore(){
-//        if (!isFirestoreUser()){
-//            String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
-//            String username = this.getCurrentUser().getDisplayName();
-//            String uid = this.getCurrentUser().getUid();
-//            UserHelper.createUser(uid, username, urlPicture, null, null,null ,null).addOnFailureListener(this.onFailureListener());
-//        }
-//    }
 
 }

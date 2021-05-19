@@ -30,7 +30,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
 
     private final MutableLiveData<List<Restaurant>> _restaurants = new MutableLiveData<>();
     public LiveData<List<Restaurant>> restaurantsList = _restaurants;
-    private List<User> userList = new ArrayList<>();
+    //private List<User> userList = new ArrayList<>();
 
     /**
      * Singleton for RestaurantsRepository
@@ -172,19 +172,5 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
          String name = results.get(i).getName();
 
     }
-
-//    private List<User> getNumberWorkmatesFromFirebase(String chosenRestaurant) {
-//        Query workmatesNumber = UserHelper.getUsersByRestaurant(chosenRestaurant);
-//        userList = (List<User>) workmatesNumber;
-//        return userList;
-//    }
-//
-//    private int workmatesNumberByRestaurant(String chosenRestaurant) {
-//        getNumberWorkmatesFromFirebase(chosenRestaurant);
-//        int number = userList.size();
-//        return number;
-//    }
-
-
 
 }

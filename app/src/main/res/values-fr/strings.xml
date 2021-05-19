@@ -36,6 +36,8 @@
     <string name="open">Ouvert</string>
     <string name="closed">Fermé</string>
     <string name="workmates_is_joining">Un collègue y sera !</string>
+    <string name="workmates_is_eating">Un collègue y mange !</string>
+    <string name="workmates_is_doing_something">Un collegue fait !</string>
     <string name="call">Appeler</string>
     <string name="website">Web</string>
     <string name="like">Liker</string>

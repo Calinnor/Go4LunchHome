@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/workmates_picture"
         style="@style/item_list_restaurant_illustration_image"
         android:layout_margin="15dp"
         android:layout_width="55dp"
@@ -16,13 +16,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/workmates_name_restaurant_type_and_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:text="@string/workmates_is_joining"
+        android:text="@string/workmates_is_doing_something"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintBottom_toBottomOf="@+id/workmates_picture"
+        app:layout_constraintStart_toEndOf="@+id/workmates_picture"
+        app:layout_constraintTop_toTopOf="@+id/workmates_picture" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,15 +15,15 @@ public class NearbyRestaurantsViewModelFactory implements ViewModelProvider.Fact
     //-----------REPOSITORY------------
     private final RestaurantsNearbySearchRepository restaurantsDataSource;
 
-    //------------CONSTRUCTOR------------
+    //------------CONSTRUCTOR use in factory------------
     public NearbyRestaurantsViewModelFactory(RestaurantsNearbySearchRepository restaurantsDataSource) {
         this.restaurantsDataSource = restaurantsDataSource;
     }
 
     /**
      * For create a ViewModel(repository) instance
-     * @param modelClass ViewModel = RestaurantNearbySearchViewModel
-     * using ViewModel(restaurantDetailsRepository)
+     * @param modelClass ViewModel = NearbyRestaurantsViewModel
+     * using ViewModel(restaurantsDataSource)
      */
     @NonNull
     @Override

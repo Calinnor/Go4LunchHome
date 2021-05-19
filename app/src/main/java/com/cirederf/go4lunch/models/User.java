@@ -11,19 +11,22 @@ public class User {
     @Nullable
     private String urlPicture;
     private String chosenRestaurant;
-    private Boolean isTheChoiceRestaurant;
     private String restaurantType;
     private String rating;
 
-    public User() { }
+    //---------DETAILS FOR WORKMATES CHOSEN RESTAURANT----------
+    public User(String username, @Nullable String urlPicture, String chosenRestaurant) {
+        this.username = username;
+        this.urlPicture = urlPicture;
+        this.chosenRestaurant = chosenRestaurant;
+    }
 
     //------------FIREBASE CONSTRUCTOR-----------
-    public User(String uid, String username, @Nullable String urlPicture, String chosenRestaurant, Boolean isTheChoiceRestaurant, String restaurantType, String rating ) {
+    public User(String uid, String username, @Nullable String urlPicture, String chosenRestaurant, String restaurantType, String rating ) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
         this.chosenRestaurant = chosenRestaurant;
-        this.isTheChoiceRestaurant = isTheChoiceRestaurant;
         this.restaurantType = restaurantType;
         this.rating = rating;
     }
@@ -46,8 +49,12 @@ public class User {
         return chosenRestaurant;
     }
 
-    public Boolean getIsTheChoiceRestaurant() {
-        return isTheChoiceRestaurant;
+    public String getRestaurantType() {
+        return restaurantType;
+    }
+
+    public String getRating() {
+        return rating;
     }
 
     //------------SETTERS-----------
@@ -67,7 +74,11 @@ public class User {
         this.chosenRestaurant = chosenRestaurant;
     }
 
-    public void setIsTheChoiceRestaurant(Boolean isTheChoiceRestaurant) {
-        this.isTheChoiceRestaurant = isTheChoiceRestaurant;
+    public void setRestaurantType(String restaurantType) {
+        this.restaurantType = restaurantType;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 }

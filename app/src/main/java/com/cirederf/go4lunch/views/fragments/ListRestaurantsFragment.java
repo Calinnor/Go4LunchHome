@@ -37,7 +37,7 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_restaurants, container, false);
+        View view = inflater.inflate(R.layout.fragment_recyclerview_list_restaurants, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -56,6 +56,12 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
         nearbyRestaurantsViewModel = ViewModelProviders.of(this, nearbyRestaurantsViewModelFactory).get(NearbyRestaurantsViewModel.class);
         this.getRestaurantsList();
     }
+
+//    private void configureUserNumberDetailsViewModel() {
+//        UserViewModelFactory userViewModelFactory = Injection.provideUserDetailsFactory();
+//        userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
+//        this.getNumberOfUsers();
+//    }
 
     private void configureRecyclerViewAdapter(View view, List<Restaurant> restaurants) {
         RecyclerView recyclerView = view.findViewById(R.id.fragment_list_restaurants_recycler_view);
@@ -80,6 +86,12 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
                             configureRecyclerViewAdapter(requireView(), restaurants);
                         });
     }
+
+//    private void getNumberOfUsers() {
+//        String choose = "Empty for this time";
+//        this.userViewModel.initListOfFirestoreUserForARestaurant(choose);
+//        this.userViewModel.setFirestoreUserListForARestaurant();
+//    }
 
     //---------ACTION-----------
     @Override

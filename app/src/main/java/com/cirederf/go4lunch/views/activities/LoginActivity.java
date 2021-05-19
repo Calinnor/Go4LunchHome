@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.cirederf.go4lunch.R;
+import com.cirederf.go4lunch.viewmodels.UserViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -25,6 +26,8 @@ public class LoginActivity extends BaseActivity {
     private static final int TWITTER_PROVIDER_CHOICE = 400;
     private static final int GOOGLE_PROVIDER_CHOICE = 300;
     private static final int FACEBOOK_PROVIDER_CHOICE = 200;
+
+    //private UserViewModel userViewModel;
 
     @BindView(R.id.button_login_with_twitter)
     Button buttonTwitter;
@@ -130,5 +133,19 @@ public class LoginActivity extends BaseActivity {
     private void toastShowLoginResult(Context context, String response){
         Toast toast = Toast.makeText(context, response, Toast.LENGTH_LONG );
         toast.show();
+    }
+
+    private void createUserInFirestore(){
+        this.configureUserViewModel();
+        if (!isFirestoreUser()){
+            String urlPicture = (Objects.requireNonNull(this.getCurrentUser()).getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+            String username = this.getCurrentUser().getDisplayName();
+            String uid = this.getCurrentUser().getUid();
+
+            //UserHelper.createUser(uid, username, urlPicture, null, null,null)
+            this.userViewModel.initUserData(uid, username, urlPicture, null, null,null);
+            this.userViewModel.setFirestoreUserDetails()
+                    .addOnFailureListener(this.onFailureListener());
+        }
     }
 }

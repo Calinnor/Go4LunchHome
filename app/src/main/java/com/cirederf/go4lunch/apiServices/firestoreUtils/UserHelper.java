@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class UserHelper {
+    //todo determine if it's an api class, a firestoreutil class, a repository class (if it's then should we create viewmodel ?)
 
     private static final String COLLECTION_NAME = "users";
 
@@ -24,26 +25,27 @@ public class UserHelper {
      * @param username: name/pseudo for the user
      * @param urlPicture: nullable, picture for the user
      * @param chosenRestaurant: the name of the chosen restaurant to use in the call to create a user list for the restaurant
-     * @param isTheChoiceRestaurant: boolean for the active restaurant show
      * @param restaurantType: the type of the restaurant for ordering search
      * @return document(uid).set(userToCreate)
      */
 
     public static Task<Void> createUser(String uid, String username, @Nullable String urlPicture
-            , @Nullable String chosenRestaurant, @Nullable Boolean isTheChoiceRestaurant, @Nullable String restaurantType
+            , @Nullable String chosenRestaurant, @Nullable String restaurantType
             , @Nullable String rating ) {
-        User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, isTheChoiceRestaurant, restaurantType, rating);
+        User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, restaurantType, rating);
         return UserHelper.getUsersCollection().document(uid).set(userToCreate);
     }
 
     //-----------USERS GETTING------------
-
     // ----- GET A USER -----
     public static Task<DocumentSnapshot> getUser(String uid){
         return UserHelper.getUsersCollection().document(uid).get();
     }
 
     //----- GET THE LIST OF ALL USERS ORDER BY CHOSEN RESTAURANT NAME-----
+    public static Query getListOfFirestoreUsers() {
+        return UserHelper.getUsersCollection();
+    }
     //first implementation : public static Task<List<User>> getUserList() {
     public static Query getUserListOrderByChosenRestaurantName(String chosenRestaurant) {
         return UserHelper.getUsersCollection().orderBy(chosenRestaurant);
