@@ -12,9 +12,6 @@ public class Injection {
     private static RestaurantsNearbySearchRepository provideNearbyRestaurantsRepository() {
         return new RestaurantsNearbySearchRepository();
     }
-//public static RestaurantsNearbySearchRepository provideNearbyRestaurantsRepository() {
-//    return new RestaurantsNearbySearchRepository();
-//} avec un public ca fonctionne pour les 3 methodes
 
     private static RestaurantDetailsRepository provideRestaurantDetailsRepository() {
         return new RestaurantDetailsRepository();

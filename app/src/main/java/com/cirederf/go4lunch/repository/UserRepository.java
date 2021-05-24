@@ -1,31 +1,24 @@
 package com.cirederf.go4lunch.repository;
 
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.api.UserFirebaseRequest;
-import com.cirederf.go4lunch.apiServices.firestoreUtils.UserHelper;
 import com.cirederf.go4lunch.models.User;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.DocumentSnapshot;
 
-import static android.provider.Settings.Global.getString;
-import static com.facebook.FacebookSdk.getApplicationContext;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRepository {
 
-    /**
-     * Singleton for userrepo
-     * @return usezrrepo
-     */
     private static UserRepository userRepository;
+    private final MutableLiveData<User> _userLiveData = new MutableLiveData<>();
+    private final LiveData<User> userLiveData = _userLiveData;
+
 
     public static UserRepository getInstance() {
         if (userRepository == null) {
@@ -36,27 +29,49 @@ public class UserRepository {
 
     private final CollectionReference userDataRequest = UserFirebaseRequest.getUsersCollection();
 
-    /**
-     * Create the retrofit request
-     */
     public UserRepository() {
     }
 
     public Task<Void> createFirestoreUser(String uid, String username, @Nullable String urlPicture
-            , @Nullable String chosenRestaurant, @Nullable String restaurantType
+            , String chosenRestaurant, @Nullable String restaurantType
             , @Nullable String rating ) {
         User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, restaurantType, rating);
         return userDataRequest.document(uid).set(userToCreate);
     }
 
-    //----- GET THE LIST OF USERS in asyncTask-----
-    public Query getListOfFirestoreUsers() {
-        //return UserHelper.getUsersCollection();
-        return userDataRequest;
+    //----------Get DETAILS FOR A FIRESTORE USER------------
+    public LiveData<User> getUsersDetailsLiveData(String uid) {
+        userDataRequest.document(uid).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    User currentUser = documentSnapshot.toObject(User.class);
+                    _userLiveData.setValue(currentUser);
+                });
+        return userLiveData;
+    }
+
+    //get a list of users
+    public LiveData<List<User>> getUsers() {
+        MutableLiveData<List<User>> usersList = new MutableLiveData<>();
+        userDataRequest.get().addOnSuccessListener(documentSnapshots -> {
+            List<User> users = new ArrayList<>();
+            for (DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
+                if (documentSnapshot != null) {
+                    User user = documentSnapshot.toObject(User.class);
+                    users.add(user);
+                }
+            }
+            usersList.setValue(users);
+        });
+        return usersList;
+    }
+
+    public Task<Void> updateChosenRestaurant(String uid, String chosenRestaurant) {
+        return userDataRequest.document(uid).update("chosenRestaurant", chosenRestaurant);
     }
 
     // ----- DELETE A USER FROM FIRESTORE-----
     public Task<Void> deleteFirestoreUser(String uid) {
         return userDataRequest.document(uid).delete();
     }
+
 }

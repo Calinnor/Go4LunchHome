@@ -27,7 +27,6 @@ public class Restaurant {
         this.placeId = placeId;
         this.openNow = openNow;
         this.type = type;
-        this.workmatesNumber = workmatesNumber;
     }
 
     //---------CONSTRUCTOR FOR DETAILS-----------
@@ -51,8 +50,6 @@ public class Restaurant {
         this.workmatesUserList = workmatesUserList;
         this.restaurantName = restaurantName;
         this.placeId = placeId;
-        //todo resolve this question : is a restaurant for firestore util ?
-        // if yes, add the name param for firestore search and organisation or just the id is ok ?
     }
 
     //////// GETTERS ////////
@@ -91,10 +88,6 @@ public class Restaurant {
     public String getType() {
         return type;
     }
-
-//    public Query getWorkmatesNumber() {
-//        return workmatesNumber;
-//    }
 
     //////// SETTERS ////////
     public void setRestaurantName(String restaurantName) {

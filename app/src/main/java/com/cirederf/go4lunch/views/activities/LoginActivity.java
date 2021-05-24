@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.cirederf.go4lunch.R;
-import com.cirederf.go4lunch.viewmodels.UserViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -27,7 +26,6 @@ public class LoginActivity extends BaseActivity {
     private static final int GOOGLE_PROVIDER_CHOICE = 300;
     private static final int FACEBOOK_PROVIDER_CHOICE = 200;
 
-    //private UserViewModel userViewModel;
 
     @BindView(R.id.button_login_with_twitter)
     Button buttonTwitter;
@@ -94,15 +92,12 @@ public class LoginActivity extends BaseActivity {
         AuthUI.IdpConfig providerId = null;
 
         if(providerIdChoice == GOOGLE_PROVIDER_CHOICE){
-            //providerId = new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build();
             providerId = new AuthUI.IdpConfig.GoogleBuilder().build();
         }
         if(providerIdChoice == FACEBOOK_PROVIDER_CHOICE){
-            //providerId = new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build();
             providerId = new AuthUI.IdpConfig.FacebookBuilder().build();
         }
         if(providerIdChoice == TWITTER_PROVIDER_CHOICE){
-            //providerId = new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build();
             providerId = new AuthUI.IdpConfig.TwitterBuilder().build();
         }
         return providerId;
@@ -142,8 +137,7 @@ public class LoginActivity extends BaseActivity {
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
 
-            //UserHelper.createUser(uid, username, urlPicture, null, null,null)
-            this.userViewModel.initUserData(uid, username, urlPicture, null, null,null);
+            this.userViewModel.initUserDataToCreate(uid, username, urlPicture, "No restaurant as chosen restaurant", null,null);
             this.userViewModel.setFirestoreUserDetails()
                     .addOnFailureListener(this.onFailureListener());
         }

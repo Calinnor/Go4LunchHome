@@ -48,7 +48,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int ITEM_MENU_LOGOUT = 0;
     private static final int FRAGMENT_SETTINGS = 1;
     private static final int FRAGMENT_YOUR_LUNCH = 2;
-    //private static final int SIGN_OUT_TASK = 10;
 
     @Override
     public int getActivityLayout() {
@@ -64,11 +63,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         this.configureDrawerLayout();
         this.updateCurrentUserUi();
 
+        //TODO modify code line for needing !
         //this line is the line asked at the starting view for the project asked in p7
         //this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
 
         //this one is for test with woklist
-        this.showSelectedFragment(R.id.main_content, ListWorkmatesFragment.newInstance());
+        //this.showSelectedFragment(R.id.main_content, ListWorkmatesFragment.newInstance());
+
+        //this one for restolist
+        this.showSelectedFragment(R.id.main_content, ListRestaurantsFragment.newInstance());
     }
 
     /**
@@ -105,11 +108,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnSuccessListener(this,
-                        this.updateUIAndFirestoreAndFirebaseAfterRESTRequestsCompleted())
+                        this.updateUIAfterFirestoreAndFirebaseRESTRequestsCompleted())
                 .addOnFailureListener(this.onFailureListener());
     }
 
-    private OnSuccessListener<Void> updateUIAndFirestoreAndFirebaseAfterRESTRequestsCompleted(){
+    private OnSuccessListener<Void> updateUIAfterFirestoreAndFirebaseRESTRequestsCompleted(){
         this.configureUserViewModel();
         if (this.getCurrentUser() != null) {
         this.userViewModel.deleteFirestoreUser(getCurrentUser().getUid());

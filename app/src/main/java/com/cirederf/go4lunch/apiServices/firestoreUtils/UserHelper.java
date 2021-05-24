@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import com.cirederf.go4lunch.models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -43,8 +44,8 @@ public class UserHelper {
     }
 
     //----- GET THE LIST OF ALL USERS ORDER BY CHOSEN RESTAURANT NAME-----
-    public static Query getListOfFirestoreUsers() {
-        return UserHelper.getUsersCollection();
+    public static DocumentReference getListOfFirestoreUsers() {
+        return UserHelper.getUsersCollection().document();
     }
     //first implementation : public static Task<List<User>> getUserList() {
     public static Query getUserListOrderByChosenRestaurantName(String chosenRestaurant) {

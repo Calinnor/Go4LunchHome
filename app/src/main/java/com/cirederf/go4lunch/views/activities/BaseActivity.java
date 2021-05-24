@@ -38,6 +38,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(this.getActivityLayout());
         ButterKnife.bind(this);
+        this.configureRestaurantDetailsViewModel();
+        this.configureUserViewModel();
     }
 
     public abstract int getActivityLayout();
@@ -65,7 +67,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void configureRestaurantDetailsViewModel() {
         RestaurantDetailsViewModelFactory detailsRestaurantViewModelFactory = Injection.provideRestaurantDetailsFactory();
         this.restaurantDetailsViewModel = ViewModelProviders.of(this, detailsRestaurantViewModelFactory).get(RestaurantDetailsViewModel.class);
-        //this.getDetailsRestaurant();
     }
 
     //-----FIREBASE USER VERIFICATION-----
@@ -83,25 +84,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         return false;
     }
-
-//    private void configureUserViewModel() {
-//        UserViewModelFactory userViewModelFactory = Injection.provideUserDetailsFactory();
-//        this.userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-//    }
-
-//    protected void createUserInFirestore(){
-//        this.configureUserViewModel();
-//        if (!isFirestoreUser()){
-//            String urlPicture = (Objects.requireNonNull(this.getCurrentUser()).getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
-//            String username = this.getCurrentUser().getDisplayName();
-//            String uid = this.getCurrentUser().getUid();
-//
-//            //UserHelper.createUser(uid, username, urlPicture, null, null,null)
-//            this.userViewModel.initUserData(uid, username, urlPicture, null, null,null);
-//            this.userViewModel.setFirestoreUserDetails()
-//                    .addOnFailureListener(this.onFailureListener());
-//        }
-//    }
 
     // -----ERROR HANDLER-----
     protected OnFailureListener onFailureListener(){

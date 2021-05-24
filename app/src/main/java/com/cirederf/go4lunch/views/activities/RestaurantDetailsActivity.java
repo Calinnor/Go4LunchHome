@@ -8,29 +8,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cirederf.go4lunch.R;
-import com.cirederf.go4lunch.injections.RestaurantDetailsViewModelFactory;
-import com.cirederf.go4lunch.injections.Injection;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.User;
-import com.cirederf.go4lunch.viewmodels.RestaurantDetailsViewModel;
-import com.cirederf.go4lunch.views.WorkmatesListAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment.RESTAURANT_PLACE_ID_PARAM;
 
-public class FetchRestaurantDetailsActivity extends BaseActivity {
+public class RestaurantDetailsActivity extends BaseActivity {
 
     @BindView(R.id.restaurant_details_type_and_address)
     TextView typeAndAddress;
@@ -38,9 +32,10 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     TextView name;
     @BindView(R.id.restaurant_detail_picture)
     ImageView imageView;
+    @BindView(R.id.restaurant_is_chosen_button)
+    FloatingActionButton mChosenRestaurantButton;
 
     private String placeId;
-    //private RestaurantDetailsViewModel restaurantDetailsViewModel;
     private RecyclerView workmatesRecyclerView;
 
     @Override
@@ -52,17 +47,9 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         placeId = getIntent().getStringExtra(RESTAURANT_PLACE_ID_PARAM);
-        //this.configureRestaurantDetailsViewModel();
         this.getDetailsRestaurant();
         this.configureWorkmatesListRecyclerView();
     }
-
-//    //----------CONFIGURATION-----------put in baseactivity
-//    private void configureRestaurantDetailsViewModel() {
-//        RestaurantDetailsViewModelFactory detailsRestaurantViewModelFactory = Injection.provideRestaurantDetailsFactory();
-//        this.restaurantDetailsViewModel = ViewModelProviders.of(this, detailsRestaurantViewModelFactory).get(RestaurantDetailsViewModel.class);
-//        this.getDetailsRestaurant();
-//    }
 
     private void configureWorkmatesListRecyclerView() {
         workmatesRecyclerView = findViewById(R.id.workmates_recyclerView);
@@ -70,22 +57,12 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
         workmatesRecyclerView.setLayoutManager(workmatesListLayoutManager);
     }
 
-//    private void configureWorkmatesListRecyclerViewAdapter(View view, List<User>workmates) {
-//        RecyclerView workmatesRecyclerView = view.findViewById(R.id.workmates_recyclerView);
-//        WorkmatesListAdapter workmatesListAdapter = new WorkmatesListAdapter(workmates);
-//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(workmatesRecyclerView.getContext(),
-//                LinearLayoutManager.VERTICAL);
-//        workmatesRecyclerView.addItemDecoration(dividerItemDecoration);
-//        workmatesRecyclerView.setAdapter(workmatesListAdapter);
-//    }
-
     //-------------FOR RESTAURANT DETAILS VALUES----------------
     private void getDetailsRestaurant() {
-        this.configureRestaurantDetailsViewModel();
         String apiKey = getString(R.string.places_api_google_key);
         this.restaurantDetailsViewModel.initRestaurantDetails(placeId, apiKey);
         this.restaurantDetailsViewModel.getRestaurantDetailsLiveData()
-                .observe(this, this::refreshRestaurantDetails);
+                .observe(this, restaurant -> RestaurantDetailsActivity.this.refreshRestaurantDetails(restaurant));
     }
 //    explication de la methodologie de observe
 
@@ -110,7 +87,7 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
     //-----PHONE-----
     private String getRestaurantPhoneNumber() {
         Restaurant restaurant = this.restaurantDetailsViewModel.getRestaurantDetailsLiveData().getValue();
-        if (restaurant == null) return "no restaurant to display" /*null*/;
+        if (restaurant == null) return "no restaurant to display";
         return restaurant.getPhoneNumber();
     }
 
@@ -137,6 +114,37 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
         return restaurant.getWebsite();
     }
 
+    //-------------FIRESTORE DATA-------------------
+    private void getUserDetail() {
+        this.userViewModel.initUserLivedataDetails(getCurrentUser().getUid());
+        this.userViewModel.getUserLivedataDetails()
+                .observe(this, new Observer<User>() {
+                    @Override
+                    public void onChanged(User user) {
+                        RestaurantDetailsActivity.this.refreshUserDetails();
+                    }
+                });
+    }
+
+    private void refreshUserDetails() {
+            if (this.isChosen()) {
+                mChosenRestaurantButton.setImageResource(0);
+            } else {
+                mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
+            }
+    }
+
+    private Boolean isChosen() {
+        String chosenRestaurant = userViewModel.getUserLivedataDetails().getValue().getChosenRestaurant();
+        if (chosenRestaurant.equals(placeId)) {
+            userViewModel.updateRestoChosen(getCurrentUser().getUid(), "No restaurant as chosen restaurant");
+            return true;
+        }else {
+            userViewModel.updateRestoChosen(getCurrentUser().getUid(), placeId);
+            return false;
+        }
+    }
+
     //-----------UI UTIL--------------
     private void toastShowActionNullResult(Context context, String response){
         Toast toast = Toast.makeText(context, response, Toast.LENGTH_LONG );
@@ -145,7 +153,7 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
 
     //----------ACTIONS---------
 
-    @OnClick({R.id.button_phone_call, R.id.button_web_site_launcher})
+    @OnClick({R.id.button_phone_call, R.id.button_web_site_launcher, R.id.restaurant_is_chosen_button})
     public void onRestaurantDetailsACTIONClick(View view){
         switch (view.getId()) {
 
@@ -157,8 +165,13 @@ public class FetchRestaurantDetailsActivity extends BaseActivity {
                 launchWebView();
                 break;
 
+            case R.id.restaurant_is_chosen_button:
+                getUserDetail();
+                break;
+
             default:
                 break;
         }
     }
+
 }

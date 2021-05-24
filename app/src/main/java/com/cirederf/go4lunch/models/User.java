@@ -4,13 +4,12 @@ import androidx.annotation.Nullable;
 
 public class User {
 
-    // todo determine if just the restaurant with it's placeId is necessary (chosenRestaurant)
-    //  or if we need a boolean (isChosenRestaurant) to compare data
     private String uid;
     private String username;
     @Nullable
     private String urlPicture;
     private String chosenRestaurant;
+    @Nullable
     private String restaurantType;
     private String rating;
 
@@ -22,13 +21,19 @@ public class User {
     }
 
     //------------FIREBASE CONSTRUCTOR-----------
-    public User(String uid, String username, @Nullable String urlPicture, String chosenRestaurant, String restaurantType, String rating ) {
+    public User(String uid, String username, @Nullable String urlPicture, String chosenRestaurant,@Nullable String restaurantType, String rating ) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
         this.chosenRestaurant = chosenRestaurant;
         this.restaurantType = restaurantType;
         this.rating = rating;
+    }
+
+    public User() {}
+
+    public <T> User(T toObject) {
+
     }
 
     //---------GETTERS----------

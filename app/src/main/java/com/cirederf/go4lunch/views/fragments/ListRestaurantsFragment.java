@@ -19,7 +19,7 @@ import com.cirederf.go4lunch.injections.NearbyRestaurantsViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
 import com.cirederf.go4lunch.views.NearbyRestaurantsListAdapter;
-import com.cirederf.go4lunch.views.activities.FetchRestaurantDetailsActivity;
+import com.cirederf.go4lunch.views.activities.RestaurantDetailsActivity;
 
 import java.util.List;
 
@@ -57,12 +57,6 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
         this.getRestaurantsList();
     }
 
-//    private void configureUserNumberDetailsViewModel() {
-//        UserViewModelFactory userViewModelFactory = Injection.provideUserDetailsFactory();
-//        userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-//        this.getNumberOfUsers();
-//    }
-
     private void configureRecyclerViewAdapter(View view, List<Restaurant> restaurants) {
         RecyclerView recyclerView = view.findViewById(R.id.fragment_list_restaurants_recycler_view);
         NearbyRestaurantsListAdapter nearbyRestaurantsListAdapter = new NearbyRestaurantsListAdapter(restaurants, this);
@@ -87,12 +81,6 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
                         });
     }
 
-//    private void getNumberOfUsers() {
-//        String choose = "Empty for this time";
-//        this.userViewModel.initListOfFirestoreUserForARestaurant(choose);
-//        this.userViewModel.setFirestoreUserListForARestaurant();
-//    }
-
     //---------ACTION-----------
     @Override
     public void onItemClick(Restaurant restaurant) {
@@ -100,7 +88,7 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
     }
 
     private void startDetailRestaurantActivity(Restaurant restaurant){
-        Intent intent = new Intent(getContext(), FetchRestaurantDetailsActivity.class);
+        Intent intent = new Intent(getContext(), RestaurantDetailsActivity.class);
         intent.putExtra(RESTAURANT_PLACE_ID_PARAM, restaurant.getPlaceId());
         this.startActivity(intent);
     }
