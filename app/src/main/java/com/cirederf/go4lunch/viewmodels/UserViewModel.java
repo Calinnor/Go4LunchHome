@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel;
 import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.repository.UserRepository;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class UserViewModel extends ViewModel {
     private Task<Void> userToCreate;
     private LiveData<User> userDetails;
     private LiveData<List<User>> usersList;
+    private Query userList;
 
     //----------REPOSITORY----------
     private UserRepository userDataSource;
@@ -40,23 +43,29 @@ public class UserViewModel extends ViewModel {
     }
 
     //-------------READ IN FIRESTORE------------
-    public void initLivedataUserDetails(String uid) {
+    public void getUserLivedataDetails(String uid) {
         userDataSource = UserRepository.getInstance();
         userDetails = userDataSource.getLiveDataUserDetails(uid);
+    }
+
+    public Query getUsersCollection() {
+        userDataSource = UserRepository.getInstance();
+        userList = userDataSource.getUsersCollection();
+        return userList;
     }
 
     public LiveData<User> setUserLivedataDetails() {
         return this.userDetails;
     }
 
-    public void initLivedataUsersList() {
-        userDataSource = UserRepository.getInstance();
-        usersList = userDataSource.getLivedataUsersList();
-    }
-
-    public LiveData<List<User>> setLivedataUsersList() {
-        return this.usersList;
-    }
+//    public void initLivedataUsersList() {
+//        userDataSource = UserRepository.getInstance();
+//        usersList = userDataSource.getLivedataUsersList();
+//    }
+//
+//    public LiveData<List<User>> setLivedataUsersList() {
+//        return this.usersList;
+//    }
 
     //------------------UPDATE IN FIRESTORE--------------
     public void updateChosenRestaurant(String uid, String chosenRestaurant) {

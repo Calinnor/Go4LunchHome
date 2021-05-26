@@ -5,12 +5,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.cirederf.go4lunch.api.UserFirebaseRequest;
-import com.cirederf.go4lunch.apiServices.placesInterfaces.UsersInterface;
+import com.cirederf.go4lunch.apiServices.UsersInterface;
 import com.cirederf.go4lunch.models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class UserRepository implements UsersInterface {
             , String chosenRestaurant, @Nullable String restaurantType
             , @Nullable String rating ) {
         User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, restaurantType, rating);
-        return currentUserDocumentReference(uid).set(userToCreate);
+        return this.currentUserDocumentReference(uid).set(userToCreate);
     }
 
     @Override
@@ -56,8 +57,8 @@ public class UserRepository implements UsersInterface {
     }
 
     @Override
-    public Task<QuerySnapshot> getUsersCollection() {
-        return usersDataRequest.get();
+    public Query getUsersCollection() {
+        return usersDataRequest;
     }
 
     @Override
@@ -83,19 +84,19 @@ public class UserRepository implements UsersInterface {
     }
 
     //------------------get a livedata list of firestore users-------------
-    public LiveData<List<User>> getLivedataUsersList() {
-        this.getUsersCollection().addOnSuccessListener(documentSnapshots -> {
-            List<User> users = new ArrayList<>();
-            for (DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
-                if (documentSnapshot != null) {
-                    User user = documentSnapshot.toObject(User.class);
-                    users.add(user);
-                }
-            }
-            _usersList.setValue(users);
-        });
-        return usersList;
-    }
+//    public LiveData<List<User>> getLivedataUsersList() {
+//        this.getUsersCollection().addOnSuccessListener(documentSnapshots -> {
+//            List<User> users = new ArrayList<>();
+//            for (DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
+//                if (documentSnapshot != null) {
+//                    User user = documentSnapshot.toObject(User.class);
+//                    users.add(user);
+//                }
+//            }
+//            _usersList.setValue(users);
+//        });
+//        return usersList;
+//    }
 
 
 

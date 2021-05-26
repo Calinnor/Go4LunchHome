@@ -16,27 +16,41 @@ import com.cirederf.go4lunch.models.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-import java.util.List;
-
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WorkmatesListAdapter extends FirestoreRecyclerAdapter<User, WorkmatesListAdapter.WorkmatesViewHolder> {
 
-    User user;
-
-    /**
-     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
-     * FirestoreRecyclerOptions} for configuration options.
-     *
-     * @param options
-     */
-    public WorkmatesListAdapter(@NonNull FirestoreRecyclerOptions<User> options) {
-        super(options);
-    }
-
     public static class WorkmatesViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.workmates_name_restaurant_type_and_name)
         TextView nameAndTypeAndRestaurantName;
+        @BindView(R.id.workmates_picture)
         ImageView workmatesPicture;
+
+        public void updateWorkmatesListUi(User workmates) {
+
+            if (workmates.getUrlPicture() != null) {
+            Glide.with(workmatesPicture.getContext())
+                    .applyDefaultRequestOptions(new RequestOptions().error(R.drawable.default_restaurant_picture))
+                    .load(workmates.getUrlPicture())
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(workmatesPicture);
+            }
+
+         String username = workmates.getUsername();
+         String chosenRestaurant = workmates.getChosenRestaurant();
+         String restaurantType = workmates.getRestaurantType();
+         if(chosenRestaurant.equals("No restaurant as chosen restaurant")) {
+             chosenRestaurant = "le restaurant";
+         }
+         if(restaurantType == null) {
+             restaurantType = "type";
+         }
+
+         nameAndTypeAndRestaurantName.setText(username +" is eating "+restaurantType+ " at ("+chosenRestaurant+")");
+
+        }
 
         public WorkmatesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -44,29 +58,38 @@ public class WorkmatesListAdapter extends FirestoreRecyclerAdapter<User, Workmat
         }
     }
 
+    public interface Listener {
+        void onDataChanged();
+    }
+
+    //FOR COMMUNICATION
+    private Listener callback;
+    /**
+     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
+     * FirestoreRecyclerOptions} for configuration options.
+     *
+     * @param options
+     */
+    public WorkmatesListAdapter(@NonNull FirestoreRecyclerOptions<User> options, Listener callback) {
+        super(options);
+        this.callback = callback;
+    }
 
     @Override
-    protected void onBindViewHolder(@NonNull WorkmatesViewHolder holder, int position, @NonNull User model) {
-
-        if (user.getUrlPicture() != null) {
-            Glide.with(holder.workmatesPicture.getContext())
-                    .applyDefaultRequestOptions(new RequestOptions()
-                            .error(R.drawable.default_restaurant_picture))
-                    .load(user.getUrlPicture())
-                    .apply(RequestOptions.centerCropTransform())
-                    .into(holder.workmatesPicture);
-        }
-
-         String username = user.getUsername();
-         String chosenRestaurant = user.getChosenRestaurant();
-         String restaurantType = user.getRestaurantType();
-         holder.nameAndTypeAndRestaurantName.setText(username +" is eating "+restaurantType+ "at "+chosenRestaurant);
+    protected void onBindViewHolder(@NonNull WorkmatesListAdapter.WorkmatesViewHolder holder, int position, @NonNull User model) {
+        holder.updateWorkmatesListUi(model);
     }
 
     @NonNull
     @Override
     public WorkmatesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recyclerview_list_workmates_view, parent, false);
-        return new WorkmatesViewHolder(view);
+        return new WorkmatesViewHolder(LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.item_recyclerview_list_workmates_view, parent, false));
+    }
+
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+        this.callback.onDataChanged();
     }
 }

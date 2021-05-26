@@ -30,7 +30,6 @@ public class ListWorkmatesFragment extends Fragment {
     private UserViewModel userViewModel;
     private String uid;
 
-
     public static ListWorkmatesFragment newInstance() {
         return (new ListWorkmatesFragment());
     }
@@ -38,7 +37,7 @@ public class ListWorkmatesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recyclerview_list_workmates, container, false);
+        View view = inflater.inflate(R.layout.item_recyclerview_list_workmates_view, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -54,13 +53,6 @@ public class ListWorkmatesFragment extends Fragment {
     private void configureUserViewModel() {
         UserViewModelFactory userViewModelFactory = Injection.provideUserDetailsFactory();
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-    }
-
-    private FirestoreRecyclerOptions<User> generateOptionsForAdapter(Query setFirestoreUserList) {
-        return new FirestoreRecyclerOptions.Builder<User>()
-                .setQuery(setFirestoreUserList, User.class)
-                .setLifecycleOwner(this)
-                .build();
     }
 
 }

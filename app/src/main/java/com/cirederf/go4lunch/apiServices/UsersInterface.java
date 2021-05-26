@@ -1,9 +1,10 @@
-package com.cirederf.go4lunch.apiServices.placesInterfaces;
+package com.cirederf.go4lunch.apiServices;
 
 import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public interface UsersInterface {
@@ -14,7 +15,7 @@ public interface UsersInterface {
             , @Nullable String rating );
 
     //---------------READ------------
-    Task<QuerySnapshot> getUsersCollection();
+    Query getUsersCollection();
     DocumentReference currentUserDocumentReference(String uid);
     Task<DocumentSnapshot> getUser(String uid);
 
