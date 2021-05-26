@@ -5,20 +5,24 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.cirederf.go4lunch.api.UserFirebaseRequest;
+import com.cirederf.go4lunch.apiServices.placesInterfaces.UsersInterface;
 import com.cirederf.go4lunch.models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepository {
+public class UserRepository implements UsersInterface {
 
     private static UserRepository userRepository;
     private final MutableLiveData<User> _userLiveData = new MutableLiveData<>();
     private final LiveData<User> userLiveData = _userLiveData;
-
+    private final MutableLiveData<List<User>> _usersList = new MutableLiveData<>();
+    private final LiveData<List<User>> usersList = _usersList;
 
     public static UserRepository getInstance() {
         if (userRepository == null) {
@@ -27,32 +31,60 @@ public class UserRepository {
         return userRepository;
     }
 
-    private final CollectionReference userDataRequest = UserFirebaseRequest.getUsersCollection();
+    private final CollectionReference usersDataRequest = UserFirebaseRequest.getUsersCollection();
 
     public UserRepository() {
     }
 
+    //----------OVERRIDES CRUD------------
+    @Override
     public Task<Void> createFirestoreUser(String uid, String username, @Nullable String urlPicture
             , String chosenRestaurant, @Nullable String restaurantType
             , @Nullable String rating ) {
         User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, restaurantType, rating);
-        return userDataRequest.document(uid).set(userToCreate);
+        return currentUserDocumentReference(uid).set(userToCreate);
     }
 
-    //----------Get DETAILS FOR A FIRESTORE USER------------
-    public LiveData<User> getUsersDetailsLiveData(String uid) {
-        userDataRequest.document(uid).get()
+    @Override
+    public Task<DocumentSnapshot> getUser(String uid) {
+        return usersDataRequest.document(uid).get();
+    }
+
+    @Override
+    public DocumentReference currentUserDocumentReference(String uid) {
+        return usersDataRequest.document(uid);
+    }
+
+    @Override
+    public Task<QuerySnapshot> getUsersCollection() {
+        return usersDataRequest.get();
+    }
+
+    @Override
+    public Task<Void> updateChosenRestaurant(String uid, String chosenRestaurant) {
+        return currentUserDocumentReference(uid).update("chosenRestaurant", chosenRestaurant);
+    }
+
+    @Override
+    public Task<Void> deleteFirestoreUser(String uid) {
+        return currentUserDocumentReference(uid).delete();
+    }
+
+    //----------Get LIVEDATA DETAILS FOR A FIRESTORE USER------------
+    public LiveData<User> getLiveDataUserDetails(String uid) {
+        this.getUser(uid)
                 .addOnSuccessListener(documentSnapshot -> {
+                    if(documentSnapshot != null) {
                     User currentUser = documentSnapshot.toObject(User.class);
                     _userLiveData.setValue(currentUser);
+                    }
                 });
         return userLiveData;
     }
 
-    //get a list of users
-    public LiveData<List<User>> getUsers() {
-        MutableLiveData<List<User>> usersList = new MutableLiveData<>();
-        userDataRequest.get().addOnSuccessListener(documentSnapshots -> {
+    //------------------get a livedata list of firestore users-------------
+    public LiveData<List<User>> getLivedataUsersList() {
+        this.getUsersCollection().addOnSuccessListener(documentSnapshots -> {
             List<User> users = new ArrayList<>();
             for (DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
                 if (documentSnapshot != null) {
@@ -60,18 +92,11 @@ public class UserRepository {
                     users.add(user);
                 }
             }
-            usersList.setValue(users);
+            _usersList.setValue(users);
         });
         return usersList;
     }
 
-    public Task<Void> updateChosenRestaurant(String uid, String chosenRestaurant) {
-        return userDataRequest.document(uid).update("chosenRestaurant", chosenRestaurant);
-    }
 
-    // ----- DELETE A USER FROM FIRESTORE-----
-    public Task<Void> deleteFirestoreUser(String uid) {
-        return userDataRequest.document(uid).delete();
-    }
 
 }

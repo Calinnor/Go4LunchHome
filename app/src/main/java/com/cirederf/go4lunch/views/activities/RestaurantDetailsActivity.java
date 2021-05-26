@@ -3,6 +3,7 @@ package com.cirederf.go4lunch.views.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,11 +37,19 @@ public class RestaurantDetailsActivity extends BaseActivity {
     FloatingActionButton mChosenRestaurantButton;
 
     private String placeId;
+    private String isthechooz = null;
     private RecyclerView workmatesRecyclerView;
 
     @Override
     public int getActivityLayout() {
         return R.layout.activity_details_restaurant;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //this.getUserChosenRestaurant();
+        //this.showChosenRestaurant();
     }
 
     @Override
@@ -56,6 +65,8 @@ public class RestaurantDetailsActivity extends BaseActivity {
         RecyclerView.LayoutManager workmatesListLayoutManager = new LinearLayoutManager(this);
         workmatesRecyclerView.setLayoutManager(workmatesListLayoutManager);
     }
+
+
 
     //-------------FOR RESTAURANT DETAILS VALUES----------------
     private void getDetailsRestaurant() {
@@ -116,8 +127,8 @@ public class RestaurantDetailsActivity extends BaseActivity {
 
     //-------------FIRESTORE DATA-------------------
     private void getUserDetail() {
-        this.userViewModel.initUserLivedataDetails(getCurrentUser().getUid());
-        this.userViewModel.getUserLivedataDetails()
+        this.userViewModel.initLivedataUserDetails(getCurrentUser().getUid());
+        this.userViewModel.setUserLivedataDetails()
                 .observe(this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
@@ -126,22 +137,41 @@ public class RestaurantDetailsActivity extends BaseActivity {
                 });
     }
 
-    private void refreshUserDetails() {
-            if (this.isChosen()) {
-                mChosenRestaurantButton.setImageResource(0);
-            } else {
-                mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
-            }
+    private void getUserChosenRestaurant() {
+        this.userViewModel.initLivedataUserDetails(getCurrentUser().getUid());
+        this.userViewModel.setUserLivedataDetails()
+                .observe(this, new Observer<User>() {
+                    @Override
+                    public void onChanged(User user) {
+                        String chosenRestaurant = userViewModel.setUserLivedataDetails().getValue().getChosenRestaurant();
+                        if (chosenRestaurant.equals(placeId)) {
+                            mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
+                        }else {
+                            mChosenRestaurantButton.setImageResource(0);
+                        }
+                    }
+                });
     }
 
-    private Boolean isChosen() {
-        String chosenRestaurant = userViewModel.getUserLivedataDetails().getValue().getChosenRestaurant();
-        if (chosenRestaurant.equals(placeId)) {
-            userViewModel.updateRestoChosen(getCurrentUser().getUid(), "No restaurant as chosen restaurant");
-            return true;
+    private void showChosenRestaurant() {
+        //String chosenRestaurant = userViewModel.setUserLivedataDetails().getValue().getChosenRestaurant();
+        isthechooz = getCurrentUser().getDisplayName();
+        if (isthechooz.equals(placeId)) {
+            mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
         }else {
-            userViewModel.updateRestoChosen(getCurrentUser().getUid(), placeId);
-            return false;
+            mChosenRestaurantButton.setImageResource(0);
+        }
+    }
+
+    private void refreshUserDetails() {
+        String chosenRestaurant = userViewModel.setUserLivedataDetails().getValue().getChosenRestaurant();
+        isthechooz = chosenRestaurant;
+        if (chosenRestaurant.equals(placeId)) {
+            userViewModel.updateChosenRestaurant(getCurrentUser().getUid(), "No restaurant as chosen restaurant");
+            mChosenRestaurantButton.setImageResource(0);
+        }else {
+            userViewModel.updateChosenRestaurant(getCurrentUser().getUid(), placeId);
+            mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
         }
     }
 

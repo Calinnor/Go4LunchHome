@@ -8,13 +8,14 @@ import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.repository.UserRepository;
 import com.google.android.gms.tasks.Task;
 
+import java.util.List;
+
 public class UserViewModel extends ViewModel {
 
     //----------FOR DATA-------------
     private Task<Void> userToCreate;
-    private Task<Void> userToDelete;
-    private Task<Void> restoNameToUpdate;
     private LiveData<User> userDetails;
+    private LiveData<List<User>> usersList;
 
     //----------REPOSITORY----------
     private UserRepository userDataSource;
@@ -24,6 +25,7 @@ public class UserViewModel extends ViewModel {
         this.userDataSource = userDataSource;
     }
 
+    //------------CREATE FIRESTORE USER-----------------
     public void initUserDataToCreate(String uid, String username, @Nullable String urlPicture
             , @Nullable String chosenRestaurant, @Nullable String restaurantType
             , @Nullable String rating) {
@@ -37,32 +39,35 @@ public class UserViewModel extends ViewModel {
         return this.userToCreate;
     }
 
-    public void updateRestoChosen(String uid, String chosenRestaurant) {
+    //-------------READ IN FIRESTORE------------
+    public void initLivedataUserDetails(String uid) {
         userDataSource = UserRepository.getInstance();
-        restoNameToUpdate = userDataSource.updateChosenRestaurant(uid, chosenRestaurant);
+        userDetails = userDataSource.getLiveDataUserDetails(uid);
     }
 
-    //this make chose reto dont update
-//    public void userDetails(String uid) {
-//        if(userDetails != null) {
-//            return;
-//        }
-//        userDataSource = UserRepository.getInstance();
-//        userDetails = userDataSource.getUsersDetailsLiveData(uid);
-//    }
-
-    public void initUserLivedataDetails(String uid) {
-        userDataSource = UserRepository.getInstance();
-        userDetails = userDataSource.getUsersDetailsLiveData(uid);
-    }
-
-    public LiveData<User> getUserLivedataDetails() {
+    public LiveData<User> setUserLivedataDetails() {
         return this.userDetails;
     }
 
+    public void initLivedataUsersList() {
+        userDataSource = UserRepository.getInstance();
+        usersList = userDataSource.getLivedataUsersList();
+    }
+
+    public LiveData<List<User>> setLivedataUsersList() {
+        return this.usersList;
+    }
+
+    //------------------UPDATE IN FIRESTORE--------------
+    public void updateChosenRestaurant(String uid, String chosenRestaurant) {
+        userDataSource = UserRepository.getInstance();
+        userDataSource.updateChosenRestaurant(uid, chosenRestaurant);
+    }
+
+    //-------------------DELETE IN FIRESTORE--------------
     public void deleteFirestoreUser(String uid) {
         userDataSource = UserRepository.getInstance();
-        userToDelete = userDataSource.deleteFirestoreUser(uid);
+        userDataSource.deleteFirestoreUser(uid);
     }
 
 }
