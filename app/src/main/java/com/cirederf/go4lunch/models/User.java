@@ -8,10 +8,13 @@ public class User {
     private String username;
     @Nullable
     private String urlPicture;
+    @Nullable
     private String chosenRestaurant;
     @Nullable
     private String restaurantType;
     private String rating;
+    @Nullable
+    private String restaurantName;
 
     //---------DETAILS FOR WORKMATES CHOSEN RESTAURANT----------
     public User(String username, @Nullable String urlPicture, String chosenRestaurant) {
@@ -21,13 +24,14 @@ public class User {
     }
 
     //------------FIREBASE CONSTRUCTOR-----------
-    public User(String uid, String username, @Nullable String urlPicture, String chosenRestaurant,@Nullable String restaurantType, String rating ) {
+    public User(String uid, String username, @Nullable String urlPicture, @Nullable String chosenRestaurant,@Nullable String restaurantType, String rating, @Nullable String restaurantName ) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
         this.chosenRestaurant = chosenRestaurant;
         this.restaurantType = restaurantType;
         this.rating = rating;
+        this.restaurantName = restaurantName;
     }
 
     public User() {}
@@ -62,6 +66,11 @@ public class User {
         return rating;
     }
 
+    @Nullable
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
     //------------SETTERS-----------
     public void setUid(String uid) {
         this.uid = uid;
@@ -85,5 +94,9 @@ public class User {
 
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    public void setRestaurantName(@Nullable String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 }

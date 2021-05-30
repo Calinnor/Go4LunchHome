@@ -137,7 +137,7 @@ public class LoginActivity extends BaseActivity {
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
 
-            this.userViewModel.initUserDataToCreate(uid, username, urlPicture, "No restaurant as chosen restaurant", null,null);
+            this.userViewModel.initUserDataToCreate(uid, username, urlPicture, "No restaurant" , null,null, null);
             this.userViewModel.setFirestoreUserDetails()
                     .addOnFailureListener(this.onFailureListener());
         }

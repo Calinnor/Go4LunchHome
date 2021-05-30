@@ -16,29 +16,31 @@ import com.cirederf.go4lunch.models.Restaurant;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRestaurantsListAdapter.RestaurantViewHolder> {
 
     List<Restaurant> nearbyRestaurants;
     private final OnItemRestaurantClickListerner onItemRestaurantClickListerner;
 
     public static class RestaurantViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.item_list_restaurant_name_txt)
         TextView textViewName;
+        @BindView(R.id.item_list_restaurant_address_txt)
         TextView textViewAddress;
+        @BindView(R.id.item_list_restaurant_hours_txt)
         TextView textViewOpeningHours;
+        @BindView(R.id.item_list_restaurant_distance_txt)
         TextView textViewDistance;
+        @BindView(R.id.item_list_restaurant_illustration_image)
         ImageView imageView;
+        @BindView(R.id.item_list_restaurant_number_workmates_txt)
         TextView textViewRating;
-        TextView textWorkmatesNumber;
 
         public RestaurantViewHolder(@NonNull View itemRestaurantView) {
             super(itemRestaurantView);
-            textViewName = itemRestaurantView.findViewById(R.id.item_list_restaurant_name_txt);
-            textViewAddress = itemRestaurantView.findViewById(R.id.item_list_restaurant_address_txt);
-            textViewOpeningHours = itemRestaurantView.findViewById(R.id.item_list_restaurant_hours_txt);
-            textViewDistance = itemRestaurantView.findViewById(R.id.item_list_restaurant_distance_txt);
-            imageView = itemRestaurantView.findViewById(R.id.item_list_restaurant_illustration_image);
-            //textWorkmatesNumber = itemRestaurantView.findViewById(R.id.item_list_restaurant_number_workmates_txt);
-            textViewRating = itemRestaurantView.findViewById(R.id.item_list_restaurant_number_workmates_txt);
+            ButterKnife.bind(this, itemView);
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,11 +22,17 @@ import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
 import com.cirederf.go4lunch.views.NearbyRestaurantsListAdapter;
 import com.cirederf.go4lunch.views.activities.RestaurantDetailsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ListRestaurantsFragment extends Fragment implements NearbyRestaurantsListAdapter.OnItemRestaurantClickListerner {
+
+
+    @BindView(R.id.fragment_list_restaurants_recycler_view)
+    RecyclerView recyclerView;
 
     private NearbyRestaurantsViewModel nearbyRestaurantsViewModel;
     public static final String RESTAURANT_PLACE_ID_PARAM = "placeId";
@@ -58,10 +65,7 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
     }
 
     private void configureRecyclerViewAdapter(View view, List<Restaurant> restaurants) {
-        RecyclerView recyclerView = view.findViewById(R.id.fragment_list_restaurants_recycler_view);
         NearbyRestaurantsListAdapter nearbyRestaurantsListAdapter = new NearbyRestaurantsListAdapter(restaurants, this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), LinearLayoutManager.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(nearbyRestaurantsListAdapter);
         RecyclerView.LayoutManager restaurantRecyclerView = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(restaurantRecyclerView);
@@ -76,8 +80,11 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
         this.nearbyRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
         this.nearbyRestaurantsViewModel.getListRestaurantsLiveData()
                 .observe(getViewLifecycleOwner(),
-                        (List<Restaurant> restaurants) -> {
-                            configureRecyclerViewAdapter(requireView(), restaurants);
+                        new Observer<List<Restaurant>>() {
+                            @Override
+                            public void onChanged(List<Restaurant> restaurants) {
+                                ListRestaurantsFragment.this.configureRecyclerViewAdapter(ListRestaurantsFragment.this.requireView(), restaurants);
+                            }
                         });
     }
 

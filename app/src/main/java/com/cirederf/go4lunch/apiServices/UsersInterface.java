@@ -12,7 +12,7 @@ public interface UsersInterface {
     //-------------CREATE------------
     Task<Void> createFirestoreUser(String uid, String username, @Nullable String urlPicture
             , String chosenRestaurant, @Nullable String restaurantType
-            , @Nullable String rating );
+            , @Nullable String rating, @Nullable String restaurantName );
 
     //---------------READ------------
     Query getUsersCollection();
@@ -21,6 +21,8 @@ public interface UsersInterface {
 
     //-------------UPDATE----------------
     Task<Void> updateChosenRestaurant(String uid, String chosenRestaurant);
+    Task<Void> updateTypeRestaurant(String uid, String typenRestaurant);
+    Task<Void> updateNameRestaurant(String uid, String nameRestaurant);
 
     //-------------DELETE------------------
     Task<Void> deleteFirestoreUser(String uid);
