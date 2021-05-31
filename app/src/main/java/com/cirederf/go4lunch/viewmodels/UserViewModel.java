@@ -2,6 +2,7 @@ package com.cirederf.go4lunch.viewmodels;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cirederf.go4lunch.models.User;
@@ -29,10 +30,10 @@ public class UserViewModel extends ViewModel {
     //------------CREATE FIRESTORE USER-----------------
     public void initUserDataToCreate(String uid, String username, @Nullable String urlPicture
             , String chosenRestaurant, @Nullable String restaurantType
-            , @Nullable String rating, @Nullable String restaurantName) {
+            , @Nullable String rating, @Nullable String restaurantName, @Nullable String recyclerDisplay) {
         if(this.userToCreate == null) {
             userDataSource = UserRepository.getInstance();
-            userToCreate = userDataSource.createFirestoreUser(uid, username, urlPicture, chosenRestaurant, restaurantType, rating, restaurantName);
+            userToCreate = userDataSource.createFirestoreUser(uid, username, urlPicture, chosenRestaurant, restaurantType, rating, restaurantName, recyclerDisplay);
         }
     }
 
@@ -70,15 +71,20 @@ public class UserViewModel extends ViewModel {
         userDataSource.updateTypeRestaurant(uid, restaurantType);
     }
 
-    public void updateRestaurantName(String uid, String restaurantName) {
+    public void updateNameRestaurant (String uid, String restaurantName) {
         userDataSource = UserRepository.getInstance();
-        userDataSource.updateTypeRestaurant(uid, restaurantName);
+        userDataSource.updateNameRestaurant(uid, restaurantName);
     }
 
     //-------------------DELETE IN FIRESTORE--------------
     public void deleteFirestoreUser(String uid) {
         userDataSource = UserRepository.getInstance();
         userDataSource.deleteFirestoreUser(uid);
+    }
+
+    public MutableLiveData<List<User>> getUsersListMutableLiveData() {
+        userDataSource = UserRepository.getInstance();
+        return userDataSource.getUserMutableLiveDataData();
     }
 
 }

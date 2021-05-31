@@ -15,6 +15,8 @@ public class User {
     private String rating;
     @Nullable
     private String restaurantName;
+    @Nullable
+    String recyclerDisplay;
 
     //---------DETAILS FOR WORKMATES CHOSEN RESTAURANT----------
     public User(String username, @Nullable String urlPicture, String chosenRestaurant) {
@@ -24,7 +26,8 @@ public class User {
     }
 
     //------------FIREBASE CONSTRUCTOR-----------
-    public User(String uid, String username, @Nullable String urlPicture, @Nullable String chosenRestaurant,@Nullable String restaurantType, String rating, @Nullable String restaurantName ) {
+    public User(String uid, String username, @Nullable String urlPicture, @Nullable String chosenRestaurant,@Nullable String restaurantType, String rating, @Nullable String restaurantName, @Nullable
+            String recyclerDisplay) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
@@ -32,6 +35,7 @@ public class User {
         this.restaurantType = restaurantType;
         this.rating = rating;
         this.restaurantName = restaurantName;
+        this.recyclerDisplay = recyclerDisplay;
     }
 
     public User() {}

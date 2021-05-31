@@ -32,8 +32,8 @@ public class UserHelper {
 
     public static Task<Void> createUser(String uid, String username, @Nullable String urlPicture
             , @Nullable String chosenRestaurant, @Nullable String restaurantType
-            , @Nullable String rating, @Nullable String restaurantName ) {
-        User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, restaurantType, rating, restaurantName);
+            , @Nullable String rating, @Nullable String restaurantName, @Nullable String recyclerDisplay ) {
+        User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, restaurantType, rating, restaurantName, recyclerDisplay);
         return UserHelper.getUsersCollection().document(uid).set(userToCreate);
     }
 
@@ -96,6 +96,9 @@ public class UserHelper {
 
     public static Task<Void> updateRating(String uid, String rating) {
         return UserHelper.getUsersCollection().document(uid).update("rating", rating);
+    }
+    public static Task<Void> updateRecyclerDisplay(String uid, String recyclerDisplay) {
+        return UserHelper.getUsersCollection().document(uid).update("recyclerDisplay", recyclerDisplay);
     }
 
     // ----- DELETE -----

@@ -68,10 +68,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
 
         //this one is for test with woklist
-        //this.showSelectedFragment(R.id.main_content, ListWorkmatesFragment.newInstance());
+        this.showSelectedFragment(R.id.main_content, ListWorkmatesFragment.newInstance());
 
         //this one for restolist
-        this.showSelectedFragment(R.id.main_content, ListRestaurantsFragment.newInstance());
+        //this.showSelectedFragment(R.id.main_content, ListRestaurantsFragment.newInstance());
     }
 
     /**

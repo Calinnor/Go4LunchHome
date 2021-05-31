@@ -141,12 +141,12 @@ public class RestaurantDetailsActivity extends BaseActivity {
                             if (chosenRestaurant.equals(placeId)) {
                                 userViewModel.updateChosenRestaurant(getCurrentUser().getUid(), "No restaurant");
                                 userViewModel.updateRestaurantType(getCurrentUser().getUid(), null);
-                                userViewModel.updateRestaurantName(getCurrentUser().getUid(), null);
+                                userViewModel.updateNameRestaurant(getCurrentUser().getUid(), null);
                                 mChosenRestaurantButton.setImageResource(0);
                             } else {
                                 userViewModel.updateChosenRestaurant(getCurrentUser().getUid(), placeId);
                                 userViewModel.updateRestaurantType(getCurrentUser().getUid(), type);
-                                userViewModel.updateRestaurantName(getCurrentUser().getUid(), restaurantName);
+                                userViewModel.updateNameRestaurant(getCurrentUser().getUid(), restaurantName);
                                 mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
                             }
                         }
