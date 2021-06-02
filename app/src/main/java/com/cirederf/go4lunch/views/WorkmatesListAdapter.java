@@ -51,13 +51,19 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
 
     @Override
     public void onBindViewHolder(@NonNull WorkmatesViewHolder holder, int position) {
-        User workmate = workmatesList.get(position);//get only first position...!?!?
-        if (!workmate.getChosenRestaurant().equals("No restaurant")) {
+        User workmate = workmatesList.get(position);
+
+        //todo have to find how set the good message, with a constant ?
+        //this display the message even if we are in wks list
+        if (workmate.getIschosenRestaurant() != null && workmate.getIschosenRestaurant() == true) {
+            holder.nameAndTypeAndRestaurantName.setText(workmate.getUsername()+ "is joining.");
+        }
+        else if (workmate.getChosenRestaurant() != null && !workmate.getChosenRestaurant().equals("No restaurant")) {
             holder.nameAndTypeAndRestaurantName
                     .setText(workmate.getUsername() + " is eating " + workmate.getRestaurantType() + " at (" + workmate.getRestaurantName() + ")");
         } else {
+            //this may be the message in wks list
             holder.nameAndTypeAndRestaurantName.setText(workmate.getUsername()+" hasn't chosen yet.");
-            UserHelper.updateRecyclerDisplay(workmate.getUid(), workmate.getUsername() + " is eating " + workmate.getRestaurantType() + " at (" + workmate.getRestaurantName());
         }
 
             Glide.with(holder.workmatesPicture.getContext())
@@ -73,6 +79,9 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
     @Override
     public int getItemCount() {
         return workmatesList.size();
+        //beware, if item.xml for list is
+        //android:layout_height="wrap_content"
+        //for the main contenair, the adapter will display ONLY ONE (the firs) item...!!!!!!!
     }
 
 

@@ -30,7 +30,6 @@ import butterknife.ButterKnife;
 
 public class ListRestaurantsFragment extends Fragment implements NearbyRestaurantsListAdapter.OnItemRestaurantClickListerner {
 
-
     @BindView(R.id.fragment_list_restaurants_recycler_view)
     RecyclerView recyclerView;
 

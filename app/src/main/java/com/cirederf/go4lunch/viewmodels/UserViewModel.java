@@ -17,6 +17,7 @@ public class UserViewModel extends ViewModel {
     //----------FOR DATA-------------
     private Task<Void> userToCreate;
     private LiveData<List<User>> userList;
+    private LiveData<List<User>> userListRst;
     private Task<DocumentSnapshot> userDetail;
 
     //----------REPOSITORY----------
@@ -30,10 +31,14 @@ public class UserViewModel extends ViewModel {
     //------------CREATE FIRESTORE USER-----------------
     public void initUserDataToCreate(String uid, String username, @Nullable String urlPicture
             , String chosenRestaurant, @Nullable String restaurantType
-            , @Nullable String rating, @Nullable String restaurantName, @Nullable String recyclerDisplay) {
+            , @Nullable String rating, @Nullable String restaurantName
+            , @Nullable String recyclerDisplay, @Nullable Boolean isChosenRestaurant) {
         if(this.userToCreate == null) {
             userDataSource = UserRepository.getInstance();
-            userToCreate = userDataSource.createFirestoreUser(uid, username, urlPicture, chosenRestaurant, restaurantType, rating, restaurantName, recyclerDisplay);
+            userToCreate = userDataSource.createFirestoreUser(uid, username, urlPicture
+                    , chosenRestaurant, restaurantType, rating
+                    , restaurantName, recyclerDisplay
+            , isChosenRestaurant);
         }
     }
 
@@ -54,6 +59,18 @@ public class UserViewModel extends ViewModel {
         }
         userDataSource = UserRepository.getInstance();
         userList = userDataSource.getUsersList();
+    }
+
+    public void initLivedataUserListWithChosenRestaurant(String chosenRestaurant) {
+        if (userList != null) {
+            return;
+        }
+        userDataSource = UserRepository.getInstance();
+        userListRst = userDataSource.getUsersListByChosenRestaurant(chosenRestaurant);
+    }
+
+    public LiveData<List<User>> getLivedataUsersListWks() {
+        return this.userListRst;
     }
 
     public LiveData<List<User>> getLivedataUsersList() {
@@ -82,9 +99,9 @@ public class UserViewModel extends ViewModel {
         userDataSource.deleteFirestoreUser(uid);
     }
 
-    public MutableLiveData<List<User>> getUsersListMutableLiveData() {
-        userDataSource = UserRepository.getInstance();
-        return userDataSource.getUserMutableLiveDataData();
-    }
 
+    public void updateisChosenRestaurant(String uid, boolean b) {
+        userDataSource = UserRepository.getInstance();
+        userDataSource.updateisChosenRestaurant(uid, b);
+    }
 }

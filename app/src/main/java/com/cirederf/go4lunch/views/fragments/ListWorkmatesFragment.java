@@ -63,14 +63,12 @@ public class ListWorkmatesFragment extends Fragment {
     }
 
     private void getUsersList() {
-        //this.userViewModel.getUsersListMutableLiveData()
         this.userViewModel.initLivedataUsersList();
         this.userViewModel.getLivedataUsersList()
                 .observe(getViewLifecycleOwner(), new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
                 ListWorkmatesFragment.this.configureRecyclerAdapterForWks(ListWorkmatesFragment.this.requireView(), users);
-                //at this point there is good number of users
             }
         });
     }
@@ -80,7 +78,6 @@ public class ListWorkmatesFragment extends Fragment {
         workmatesRecyclerView.setAdapter(workmatesListAdapter);
         RecyclerView.LayoutManager workmatesView = new LinearLayoutManager(requireView.getContext());
         workmatesRecyclerView.setLayoutManager(workmatesView);
-
     }
 
 }

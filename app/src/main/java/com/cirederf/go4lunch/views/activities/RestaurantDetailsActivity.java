@@ -10,15 +10,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.User;
+import com.cirederf.go4lunch.views.WorkmatesListAdapter;
+import com.cirederf.go4lunch.views.fragments.ListWorkmatesFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,6 +43,8 @@ public class RestaurantDetailsActivity extends BaseActivity {
     FloatingActionButton mChosenRestaurantButton;
     @BindView(R.id.text_view_recyclerview_empty)
     TextView textViewRecyclerViewEmpty;
+    @BindView(R.id.workmates_recyclerView)
+    RecyclerView workmatesRecyclerView;
 
     private String placeId;
     private String type;
@@ -56,6 +64,7 @@ public class RestaurantDetailsActivity extends BaseActivity {
         placeId = getIntent().getStringExtra(RESTAURANT_PLACE_ID_PARAM);
         this.initChosenButton(applyChosenRestaurantOptionAtStart);
         this.getDetailsRestaurant();
+        this.getworklist();
     }
 
     //-------------FOR RESTAURANT DETAILS VALUES----------------
@@ -134,8 +143,10 @@ public class RestaurantDetailsActivity extends BaseActivity {
                         if (applyChosenRestaurantOption == applyChosenRestaurantOptionAtStart) {
                             if (chosenRestaurant.equals(placeId)) {
                                 mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
+                                userViewModel.updateisChosenRestaurant(getCurrentUser().getUid(), true);
                             } else {
                                 mChosenRestaurantButton.setImageResource(0);
+                                userViewModel.updateisChosenRestaurant(getCurrentUser().getUid(), false);
                             }
                         } else {
                             if (chosenRestaurant.equals(placeId)) {
@@ -170,40 +181,32 @@ public class RestaurantDetailsActivity extends BaseActivity {
             case R.id.button_phone_call:
                 startPhoneCall();
                 break;
-
             case R.id.button_web_site_launcher:
                 launchWebView();
                 break;
-
             case R.id.restaurant_is_chosen_button:
-                //this.updateUserChosenRestaurant();
                 this.initChosenButton(applyChosenRestaurantOptionAtClickSelection);
                 break;
-
             default:
                 break;
         }
     }
 
-//    private void updateUserChosenRestaurant() {
-//        userViewModel.returnUserDetailDocument(this.getCurrentUser().getUid())
-//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                        User currentUser = documentSnapshot.toObject(User.class);
-//                        String chosenRestaurant = currentUser.getChosenRestaurant();
-//
-//                        if (chosenRestaurant.equals(placeId)) {
-//                            userViewModel.updateChosenRestaurant(getCurrentUser().getUid(), "No restaurant as chosen restaurant");
-//                            mChosenRestaurantButton.setImageResource(0);
-//                        } else {
-//                            userViewModel.updateChosenRestaurant(getCurrentUser().getUid(), placeId);
-//                            mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
-//                        }
-//                    }
-//                });
-//    }
+    private void getworklist() {
+        this.userViewModel.initLivedataUserListWithChosenRestaurant(placeId);
+        this.userViewModel.getLivedataUsersListWks().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                RestaurantDetailsActivity.this.configureRecyclerAdapterForWks(users);
+            }
+        });
+    }
 
-
+    private void configureRecyclerAdapterForWks(List<User> users) {
+        WorkmatesListAdapter workmatesListAdapter = new WorkmatesListAdapter(users);
+        workmatesRecyclerView.setAdapter(workmatesListAdapter);
+        RecyclerView.LayoutManager workmatesView = new LinearLayoutManager(this);
+        workmatesRecyclerView.setLayoutManager(workmatesView);
+    }
 
 }

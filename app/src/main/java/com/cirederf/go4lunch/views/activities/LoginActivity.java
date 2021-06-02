@@ -26,7 +26,6 @@ public class LoginActivity extends BaseActivity {
     private static final int GOOGLE_PROVIDER_CHOICE = 300;
     private static final int FACEBOOK_PROVIDER_CHOICE = 200;
 
-
     @BindView(R.id.button_login_with_twitter)
     Button buttonTwitter;
     @BindView(R.id.button_login_with_facebook)
@@ -137,7 +136,8 @@ public class LoginActivity extends BaseActivity {
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
 
-            this.userViewModel.initUserDataToCreate(uid, username, urlPicture, "No restaurant" , null,null, null, null);
+            this.userViewModel.initUserDataToCreate(uid, username, urlPicture, "No restaurant"
+                    , null,null, null, null, null);
             this.userViewModel.setFirestoreUserDetails()
                     .addOnFailureListener(this.onFailureListener());
         }

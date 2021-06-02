@@ -13,20 +13,20 @@ public interface UsersInterface {
     //-------------CREATE------------
     Task<Void> createFirestoreUser(String uid, String username, @Nullable String urlPicture
             , String chosenRestaurant, @Nullable String restaurantType
-            , @Nullable String rating, @Nullable String restaurantName, @Nullable String recyclerDisplay );
+            , @Nullable String rating, @Nullable String restaurantName,
+                                   @Nullable String recyclerDisplay, @Nullable Boolean isChosenRestaurant );
 
     //---------------READ------------
     CollectionReference getCollectionUser();
-    Query getListUsers();
     DocumentReference currentUserDocumentReference(String uid);
     Task<DocumentSnapshot> getUser(String uid);
+    Query getUsersByChosenRestaurant(String chosenRestaurant);
 
     //-------------UPDATE----------------
     Task<Void> updateChosenRestaurant(String uid, String chosenRestaurant);
     Task<Void> updateTypeRestaurant(String uid, String typenRestaurant);
     Task<Void> updateNameRestaurant(String uid, String nameRestaurant);
-    //for testing
-    Task<Void> updateDisplayInfoInRecycler(String uid, String recyclerDisplay);
+    Task<Void> updateisChosenRestaurant(String uid, boolean b);
 
     //-------------DELETE------------------
     Task<Void> deleteFirestoreUser(String uid);

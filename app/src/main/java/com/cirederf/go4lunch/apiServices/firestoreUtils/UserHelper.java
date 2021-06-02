@@ -32,8 +32,8 @@ public class UserHelper {
 
     public static Task<Void> createUser(String uid, String username, @Nullable String urlPicture
             , @Nullable String chosenRestaurant, @Nullable String restaurantType
-            , @Nullable String rating, @Nullable String restaurantName, @Nullable String recyclerDisplay ) {
-        User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, restaurantType, rating, restaurantName, recyclerDisplay);
+            , @Nullable String rating, @Nullable String restaurantName, @Nullable String recyclerDisplay, @Nullable Boolean b ) {
+        User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, restaurantType, rating, restaurantName, recyclerDisplay, b);
         return UserHelper.getUsersCollection().document(uid).set(userToCreate);
     }
 
