@@ -79,12 +79,7 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
         this.nearbyRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
         this.nearbyRestaurantsViewModel.getListRestaurantsLiveData()
                 .observe(getViewLifecycleOwner(),
-                        new Observer<List<Restaurant>>() {
-                            @Override
-                            public void onChanged(List<Restaurant> restaurants) {
-                                ListRestaurantsFragment.this.configureRecyclerViewAdapter(ListRestaurantsFragment.this.requireView(), restaurants);
-                            }
-                        });
+                        restaurants -> ListRestaurantsFragment.this.configureRecyclerViewAdapter(ListRestaurantsFragment.this.requireView(), restaurants));
     }
 
     //---------ACTION-----------

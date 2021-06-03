@@ -1,14 +1,13 @@
 package com.cirederf.go4lunch.views.activities;
 
-import androidx.annotation.NonNull;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Toast;
 
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.injections.Injection;
@@ -23,7 +22,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.ButterKnife;
 
@@ -46,6 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void configureToolbar(){
         ActionBar ab = getSupportActionBar();
+        assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -80,6 +79,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Boolean isFirestoreUser(){
         FirebaseUser currentUser = this.getCurrentUser();
         for (User user : userList){
+            assert currentUser != null;
             if (user.getUid().equals(currentUser.getUid())) return true;
         }
         return false;
@@ -87,11 +87,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     // -----ERROR HANDLER-----
     protected OnFailureListener onFailureListener(){
-        return new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), getString(R.string.error_unknown_error), Toast.LENGTH_LONG).show();
-            }
-        };
+        return e -> Toast.makeText(getApplicationContext(), getString(R.string.error_unknown_error), Toast.LENGTH_LONG).show();
     }
 }

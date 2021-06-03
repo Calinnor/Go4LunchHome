@@ -132,12 +132,14 @@ public class LoginActivity extends BaseActivity {
     private void createUserInFirestore(){
         this.configureUserViewModel();
         if (!isFirestoreUser()){
-            String urlPicture = (Objects.requireNonNull(this.getCurrentUser()).getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+            String urlPicture = (Objects.requireNonNull(this.getCurrentUser()).getPhotoUrl() != null) ? Objects.requireNonNull(this.getCurrentUser().getPhotoUrl()).toString() : null;
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
 
             this.userViewModel.initUserDataToCreate(uid, username, urlPicture, "No restaurant"
-                    , null,null, null, null, null);
+                    , null,null, null
+                    //, null, null
+            );
             this.userViewModel.setFirestoreUserDetails()
                     .addOnFailureListener(this.onFailureListener());
         }

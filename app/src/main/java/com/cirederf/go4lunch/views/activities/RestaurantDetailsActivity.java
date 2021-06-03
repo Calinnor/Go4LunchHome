@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,13 +17,10 @@ import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.views.WorkmatesListAdapter;
-import com.cirederf.go4lunch.views.fragments.ListWorkmatesFragment;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentSnapshot;
-
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,7 +46,6 @@ public class RestaurantDetailsActivity extends BaseActivity {
     private String type;
     private String restaurantName;
     private final int applyChosenRestaurantOptionAtStart = 100;
-    private final int applyChosenRestaurantOptionAtClickSelection = 200;
 
 
     @Override
@@ -64,7 +59,7 @@ public class RestaurantDetailsActivity extends BaseActivity {
         placeId = getIntent().getStringExtra(RESTAURANT_PLACE_ID_PARAM);
         this.initChosenButton(applyChosenRestaurantOptionAtStart);
         this.getDetailsRestaurant();
-        this.getworklist();
+        this.getWorkmateslist();
     }
 
     //-------------FOR RESTAURANT DETAILS VALUES----------------
@@ -72,12 +67,7 @@ public class RestaurantDetailsActivity extends BaseActivity {
         String apiKey = getString(R.string.places_api_google_key);
         this.restaurantDetailsViewModel.initRestaurantDetails(placeId, apiKey);
         this.restaurantDetailsViewModel.getRestaurantDetailsLiveData()
-                .observe(this, new Observer<Restaurant>() {
-                    @Override
-                    public void onChanged(Restaurant restaurant) {
-                        RestaurantDetailsActivity.this.refreshRestaurantDetails(restaurant);
-                    }
-                });
+                .observe(this, RestaurantDetailsActivity.this::refreshRestaurantDetails);
     }
 //    explication de la methodologie de observe
 
@@ -96,7 +86,7 @@ public class RestaurantDetailsActivity extends BaseActivity {
         type = restaurant.getType();
         restaurantName = restaurant.getRestaurantName();
         name.setText(restaurantName);
-        typeAndAddress.setText(type + ", " + restaurant.getAddress());
+        typeAndAddress.setText(String.format("%s, %s", type, restaurant.getAddress()));
         Glide.with(imageView.getContext()).load(restaurant.getPicture()).into(imageView);
     }
 
@@ -133,33 +123,31 @@ public class RestaurantDetailsActivity extends BaseActivity {
 
     //-------------CHOSEN RESTAURANT------------------
     private void initChosenButton(int applyChosenRestaurantOption) {
-        userViewModel.returnUserDetailDocument(this.getCurrentUser().getUid())
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        User currentUser = documentSnapshot.toObject(User.class);
-                        String chosenRestaurant = currentUser.getChosenRestaurant();
+        userViewModel.returnUserDetailDocument(Objects.requireNonNull(this.getCurrentUser()).getUid())
+                .addOnSuccessListener(documentSnapshot -> {
+                    User currentUser = documentSnapshot.toObject(User.class);
+                    assert currentUser != null;
+                    String chosenRestaurant = currentUser.getChosenRestaurant();
 
-                        if (applyChosenRestaurantOption == applyChosenRestaurantOptionAtStart) {
-                            if (chosenRestaurant.equals(placeId)) {
-                                mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
-                                userViewModel.updateisChosenRestaurant(getCurrentUser().getUid(), true);
-                            } else {
-                                mChosenRestaurantButton.setImageResource(0);
-                                userViewModel.updateisChosenRestaurant(getCurrentUser().getUid(), false);
-                            }
+                    if (applyChosenRestaurantOption == applyChosenRestaurantOptionAtStart) {
+                        assert chosenRestaurant != null;
+                        if (chosenRestaurant.equals(placeId)) {
+                            mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
                         } else {
-                            if (chosenRestaurant.equals(placeId)) {
-                                userViewModel.updateChosenRestaurant(getCurrentUser().getUid(), "No restaurant");
-                                userViewModel.updateRestaurantType(getCurrentUser().getUid(), null);
-                                userViewModel.updateNameRestaurant(getCurrentUser().getUid(), null);
-                                mChosenRestaurantButton.setImageResource(0);
-                            } else {
-                                userViewModel.updateChosenRestaurant(getCurrentUser().getUid(), placeId);
-                                userViewModel.updateRestaurantType(getCurrentUser().getUid(), type);
-                                userViewModel.updateNameRestaurant(getCurrentUser().getUid(), restaurantName);
-                                mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
-                            }
+                            mChosenRestaurantButton.setImageResource(0);
+                        }
+                    } else {
+                        assert chosenRestaurant != null;
+                        if (chosenRestaurant.equals(placeId)) {
+                            userViewModel.updateChosenRestaurant(getCurrentUser().getUid(), "No restaurant");
+                            userViewModel.updateRestaurantType(getCurrentUser().getUid(), null);
+                            userViewModel.updateNameRestaurant(getCurrentUser().getUid(), null);
+                            mChosenRestaurantButton.setImageResource(0);
+                        } else {
+                            userViewModel.updateChosenRestaurant(getCurrentUser().getUid(), placeId);
+                            userViewModel.updateRestaurantType(getCurrentUser().getUid(), type);
+                            userViewModel.updateNameRestaurant(getCurrentUser().getUid(), restaurantName);
+                            mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
                         }
                     }
                 });
@@ -176,6 +164,7 @@ public class RestaurantDetailsActivity extends BaseActivity {
 
     @OnClick({R.id.button_phone_call, R.id.button_web_site_launcher, R.id.restaurant_is_chosen_button})
     public void onRestaurantDetailsACTIONClick(View view){
+        int applyChosenRestaurantOptionAtClickSelection = 200;
         switch (view.getId()) {
 
             case R.id.button_phone_call:
@@ -192,14 +181,9 @@ public class RestaurantDetailsActivity extends BaseActivity {
         }
     }
 
-    private void getworklist() {
+    private void getWorkmateslist() {
         this.userViewModel.initLivedataUserListWithChosenRestaurant(placeId);
-        this.userViewModel.getLivedataUsersListWks().observe(this, new Observer<List<User>>() {
-            @Override
-            public void onChanged(List<User> users) {
-                RestaurantDetailsActivity.this.configureRecyclerAdapterForWks(users);
-            }
-        });
+        this.userViewModel.getLivedataUsersListWithRestaurant().observe(this, RestaurantDetailsActivity.this::configureRecyclerAdapterForWks);
     }
 
     private void configureRecyclerAdapterForWks(List<User> users) {

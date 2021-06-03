@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.R;
-import com.cirederf.go4lunch.apiServices.firestoreUtils.UserHelper;
 import com.cirederf.go4lunch.models.User;
 
 import java.util.List;
@@ -55,15 +54,15 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
 
         //todo have to find how set the good message, with a constant ?
         //this display the message even if we are in wks list
-        if (workmate.getIschosenRestaurant() != null && workmate.getIschosenRestaurant() == true) {
-            holder.nameAndTypeAndRestaurantName.setText(workmate.getUsername()+ "is joining.");
+        if (workmate.getIschosenRestaurantDisplay() != null && !workmate.getIschosenRestaurantDisplay()) {
+            holder.nameAndTypeAndRestaurantName.setText(String.format("%sis joining.", workmate.getUsername()));
         }
-        else if (workmate.getChosenRestaurant() != null && !workmate.getChosenRestaurant().equals("No restaurant")) {
+        else if (workmate.getChosenRestaurant() != null && !workmate.getChosenRestaurant().equals("No restaurant") && workmate.getIschosenRestaurantDisplay()) {
             holder.nameAndTypeAndRestaurantName
-                    .setText(workmate.getUsername() + " is eating " + workmate.getRestaurantType() + " at (" + workmate.getRestaurantName() + ")");
+                    .setText(String.format("%s is eating (%s) at %s", workmate.getUsername(), workmate.getRestaurantType(), workmate.getRestaurantName()));
         } else {
             //this may be the message in wks list
-            holder.nameAndTypeAndRestaurantName.setText(workmate.getUsername()+" hasn't chosen yet.");
+            holder.nameAndTypeAndRestaurantName.setText(String.format("%s hasn't chosen yet.", workmate.getUsername()));
         }
 
             Glide.with(holder.workmatesPicture.getContext())

@@ -65,12 +65,7 @@ public class ListWorkmatesFragment extends Fragment {
     private void getUsersList() {
         this.userViewModel.initLivedataUsersList();
         this.userViewModel.getLivedataUsersList()
-                .observe(getViewLifecycleOwner(), new Observer<List<User>>() {
-            @Override
-            public void onChanged(List<User> users) {
-                ListWorkmatesFragment.this.configureRecyclerAdapterForWks(ListWorkmatesFragment.this.requireView(), users);
-            }
-        });
+                .observe(getViewLifecycleOwner(), users -> ListWorkmatesFragment.this.configureRecyclerAdapterForWks(ListWorkmatesFragment.this.requireView(), users));
     }
 
     private void configureRecyclerAdapterForWks(View requireView, List<User> users) {

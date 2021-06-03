@@ -118,9 +118,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         this.userViewModel.deleteFirestoreUser(getCurrentUser().getUid());
         AuthUI.getInstance().delete(this);
         }
-        return aVoid -> {
-            finish();
-        };
+        return aVoid -> finish();
     }
 
     //---------UPDATE UI WITH FIREBASE DATA IN NAV HEADER-----------

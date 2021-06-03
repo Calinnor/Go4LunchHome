@@ -35,8 +35,10 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
         TextView textViewDistance;
         @BindView(R.id.item_list_restaurant_illustration_image)
         ImageView imageView;
-        @BindView(R.id.item_list_restaurant_number_workmates_txt)
+        @BindView(R.id.item_list_restaurant_star_1_image)
         TextView textViewRating;
+        @BindView(R.id.item_list_restaurant_number_workmates_txt)
+        TextView numberOfWorkmates;
 
         public RestaurantViewHolder(@NonNull View itemRestaurantView) {
             super(itemRestaurantView);
@@ -79,7 +81,13 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
                 .apply(RequestOptions.centerCropTransform())
                 .into(holder.imageView);
 
+        holder.numberOfWorkmates.setText(getWksListsizewithresto(nearbySearchRestaurants.getPlaceId()));
+
         holder.itemView.setOnClickListener(v -> onItemRestaurantClickListerner.onItemClick(nearbySearchRestaurants));
+    }
+
+    private int getWksListsizewithresto(String placeId) {
+        return 1;
     }
 
     @Override

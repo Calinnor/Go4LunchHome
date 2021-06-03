@@ -65,6 +65,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                 .enqueue(new Callback<PlacesSearchApi>() {
                     @Override
                     public void onResponse(Call<PlacesSearchApi> call, Response<PlacesSearchApi> response) {
+                        assert response.body() != null;
                         List<Result> results = response.body().getResults();
                         int size = results.size();
                         for(int i = 0; i < size; i ++) {
@@ -116,25 +117,25 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                 : null;
     }
 
-    private String setPlaceId(List<Result>results, int i) {
-        return results.get(i).getPlaceId() != null ? results.get(i).getPlaceId() : "";
-    }
-
-    private String setPhoneNumber(List<Result>results, int i) {
-        return results.get(i).getBusinessStatus() != null ? results.get(i).getBusinessStatus() : "";
-    }
-
-    private String setWebSite(List<Result>results, int i) {
-        return results.get(i).getBusinessStatus() != null ? results.get(i).getBusinessStatus() : "";
-    }
-
-    private String setName(List<Result>results, int i) {
-        return results.get(i).getName() != null ? results.get(i).getName() : "";
-    }
-
-    private String setAddress(List<Result>results, int i) {
-        return results.get(i).getVicinity() != null ? results.get(i).getVicinity() : "";
-    }
+//    private String setPlaceId(List<Result>results, int i) {
+//        return results.get(i).getPlaceId() != null ? results.get(i).getPlaceId() : "";
+//    }
+//
+//    private String setPhoneNumber(List<Result>results, int i) {
+//        return results.get(i).getBusinessStatus() != null ? results.get(i).getBusinessStatus() : "";
+//    }
+//
+//    private String setWebSite(List<Result>results, int i) {
+//        return results.get(i).getBusinessStatus() != null ? results.get(i).getBusinessStatus() : "";
+//    }
+//
+//    private String setName(List<Result>results, int i) {
+//        return results.get(i).getName() != null ? results.get(i).getName() : "";
+//    }
+//
+//    private String setAddress(List<Result>results, int i) {
+//        return results.get(i).getVicinity() != null ? results.get(i).getVicinity() : "";
+//    }
 
     private double setRating(List<Result>results, int i) {
         return results.get(i).getRating() != null ? results.get(i).getRating() : 0;
@@ -144,28 +145,28 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
         return results.get(i).getOpeningHours() != null ? results.get(i).getOpeningHours().getOpenNow() : false;
     }
 
-    private Location setLocation(List<Result>results, int i) {
-        return results.get(i).getGeometry().getLocation();
-    }
-
-    private PlusCode setPlusCode(List<Result>results, int i){
-        return results.get(i).getPlusCode();}
-
-    private Integer setPriceLevel(List<Result>results, int i){
-        return results.get(i).getPriceLevel();}
-
-    private String setReference(List<Result>results, int i){
-        return results.get(i).getReference() != null ? results.get(i).getReference() : "";}
-
-    private String setScope(List<Result>results, int i){
-        return results.get(i).getScope() != null ? results.get(i).getScope() : "";}
+//    private Location setLocation(List<Result>results, int i) {
+//        return results.get(i).getGeometry().getLocation();
+//    }
+//
+//    private PlusCode setPlusCode(List<Result>results, int i){
+//        return results.get(i).getPlusCode();}
+//
+//    private Integer setPriceLevel(List<Result>results, int i){
+//        return results.get(i).getPriceLevel();}
+//
+//    private String setReference(List<Result>results, int i){
+//        return results.get(i).getReference() != null ? results.get(i).getReference() : "";}
+//
+//    private String setScope(List<Result>results, int i){
+//        return results.get(i).getScope() != null ? results.get(i).getScope() : "";}
 
     private String setType(List<Result>results, int i){
         return results.get(i).getTypes() != null ? results.get(i).getTypes().get(0) : null;}
 
-    private void refreshNearbyRestaurantValues(List<Result>results, int i) {
-         String name = results.get(i).getName();
-
-    }
+//    private void refreshNearbyRestaurantValues(List<Result>results, int i) {
+//         String name = results.get(i).getName();
+//
+//    }
 
 }

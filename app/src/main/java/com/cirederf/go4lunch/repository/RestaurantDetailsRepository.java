@@ -57,6 +57,7 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
 
                     @Override
                     public void onResponse(Call<RestaurantDetailsApi> call, Response<RestaurantDetailsApi> response) {
+                        assert response.body() != null;
                         Result result = response.body().getResult();
                         Restaurant detailsRestaurant = new Restaurant(
                                 result.getName()
@@ -91,9 +92,9 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
                 : null;
     }
 
-    private String setDetailsAddress(Result result) {
-        return result.getFormattedAddress() != null ? result.getFormattedAddress() : "no address";
-    }
+//    private String setDetailsAddress(Result result) {
+//        return result.getFormattedAddress() != null ? result.getFormattedAddress() : "no address";
+//    }
 
     private String setDetailsType(Result result) {
         List<String> types = result.getTypes();
@@ -110,15 +111,15 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
         return restaurantType;
     }
 
-    private String setDetailName(Result result) {
-        return result.getName() != null ? result.getName() : "no name";
-    }
-
-    private String setPhoneNumber(Result result) {
-        return result.getFormattedPhoneNumber() != null ? result.getFormattedPhoneNumber() : "no phone";
-    }
-
-    private String setWebSite(Result result) {
-        return result.getWebsite() != null ? result.getWebsite() : "no webSite";
-    }
+//    private String setDetailName(Result result) {
+//        return result.getName() != null ? result.getName() : "no name";
+//    }
+//
+//    private String setPhoneNumber(Result result) {
+//        return result.getFormattedPhoneNumber() != null ? result.getFormattedPhoneNumber() : "no phone";
+//    }
+//
+//    private String setWebSite(Result result) {
+//        return result.getWebsite() != null ? result.getWebsite() : "no webSite";
+//    }
 }

@@ -4,21 +4,14 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.api.UserFirebaseRequest;
 import com.cirederf.go4lunch.apiServices.UsersInterface;
-import com.cirederf.go4lunch.apiServices.firestoreUtils.UserHelper;
 import com.cirederf.go4lunch.models.User;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +40,10 @@ public class UserRepository implements UsersInterface {
     @Override
     public Task<Void> createFirestoreUser(String uid, String username, @Nullable String urlPicture
             ,  @Nullable String chosenRestaurant, @Nullable String restaurantType
-            , @Nullable String rating,@Nullable String restaurantName, @Nullable String recyclerDisplay, @Nullable Boolean isChosenRestauarnt ) {
-        User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, restaurantType, rating, restaurantName, recyclerDisplay, isChosenRestauarnt);
+            , @Nullable String rating,@Nullable String restaurantName
+    ) {
+        User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, restaurantType, rating, restaurantName
+        );
         return this.currentUserDocumentReference(uid).set(userToCreate);
     }
 
@@ -107,6 +102,8 @@ public class UserRepository implements UsersInterface {
                 int size = userList.size();
                 for (int i = 0; i < size; i++) {
                     User user = userList.get(i).toObject(User.class);
+                    assert user != null;
+                    user.setIschosenRestaurantDisplay(true);
                     users.add(user);
                 }
                 _usersList.setValue(users);
@@ -125,6 +122,8 @@ public class UserRepository implements UsersInterface {
                 int size = userList.size();
                 for (int i = 0; i < size; i++) {
                     User user = userList.get(i).toObject(User.class);
+                    assert user != null;
+                    user.setIschosenRestaurantDisplay(false);
                     users.add(user);
                 }
                 _usersListKs.setValue(users);
@@ -133,7 +132,4 @@ public class UserRepository implements UsersInterface {
         return usersListKs;
     }
 
-    public Task<Void> updateisChosenRestaurant(String uid, boolean b) {
-        return currentUserDocumentReference(uid).update("ischosenRestaurant", b);
-    }
 }

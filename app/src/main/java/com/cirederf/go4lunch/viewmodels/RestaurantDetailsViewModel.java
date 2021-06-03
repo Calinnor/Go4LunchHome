@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.repository.RestaurantDetailsRepository;
-
-import java.util.List;
 
 public class RestaurantDetailsViewModel extends ViewModel {
 

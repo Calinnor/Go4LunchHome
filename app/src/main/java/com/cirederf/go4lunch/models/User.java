@@ -16,20 +16,19 @@ public class User {
     @Nullable
     private String restaurantName;
     @Nullable
-    String recyclerDisplay;
-    @Nullable
-    Boolean ischosenRestaurant;
+    Boolean ischosenRestaurantDisplay;
 
     //---------DETAILS FOR WORKMATES CHOSEN RESTAURANT----------
-    public User(String username, @Nullable String urlPicture, String chosenRestaurant) {
+    public User(String username, @Nullable String urlPicture,@Nullable String chosenRestaurant) {
         this.username = username;
         this.urlPicture = urlPicture;
         this.chosenRestaurant = chosenRestaurant;
     }
 
     //------------FIREBASE CONSTRUCTOR-----------
-    public User(String uid, String username, @Nullable String urlPicture, @Nullable String chosenRestaurant,@Nullable String restaurantType, String rating, @Nullable String restaurantName, @Nullable
-            String recyclerDisplay, boolean ischosenRestaurant) {
+    public User(String uid, String username
+            ,@Nullable String urlPicture, @Nullable String chosenRestaurant
+            ,@Nullable String restaurantType, String rating, @Nullable String restaurantName) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
@@ -37,14 +36,13 @@ public class User {
         this.restaurantType = restaurantType;
         this.rating = rating;
         this.restaurantName = restaurantName;
-        this.recyclerDisplay = recyclerDisplay;
     }
 
     public User() {}
 
-    public <T> User(T toObject) {
-
-    }
+//    public <T> User(T toObject) {
+//
+//    }
 
     //---------GETTERS----------
     public String getUid() {
@@ -78,13 +76,8 @@ public class User {
     }
 
     @Nullable
-    public String getRecyclerDisplay() {
-        return recyclerDisplay;
-    }
-
-    @Nullable
-    public Boolean getIschosenRestaurant() {
-        return ischosenRestaurant;
+    public Boolean getIschosenRestaurantDisplay() {
+        return ischosenRestaurantDisplay;
     }
 
     //------------SETTERS-----------
@@ -92,35 +85,31 @@ public class User {
         this.uid = uid;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setUrlPicture(@Nullable String urlPicture) {
-        this.urlPicture = urlPicture;
-    }
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
+//
+//    public void setUrlPicture(@Nullable String urlPicture) {
+//        this.urlPicture = urlPicture;
+//    }
 
     public void setChosenRestaurant(String chosenRestaurant) {
         this.chosenRestaurant = chosenRestaurant;
     }
 
-    public void setRestaurantType(String restaurantType) {
-        this.restaurantType = restaurantType;
-    }
+//    public void setRestaurantType(String restaurantType) {
+//        this.restaurantType = restaurantType;
+//    }
+//
+//    public void setRating(String rating) {
+//        this.rating = rating;
+//    }
+//
+//    public void setRestaurantName(@Nullable String restaurantName) {
+//        this.restaurantName = restaurantName;
+//    }
 
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
-
-    public void setRestaurantName(@Nullable String restaurantName) {
-        this.restaurantName = restaurantName;
-    }
-
-    public void setRecyclerDisplay(@Nullable String recyclerDisplay) {
-        this.recyclerDisplay = recyclerDisplay;
-    }
-
-    public void setIschosenRestaurant(@Nullable Boolean ischosenRestaurant) {
-        this.ischosenRestaurant = ischosenRestaurant;
+    public void setIschosenRestaurantDisplay(@Nullable Boolean ischosenRestaurant) {
+        this.ischosenRestaurantDisplay = ischosenRestaurant;
     }
 }
