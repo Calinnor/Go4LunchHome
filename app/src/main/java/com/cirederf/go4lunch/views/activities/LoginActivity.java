@@ -138,7 +138,6 @@ public class LoginActivity extends BaseActivity {
 
             this.userViewModel.initUserDataToCreate(uid, username, urlPicture, "No restaurant"
                     , null,null, null
-                    //, null, null
             );
             this.userViewModel.setFirestoreUserDetails()
                     .addOnFailureListener(this.onFailureListener());

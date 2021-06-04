@@ -7,12 +7,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.R;
+import com.cirederf.go4lunch.injections.Injection;
+import com.cirederf.go4lunch.injections.UserViewModelFactory;
 import com.cirederf.go4lunch.models.User;
+import com.cirederf.go4lunch.viewmodels.UserViewModel;
+import com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment;
 
 import java.util.List;
 
@@ -52,8 +58,6 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
     public void onBindViewHolder(@NonNull WorkmatesViewHolder holder, int position) {
         User workmate = workmatesList.get(position);
 
-        //todo have to find how set the good message, with a constant ?
-        //this display the message even if we are in wks list
         if (workmate.getIschosenRestaurantDisplay() != null && !workmate.getIschosenRestaurantDisplay()) {
             holder.nameAndTypeAndRestaurantName.setText(String.format("%sis joining.", workmate.getUsername()));
         }
@@ -61,7 +65,6 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
             holder.nameAndTypeAndRestaurantName
                     .setText(String.format("%s is eating (%s) at %s", workmate.getUsername(), workmate.getRestaurantType(), workmate.getRestaurantName()));
         } else {
-            //this may be the message in wks list
             holder.nameAndTypeAndRestaurantName.setText(String.format("%s hasn't chosen yet.", workmate.getUsername()));
         }
 
@@ -82,8 +85,5 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
         //android:layout_height="wrap_content"
         //for the main contenair, the adapter will display ONLY ONE (the firs) item...!!!!!!!
     }
-
-
-
 
 }

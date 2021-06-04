@@ -59,7 +59,7 @@ public class RestaurantDetailsActivity extends BaseActivity {
         placeId = getIntent().getStringExtra(RESTAURANT_PLACE_ID_PARAM);
         this.initChosenButton(applyChosenRestaurantOptionAtStart);
         this.getDetailsRestaurant();
-        this.getWorkmateslist();
+        this.getWorkmatesList();
     }
 
     //-------------FOR RESTAURANT DETAILS VALUES----------------
@@ -181,12 +181,13 @@ public class RestaurantDetailsActivity extends BaseActivity {
         }
     }
 
-    private void getWorkmateslist() {
+    private void getWorkmatesList() {
         this.userViewModel.initLivedataUserListWithChosenRestaurant(placeId);
-        this.userViewModel.getLivedataUsersListWithRestaurant().observe(this, RestaurantDetailsActivity.this::configureRecyclerAdapterForWks);
+        this.userViewModel.getLivedataUsersListWithRestaurant()
+                .observe(this, RestaurantDetailsActivity.this::configureRecyclerAdapterForWorkmates);
     }
 
-    private void configureRecyclerAdapterForWks(List<User> users) {
+    private void configureRecyclerAdapterForWorkmates(List<User> users) {
         WorkmatesListAdapter workmatesListAdapter = new WorkmatesListAdapter(users);
         workmatesRecyclerView.setAdapter(workmatesListAdapter);
         RecyclerView.LayoutManager workmatesView = new LinearLayoutManager(this);

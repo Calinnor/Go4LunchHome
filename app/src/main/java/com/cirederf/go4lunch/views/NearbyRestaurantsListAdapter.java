@@ -7,12 +7,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.R;
+import com.cirederf.go4lunch.injections.Injection;
+import com.cirederf.go4lunch.injections.UserViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
+import com.cirederf.go4lunch.models.User;
+import com.cirederf.go4lunch.viewmodels.UserViewModel;
+import com.cirederf.go4lunch.views.activities.RestaurantDetailsActivity;
 
 import java.util.List;
 
@@ -35,8 +41,8 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
         TextView textViewDistance;
         @BindView(R.id.item_list_restaurant_illustration_image)
         ImageView imageView;
-        @BindView(R.id.item_list_restaurant_star_1_image)
-        TextView textViewRating;
+//        @BindView(R.id.item_list_restaurant_star_1_image)
+//        TextView textViewRating;
         @BindView(R.id.item_list_restaurant_number_workmates_txt)
         TextView numberOfWorkmates;
 
@@ -64,7 +70,6 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
         holder.textViewName.setText(nearbySearchRestaurants.getRestaurantName());
         holder.textViewDistance.setText("seem 100m");
         holder.textViewAddress.setText(nearbySearchRestaurants.getAddress());
-        holder.textViewRating.setText(String.valueOf(nearbySearchRestaurants.getRating()));
 
         if(nearbySearchRestaurants.getOpenNow()) {
             holder.textViewOpeningHours.setText(R.string.open);
@@ -81,14 +86,12 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
                 .apply(RequestOptions.centerCropTransform())
                 .into(holder.imageView);
 
-        holder.numberOfWorkmates.setText(getWksListsizewithresto(nearbySearchRestaurants.getPlaceId()));
+        //todo search for display user list size for user in a restaurant:
 
         holder.itemView.setOnClickListener(v -> onItemRestaurantClickListerner.onItemClick(nearbySearchRestaurants));
     }
 
-    private int getWksListsizewithresto(String placeId) {
-        return 1;
-    }
+
 
     @Override
     public int getItemCount() {

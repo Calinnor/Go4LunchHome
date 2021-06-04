@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.cirederf.go4lunch.api.UserFirebaseRequest;
 import com.cirederf.go4lunch.apiServices.UsersInterface;
+import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -20,9 +21,9 @@ public class UserRepository implements UsersInterface {
 
     private static UserRepository userRepository;
     private final MutableLiveData<List<User>> _usersList = new MutableLiveData<>();
-    private final MutableLiveData<List<User>> _usersListKs = new MutableLiveData<>();
+    private final MutableLiveData<List<User>> _usersListWithRestaurant = new MutableLiveData<>();
     private final LiveData<List<User>> usersList = _usersList;
-    private final LiveData<List<User>> usersListKs = _usersListKs;
+    private final LiveData<List<User>> usersListWithRestaurant = _usersListWithRestaurant;
 
     public static UserRepository getInstance() {
         if (userRepository == null) {
@@ -100,6 +101,10 @@ public class UserRepository implements UsersInterface {
                 List<DocumentSnapshot> userList = queryDocumentSnapshots.getDocuments();
                 List<User> users = new ArrayList<>();
                 int size = userList.size();
+
+                //here create a restaurant size ?
+
+
                 for (int i = 0; i < size; i++) {
                     User user = userList.get(i).toObject(User.class);
                     assert user != null;
@@ -126,10 +131,10 @@ public class UserRepository implements UsersInterface {
                     user.setIschosenRestaurantDisplay(false);
                     users.add(user);
                 }
-                _usersListKs.setValue(users);
+                _usersListWithRestaurant.setValue(users);
             }
         });
-        return usersListKs;
+        return usersListWithRestaurant;
     }
 
 }

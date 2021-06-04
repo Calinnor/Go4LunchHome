@@ -2,8 +2,12 @@ package com.cirederf.go4lunch.repository;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.cirederf.go4lunch.injections.Injection;
+import com.cirederf.go4lunch.injections.UserViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
+import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.models.apiNearbyModels.Location;
 import com.cirederf.go4lunch.models.apiNearbyModels.PlacesSearchApi;
 import com.cirederf.go4lunch.models.apiNearbyModels.PlusCode;
@@ -11,6 +15,7 @@ import com.cirederf.go4lunch.models.apiNearbyModels.Result;
 import com.cirederf.go4lunch.api.PlacesApiRequests;
 import com.cirederf.go4lunch.api.RetrofitService;
 import com.cirederf.go4lunch.apiServices.placesInterfaces.NearbyPlaceInterface;
+import com.cirederf.go4lunch.viewmodels.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +31,8 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
 
     private final MutableLiveData<List<Restaurant>> _restaurants = new MutableLiveData<>();
     public LiveData<List<Restaurant>> restaurantsList = _restaurants;
+
+    private UserViewModel userViewModel;
 
     /**
      * Singleton for RestaurantsRepository
@@ -67,27 +74,28 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                     public void onResponse(Call<PlacesSearchApi> call, Response<PlacesSearchApi> response) {
                         assert response.body() != null;
                         List<Result> results = response.body().getResults();
+                        /**
+                         * In idea:
+                         * List<User> workmatesChekingWithThisResto = new ArrayList();
+                         * userViewModel.initLivedataUserListWithChosenRestaurant(setPlaceId(results, i);
+                         * workmatesChekingWithThisResto = userVieModel.getLivedataUsersListWithRestaurant();
+                         */
                         int size = results.size();
                         for(int i = 0; i < size; i ++) {
-                            String name = results.get(i).getName() != null ? results.get(i).getName() : "";
-                            String address = results.get(i).getVicinity() != null ? results.get(i).getVicinity() : "";
-                            String placeId = results.get(i).getPlaceId() != null ? results.get(i).getPlaceId() : "";
-
+                            //todo ask why it's not a good way to do that
                             Restaurant nearbySearchRestaurant = new Restaurant(
-                                    //setName(results, i)
-                                    //name
                                     results.get(i).getName()
-                                    //,setAddress(results, i)
-                                    ,address
+                                    ,setAddress(results, i)
                                     ,setRating(results, i)
                                     ,setPicture(results, i, apiKey)
-                                    //,setPlaceId(results, i)
-                                    ,placeId
-                                    //,setLocation(results, i)
+                                    ,setPlaceId(results, i)
                                     ,setOpenNow(results, i)
                                     ,setType(results, i)
-                                    //,workmatesNumberByRestaurant(results.get(i).getName())
-                                    //,UserHelper.getUsersByRestaurant(results.get(i).getName())
+                                    /**
+                                     * Here
+                                     * may add param "int size" in restaurant model then
+                                     * setSize(workmatesChekingWithThisResto.size();
+                                     */
                             );
 
                             restaurants.add(nearbySearchRestaurant);
@@ -117,25 +125,17 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                 : null;
     }
 
-//    private String setPlaceId(List<Result>results, int i) {
-//        return results.get(i).getPlaceId() != null ? results.get(i).getPlaceId() : "";
-//    }
-//
-//    private String setPhoneNumber(List<Result>results, int i) {
-//        return results.get(i).getBusinessStatus() != null ? results.get(i).getBusinessStatus() : "";
-//    }
-//
-//    private String setWebSite(List<Result>results, int i) {
-//        return results.get(i).getBusinessStatus() != null ? results.get(i).getBusinessStatus() : "";
-//    }
-//
-//    private String setName(List<Result>results, int i) {
-//        return results.get(i).getName() != null ? results.get(i).getName() : "";
-//    }
-//
-//    private String setAddress(List<Result>results, int i) {
-//        return results.get(i).getVicinity() != null ? results.get(i).getVicinity() : "";
-//    }
+    private String setPlaceId(List<Result>results, int i) {
+        return results.get(i).getPlaceId() != null ? results.get(i).getPlaceId() : "";
+    }
+
+    private String setName(List<Result>results, int i) {
+        return results.get(i).getName() != null ? results.get(i).getName() : "";
+    }
+
+    private String setAddress(List<Result>results, int i) {
+        return results.get(i).getVicinity() != null ? results.get(i).getVicinity() : "";
+    }
 
     private double setRating(List<Result>results, int i) {
         return results.get(i).getRating() != null ? results.get(i).getRating() : 0;
@@ -145,28 +145,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
         return results.get(i).getOpeningHours() != null ? results.get(i).getOpeningHours().getOpenNow() : false;
     }
 
-//    private Location setLocation(List<Result>results, int i) {
-//        return results.get(i).getGeometry().getLocation();
-//    }
-//
-//    private PlusCode setPlusCode(List<Result>results, int i){
-//        return results.get(i).getPlusCode();}
-//
-//    private Integer setPriceLevel(List<Result>results, int i){
-//        return results.get(i).getPriceLevel();}
-//
-//    private String setReference(List<Result>results, int i){
-//        return results.get(i).getReference() != null ? results.get(i).getReference() : "";}
-//
-//    private String setScope(List<Result>results, int i){
-//        return results.get(i).getScope() != null ? results.get(i).getScope() : "";}
-
     private String setType(List<Result>results, int i){
         return results.get(i).getTypes() != null ? results.get(i).getTypes().get(0) : null;}
-
-//    private void refreshNearbyRestaurantValues(List<Result>results, int i) {
-//         String name = results.get(i).getName();
-//
-//    }
 
 }

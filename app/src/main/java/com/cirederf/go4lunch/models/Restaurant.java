@@ -1,9 +1,5 @@
 package com.cirederf.go4lunch.models;
 
-import com.google.firebase.firestore.Query;
-
-import java.util.List;
-
 public class Restaurant {
     private String restaurantName;
     private String address;
@@ -14,12 +10,10 @@ public class Restaurant {
     private String website;
     private Boolean openNow;
     private String type;
-    private Query workmatesNumber;
-    private List<User> workmatesUserList;
 
     //////// CONSTRUCTORS ////////
     //-------CONSTRUCTOR FOR SEARCH PLACES--------
-    public Restaurant(String restaurantName, String address, double rating, String picture, String placeId, Boolean openNow, String type/*, @Nullable Query workmatesNumber*/) {
+    public Restaurant(String restaurantName, String address, double rating, String picture, String placeId, Boolean openNow, String type) {
         this.restaurantName = restaurantName;
         this.address = address;
         this.rating = rating;
@@ -46,8 +40,7 @@ public class Restaurant {
      //* @param workmatesUserList: list of workmates using the app and having selected this restaurant
      * @param placeId: id for each restaurant
      */
-    public Restaurant (List<User> workmatesUserList, String restaurantName, String placeId) {
-        this.workmatesUserList = workmatesUserList;
+    public Restaurant (String restaurantName, String placeId) {
         this.restaurantName = restaurantName;
         this.placeId = placeId;
     }
@@ -90,9 +83,6 @@ public class Restaurant {
     }
 
     //////// SETTERS ////////
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
-    }
 
     public void setPlaceId(String placeId) {
         this.placeId = placeId;

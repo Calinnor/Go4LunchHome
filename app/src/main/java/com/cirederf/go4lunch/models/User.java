@@ -40,10 +40,6 @@ public class User {
 
     public User() {}
 
-//    public <T> User(T toObject) {
-//
-//    }
-
     //---------GETTERS----------
     public String getUid() {
         return uid;
@@ -85,29 +81,9 @@ public class User {
         this.uid = uid;
     }
 
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//    public void setUrlPicture(@Nullable String urlPicture) {
-//        this.urlPicture = urlPicture;
-//    }
-
     public void setChosenRestaurant(String chosenRestaurant) {
         this.chosenRestaurant = chosenRestaurant;
     }
-
-//    public void setRestaurantType(String restaurantType) {
-//        this.restaurantType = restaurantType;
-//    }
-//
-//    public void setRating(String rating) {
-//        this.rating = rating;
-//    }
-//
-//    public void setRestaurantName(@Nullable String restaurantName) {
-//        this.restaurantName = restaurantName;
-//    }
 
     public void setIschosenRestaurantDisplay(@Nullable Boolean ischosenRestaurant) {
         this.ischosenRestaurantDisplay = ischosenRestaurant;
