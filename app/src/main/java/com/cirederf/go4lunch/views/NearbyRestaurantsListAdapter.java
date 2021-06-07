@@ -1,10 +1,12 @@
 package com.cirederf.go4lunch.views;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,30 +15,40 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.models.Restaurant;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRestaurantsListAdapter.RestaurantViewHolder> {
 
+    private static final String COLLECTION_NAME = "users";
     List<Restaurant> nearbyRestaurants;
     private final OnItemRestaurantClickListerner onItemRestaurantClickListerner;
+    private Context context;
 
     public static class RestaurantViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.item_list_restaurant_name_txt)
         TextView textViewName;
+        @BindView(R.id.item_list_restaurant_address_txt)
         TextView textViewAddress;
+        @BindView(R.id.item_list_restaurant_hours_txt)
         TextView textViewOpeningHours;
+        @BindView(R.id.item_list_restaurant_distance_txt)
         TextView textViewDistance;
-        TextView textViewRating;
+        @BindView(R.id.item_list_restaurant_illustration_image)
         ImageView imageView;
+        @BindView(R.id.item_list_restaurant_number_workmates_txt)
+        TextView numberWks;
 
         public RestaurantViewHolder(@NonNull View itemRestaurantView) {
             super(itemRestaurantView);
-            textViewName = itemRestaurantView.findViewById(R.id.item_list_restaurant_name_txt);
-            textViewAddress = itemRestaurantView.findViewById(R.id.item_list_restaurant_address_txt);
-            textViewOpeningHours = itemRestaurantView.findViewById(R.id.item_list_restaurant_hours_txt);
-            textViewDistance = itemRestaurantView.findViewById(R.id.item_list_restaurant_distance_txt);
-            textViewRating = itemRestaurantView.findViewById(R.id.item_list_restaurant_number_rating_txt);
-            imageView = itemRestaurantView.findViewById(R.id.item_list_restaurant_illustration_image);
+            ButterKnife.bind(this, itemView);
         }
     }
 
@@ -48,7 +60,7 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
     @NonNull
     @Override
     public RestaurantViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_restaurants_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recyclerview_list_restaurants_view, parent, false);
         return new RestaurantViewHolder(view);
     }
 
@@ -58,7 +70,6 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
         holder.textViewName.setText(nearbySearchRestaurants.getRestaurantName());
         holder.textViewDistance.setText("seem 100m");
         holder.textViewAddress.setText(nearbySearchRestaurants.getAddress());
-        holder.textViewRating.setText(String.valueOf(nearbySearchRestaurants.getRating()));
 
         if(nearbySearchRestaurants.getOpenNow()) {
             holder.textViewOpeningHours.setText(R.string.open);
@@ -75,6 +86,27 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
                 .apply(RequestOptions.centerCropTransform())
                 .into(holder.imageView);
 
+
+        Query query = getCollection().whereEqualTo("chosenRestaurant", nearbySearchRestaurants.getPlaceId());
+        query.addSnapshotListener((snapshots, e) -> {
+            int numberWorkmates;
+            if (e != null) {
+                Toast.makeText(context, "Error when getting number of workmates", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (snapshots != null && !snapshots.isEmpty()) {
+                numberWorkmates = snapshots.size();
+                holder
+                        .numberWks
+                        .setText
+                                (String.valueOf(numberWorkmates));
+            }
+            if (snapshots != null && snapshots.isEmpty()) {
+                holder.numberWks.setText("");
+            }
+        });
+
         holder.itemView.setOnClickListener(v -> onItemRestaurantClickListerner.onItemClick(nearbySearchRestaurants));
     }
 
@@ -85,6 +117,9 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
 
     public interface OnItemRestaurantClickListerner {
         void onItemClick(Restaurant restaurant);
+    }
+    private CollectionReference getCollection() {
+        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
 }

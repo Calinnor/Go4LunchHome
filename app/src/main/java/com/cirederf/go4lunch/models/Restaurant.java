@@ -1,5 +1,7 @@
 package com.cirederf.go4lunch.models;
 
+import com.google.firebase.firestore.Query;
+
 import java.util.List;
 
 public class Restaurant {
@@ -12,11 +14,12 @@ public class Restaurant {
     private String website;
     private Boolean openNow;
     private String type;
+    private Query workmatesNumber;
     private List<User> workmatesUserList;
 
     //////// CONSTRUCTORS ////////
     //-------CONSTRUCTOR FOR SEARCH PLACES--------
-    public Restaurant(String restaurantName, String address, double rating, String picture, String placeId, Boolean openNow, String type) {
+    public Restaurant(String restaurantName, String address, double rating, String picture, String placeId, Boolean openNow, String type/*, @Nullable Query workmatesNumber*/) {
         this.restaurantName = restaurantName;
         this.address = address;
         this.rating = rating;
@@ -40,15 +43,13 @@ public class Restaurant {
 
     //-------FIREBASE CONSTRUCTOR--------
     /**
-     * @param workmatesUserList: list of workmates using the app and having selected this restaurant
+     //* @param workmatesUserList: list of workmates using the app and having selected this restaurant
      * @param placeId: id for each restaurant
      */
     public Restaurant (List<User> workmatesUserList, String restaurantName, String placeId) {
         this.workmatesUserList = workmatesUserList;
         this.restaurantName = restaurantName;
         this.placeId = placeId;
-        //todo resolve this question : is a restaurant for firestore util ?
-        // if yes, add the name param for firestore search and organisation or just the id is ok ?
     }
 
     //////// GETTERS ////////

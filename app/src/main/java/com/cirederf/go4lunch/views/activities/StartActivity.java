@@ -13,13 +13,9 @@ public class StartActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if(isCurrentUserLogged()) {
-            this.createUserInFirestore();
             this.startMain();
         } else {
             startLogin();
         }
     }
-    //todo determine if this.createUserInFirestore(); may be used here
-    // or in isCurrentUserLogged in baseactivity
-    // or in mainactivity
 }

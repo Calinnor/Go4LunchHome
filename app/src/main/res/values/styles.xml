@@ -64,7 +64,7 @@
         <item name="android:layout_marginEnd">@dimen/item_list_restaurant_margin_end_people_rating</item>
     </style>
 
-    <!-- Item Restaurant List Illustration Image -->
+     Item Restaurant List Illustration Image
     <style name="item_list_restaurant_illustration_image">
         <item name="android:src">@drawable/default_restaurant_picture</item>
         <item name="android:layout_marginEnd">@dimen/item_list_restaurant_margin_end_illustration</item>

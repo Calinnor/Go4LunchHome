@@ -85,6 +85,8 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                                     //,setLocation(results, i)
                                     ,setOpenNow(results, i)
                                     ,setType(results, i)
+                                    //,workmatesNumberByRestaurant(results.get(i).getName())
+                                    //,UserHelper.getUsersByRestaurant(results.get(i).getName())
                             );
 
                             restaurants.add(nearbySearchRestaurant);
@@ -165,7 +167,5 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
          String name = results.get(i).getName();
 
     }
-
-
 
 }

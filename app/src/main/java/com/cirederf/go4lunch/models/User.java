@@ -4,28 +4,46 @@ import androidx.annotation.Nullable;
 
 public class User {
 
-    // todo determine if just the restaurant with it's placeId is necessary (chosenRestaurant)
-    //  or if we need a boolean (isChosenRestaurant) to compare data
     private String uid;
     private String username;
     @Nullable
     private String urlPicture;
+    @Nullable
     private String chosenRestaurant;
-    private Boolean isTheChoiceRestaurant;
+    @Nullable
     private String restaurantType;
     private String rating;
+    @Nullable
+    private String restaurantName;
+    @Nullable
+    String recyclerDisplay;
+    @Nullable
+    Boolean ischosenRestaurant;
 
-    public User() { }
+    //---------DETAILS FOR WORKMATES CHOSEN RESTAURANT----------
+    public User(String username, @Nullable String urlPicture, String chosenRestaurant) {
+        this.username = username;
+        this.urlPicture = urlPicture;
+        this.chosenRestaurant = chosenRestaurant;
+    }
 
     //------------FIREBASE CONSTRUCTOR-----------
-    public User(String uid, String username, @Nullable String urlPicture, String chosenRestaurant, Boolean isTheChoiceRestaurant, String restaurantType, String rating ) {
+    public User(String uid, String username, @Nullable String urlPicture, @Nullable String chosenRestaurant,@Nullable String restaurantType, String rating, @Nullable String restaurantName, @Nullable
+            String recyclerDisplay, boolean ischosenRestaurant) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
         this.chosenRestaurant = chosenRestaurant;
-        this.isTheChoiceRestaurant = isTheChoiceRestaurant;
         this.restaurantType = restaurantType;
         this.rating = rating;
+        this.restaurantName = restaurantName;
+        this.recyclerDisplay = recyclerDisplay;
+    }
+
+    public User() {}
+
+    public <T> User(T toObject) {
+
     }
 
     //---------GETTERS----------
@@ -46,8 +64,27 @@ public class User {
         return chosenRestaurant;
     }
 
-    public Boolean getIsTheChoiceRestaurant() {
-        return isTheChoiceRestaurant;
+    public String getRestaurantType() {
+        return restaurantType;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    @Nullable
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    @Nullable
+    public String getRecyclerDisplay() {
+        return recyclerDisplay;
+    }
+
+    @Nullable
+    public Boolean getIschosenRestaurant() {
+        return ischosenRestaurant;
     }
 
     //------------SETTERS-----------
@@ -67,7 +104,23 @@ public class User {
         this.chosenRestaurant = chosenRestaurant;
     }
 
-    public void setIsTheChoiceRestaurant(Boolean isTheChoiceRestaurant) {
-        this.isTheChoiceRestaurant = isTheChoiceRestaurant;
+    public void setRestaurantType(String restaurantType) {
+        this.restaurantType = restaurantType;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public void setRestaurantName(@Nullable String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public void setRecyclerDisplay(@Nullable String recyclerDisplay) {
+        this.recyclerDisplay = recyclerDisplay;
+    }
+
+    public void setIschosenRestaurant(@Nullable Boolean ischosenRestaurant) {
+        this.ischosenRestaurant = ischosenRestaurant;
     }
 }

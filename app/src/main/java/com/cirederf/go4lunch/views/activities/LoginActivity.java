@@ -70,12 +70,6 @@ public class LoginActivity extends BaseActivity {
         this.startSignInActivity(providerId);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        this.getResponseAfterSignInClose(requestCode, resultCode, data);
-//    }
-
     //---------------FIREBASE REQUEST-----------
     private void startSignInActivity(AuthUI.IdpConfig providerId){
         startActivityForResult(
@@ -97,15 +91,12 @@ public class LoginActivity extends BaseActivity {
         AuthUI.IdpConfig providerId = null;
 
         if(providerIdChoice == GOOGLE_PROVIDER_CHOICE){
-            //providerId = new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build();
             providerId = new AuthUI.IdpConfig.GoogleBuilder().build();
         }
         if(providerIdChoice == FACEBOOK_PROVIDER_CHOICE){
-            //providerId = new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build();
             providerId = new AuthUI.IdpConfig.FacebookBuilder().build();
         }
         if(providerIdChoice == TWITTER_PROVIDER_CHOICE){
-            //providerId = new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build();
             providerId = new AuthUI.IdpConfig.TwitterBuilder().build();
         }
         return providerId;
@@ -118,6 +109,7 @@ public class LoginActivity extends BaseActivity {
         if (requestCode == RC_SIGNIN) {
             if (resultCode == RESULT_OK) {
                 toastShowLoginResult(getApplicationContext(), getString(R.string.connection_succeed));
+                this.createUserInFirestore();
                 this.startMain();
             } else {
                 if (response == null) {
@@ -135,5 +127,19 @@ public class LoginActivity extends BaseActivity {
     private void toastShowLoginResult(Context context, String response){
         Toast toast = Toast.makeText(context, response, Toast.LENGTH_LONG );
         toast.show();
+    }
+
+    private void createUserInFirestore(){
+        this.configureUserViewModel();
+        if (!isFirestoreUser()){
+            String urlPicture = (Objects.requireNonNull(this.getCurrentUser()).getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+            String username = this.getCurrentUser().getDisplayName();
+            String uid = this.getCurrentUser().getUid();
+
+            this.userViewModel.initUserDataToCreate(uid, username, urlPicture, "No restaurant"
+                    , null,null, null, null, null);
+            this.userViewModel.setFirestoreUserDetails()
+                    .addOnFailureListener(this.onFailureListener());
+        }
     }
 }

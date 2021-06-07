@@ -5,11 +5,13 @@ import androidx.annotation.Nullable;
 import com.cirederf.go4lunch.models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class UserHelper {
+    //todo determine if it's an api class, a firestoreutil class, a repository class (if it's then should we create viewmodel ?)
 
     private static final String COLLECTION_NAME = "users";
 
@@ -24,26 +26,27 @@ public class UserHelper {
      * @param username: name/pseudo for the user
      * @param urlPicture: nullable, picture for the user
      * @param chosenRestaurant: the name of the chosen restaurant to use in the call to create a user list for the restaurant
-     * @param isTheChoiceRestaurant: boolean for the active restaurant show
      * @param restaurantType: the type of the restaurant for ordering search
      * @return document(uid).set(userToCreate)
      */
 
     public static Task<Void> createUser(String uid, String username, @Nullable String urlPicture
-            , @Nullable String chosenRestaurant, @Nullable Boolean isTheChoiceRestaurant, @Nullable String restaurantType
-            , @Nullable String rating ) {
-        User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, isTheChoiceRestaurant, restaurantType, rating);
+            , @Nullable String chosenRestaurant, @Nullable String restaurantType
+            , @Nullable String rating, @Nullable String restaurantName, @Nullable String recyclerDisplay, @Nullable Boolean b ) {
+        User userToCreate = new User(uid, username, urlPicture, chosenRestaurant, restaurantType, rating, restaurantName, recyclerDisplay, b);
         return UserHelper.getUsersCollection().document(uid).set(userToCreate);
     }
 
     //-----------USERS GETTING------------
-
     // ----- GET A USER -----
     public static Task<DocumentSnapshot> getUser(String uid){
         return UserHelper.getUsersCollection().document(uid).get();
     }
 
     //----- GET THE LIST OF ALL USERS ORDER BY CHOSEN RESTAURANT NAME-----
+    public static DocumentReference getListOfFirestoreUsers() {
+        return UserHelper.getUsersCollection().document();
+    }
     //first implementation : public static Task<List<User>> getUserList() {
     public static Query getUserListOrderByChosenRestaurantName(String chosenRestaurant) {
         return UserHelper.getUsersCollection().orderBy(chosenRestaurant);
@@ -93,6 +96,9 @@ public class UserHelper {
 
     public static Task<Void> updateRating(String uid, String rating) {
         return UserHelper.getUsersCollection().document(uid).update("rating", rating);
+    }
+    public static Task<Void> updateRecyclerDisplay(String uid, String recyclerDisplay) {
+        return UserHelper.getUsersCollection().document(uid).update("recyclerDisplay", recyclerDisplay);
     }
 
     // ----- DELETE -----

@@ -56,10 +56,13 @@
     <string name="title_activity_details_restaurant" translatable="false">DetailsRestaurant</string>
 
     <string name="workmates_is_joining">Workmates is joining !</string>
+    <string name="workmates_is_eating">Workmates is eating here !</string>
+    <string name="workmates_is_doing_something">Workmates is doing something !</string>
     <string name="call">Call</string>
     <string name="website">website</string>
     <string name="like">Like</string>
     <string name="type_and_address">type and address</string>
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
+<!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
 </resources>

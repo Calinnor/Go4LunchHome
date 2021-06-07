@@ -60,18 +60,12 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
                         Result result = response.body().getResult();
                         Restaurant detailsRestaurant = new Restaurant(
                                 result.getName()
-                                //setDetailName(result)
                                 ,result.getFormattedAddress()
-                                //,setDetailsAddress(result)
                                 ,result.getRating()
-                                //,result.getPhotos().get(0)
                                 ,setDetailsPicture(result, apiKey)
-                                //,result.getTypes().get(0)
                                 ,setDetailsType(result)
                                 ,result.getWebsite()
-                                //,setWebSite(result)
                                 ,result.getFormattedPhoneNumber()
-                                //,setPhoneNumber(result)
                         );
                         _detailsRestaurant.setValue(detailsRestaurant);
                     }
@@ -84,8 +78,6 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
 
         return restaurantDetails;
     }
-
-
 
     //----------------METHODS FOR SET DETAILS VALUES IN onResponse()-------------
     private String getPicture(String photoReference, String apiKey) {
