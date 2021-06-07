@@ -3,7 +3,6 @@ package com.cirederf.go4lunch.views.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,29 +14,24 @@ import android.view.ViewGroup;
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.injections.Injection;
 import com.cirederf.go4lunch.injections.UserViewModelFactory;
-import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.viewmodels.UserViewModel;
-import com.cirederf.go4lunch.views.NearbyRestaurantsListAdapter;
 import com.cirederf.go4lunch.views.WorkmatesListAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.Query;
 
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListWorkmatesFragment extends Fragment {
+public class WorkmatesListFragment extends Fragment {
 
     @BindView(R.id.list_of_workmates_recyclerView)
     RecyclerView workmatesRecyclerView;
 
     private UserViewModel userViewModel;
 
-    public static ListWorkmatesFragment newInstance() {
-        return (new ListWorkmatesFragment());
+    public static WorkmatesListFragment newInstance() {
+        return (new WorkmatesListFragment());
     }
 
     @Override
@@ -65,7 +59,7 @@ public class ListWorkmatesFragment extends Fragment {
     private void getUsersList() {
         this.userViewModel.initLivedataUsersList();
         this.userViewModel.getLivedataUsersList()
-                .observe(getViewLifecycleOwner(), users -> ListWorkmatesFragment.this.configureRecyclerAdapterForWks(ListWorkmatesFragment.this.requireView(), users));
+                .observe(getViewLifecycleOwner(), users -> WorkmatesListFragment.this.configureRecyclerAdapterForWks(WorkmatesListFragment.this.requireView(), users));
     }
 
     private void configureRecyclerAdapterForWks(View requireView, List<User> users) {

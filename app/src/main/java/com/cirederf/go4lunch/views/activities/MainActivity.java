@@ -18,9 +18,9 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment;
+import com.cirederf.go4lunch.views.fragments.RestaurantsListFragment;
 import com.cirederf.go4lunch.views.fragments.MapFragment;
-import com.cirederf.go4lunch.views.fragments.ListWorkmatesFragment;
+import com.cirederf.go4lunch.views.fragments.WorkmatesListFragment;
 import com.cirederf.go4lunch.views.fragments.YourLunchFragment;
 import com.cirederf.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
@@ -68,10 +68,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
 
         //this one is for test with woklist
-        this.showSelectedFragment(R.id.main_content, ListWorkmatesFragment.newInstance());
+        //this.showSelectedFragment(R.id.main_content, WorkmatesListFragment.newInstance());
 
         //this one for restolist
-        //this.showSelectedFragment(R.id.main_content, ListRestaurantsFragment.newInstance());
+        this.showSelectedFragment(R.id.main_content, RestaurantsListFragment.newInstance());
     }
 
     /**
@@ -158,10 +158,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     showSelectedFragment(R.id.map, MapFragment.newInstance());
                     return true;
                 case R.id.list:
-                    showSelectedFragment(R.id.list, ListRestaurantsFragment.newInstance());
+                    showSelectedFragment(R.id.list, RestaurantsListFragment.newInstance());
                     return true;
                 case R.id.workmates:
-                    showSelectedFragment(R.id.workmates, ListWorkmatesFragment.newInstance());
+                    showSelectedFragment(R.id.workmates, WorkmatesListFragment.newInstance());
                     return true;
             }
             return false;

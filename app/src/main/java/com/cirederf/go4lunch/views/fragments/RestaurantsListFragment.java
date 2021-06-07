@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,21 +16,17 @@ import android.view.ViewGroup;
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.injections.Injection;
 import com.cirederf.go4lunch.injections.NearbyRestaurantsViewModelFactory;
-import com.cirederf.go4lunch.injections.UserViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
-import com.cirederf.go4lunch.viewmodels.UserViewModel;
 import com.cirederf.go4lunch.views.NearbyRestaurantsListAdapter;
 import com.cirederf.go4lunch.views.activities.RestaurantDetailsActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListRestaurantsFragment extends Fragment implements NearbyRestaurantsListAdapter.OnItemRestaurantClickListerner {
+public class RestaurantsListFragment extends Fragment implements NearbyRestaurantsListAdapter.OnItemRestaurantClickListerner {
 
     @BindView(R.id.fragment_list_restaurants_recycler_view)
     RecyclerView recyclerView;
@@ -39,8 +34,8 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
     private NearbyRestaurantsViewModel nearbyRestaurantsViewModel;
     public static final String RESTAURANT_PLACE_ID_PARAM = "placeId";
 
-    public static ListRestaurantsFragment newInstance() {
-        return (new ListRestaurantsFragment());
+    public static RestaurantsListFragment newInstance() {
+        return (new RestaurantsListFragment());
     }
 
     @Override
@@ -73,12 +68,13 @@ public class ListRestaurantsFragment extends Fragment implements NearbyRestauran
         String type = "restaurant";
         String apiKey = getString(R.string.places_api_google_key);
         this.nearbyRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
-        this.nearbyRestaurantsViewModel.getListRestaurantsLiveData()
+        this.nearbyRestaurantsViewModel
+                .getListRestaurantsLiveData()
                 .observe(getViewLifecycleOwner(),
                         new Observer<List<Restaurant>>() {
                             @Override
                             public void onChanged(List<Restaurant> restaurants) {
-                                ListRestaurantsFragment.this.configureRecyclerViewAdapter(ListRestaurantsFragment.this.requireView(), restaurants);
+                                RestaurantsListFragment.this.configureRecyclerViewAdapter(RestaurantsListFragment.this.requireView(), restaurants);
                             }
                         });
     }

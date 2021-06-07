@@ -59,42 +59,26 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
                     public void onResponse(Call<RestaurantDetailsApi> call, Response<RestaurantDetailsApi> response) {
                         assert response.body() != null;
                         Result result = response.body().getResult();
-                        Restaurant detailsRestaurant = new Restaurant(
-                                result.getName()
-                                ,result.getFormattedAddress()
-                                ,result.getRating()
-                                ,setDetailsPicture(result, apiKey)
-                                ,setDetailsType(result)
-                                ,result.getWebsite()
-                                ,result.getFormattedPhoneNumber()
-                        );
+
+                        Restaurant detailsRestaurant = new Restaurant.Builder()
+                                .setRestaurantName(result.getName())
+                                .setAddress(result.getFormattedAddress())
+                                .setRating(result.getRating())
+                                .setPpicture(result.getPhotos().get(0).getPhotoReference(), apiKey)
+                                .setType(setDetailsType(result))
+                                .setWebsite(result.getWebsite())
+                                .setPhoneNumber(result.getFormattedPhoneNumber())
+                                .build();
+
                         _detailsRestaurant.setValue(detailsRestaurant);
                     }
-
                     @Override
                     public void onFailure(Call<RestaurantDetailsApi> call, Throwable t) {
                         _detailsRestaurant.setValue(null);
                     }
                 });
-
         return restaurantDetails;
     }
-
-    //----------------METHODS FOR SET DETAILS VALUES IN onResponse()-------------
-    private String getPicture(String photoReference, String apiKey) {
-        return "https://maps.googleapis.com/maps/api/place/photo?" + "photoreference=" + photoReference
-                + "&maxwidth=" + 250 + "&key=" + apiKey;
-    }
-
-    private String setDetailsPicture(Result result, String apiKey) {
-        return result.getPhotos() != null ?
-                getPicture(result.getPhotos().get(0).getPhotoReference(), apiKey)
-                : null;
-    }
-
-//    private String setDetailsAddress(Result result) {
-//        return result.getFormattedAddress() != null ? result.getFormattedAddress() : "no address";
-//    }
 
     private String setDetailsType(Result result) {
         List<String> types = result.getTypes();
@@ -111,15 +95,4 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
         return restaurantType;
     }
 
-//    private String setDetailName(Result result) {
-//        return result.getName() != null ? result.getName() : "no name";
-//    }
-//
-//    private String setPhoneNumber(Result result) {
-//        return result.getFormattedPhoneNumber() != null ? result.getFormattedPhoneNumber() : "no phone";
-//    }
-//
-//    private String setWebSite(Result result) {
-//        return result.getWebsite() != null ? result.getWebsite() : "no webSite";
-//    }
 }

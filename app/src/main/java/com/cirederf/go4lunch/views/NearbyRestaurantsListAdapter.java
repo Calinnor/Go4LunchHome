@@ -5,20 +5,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.R;
-import com.cirederf.go4lunch.injections.Injection;
-import com.cirederf.go4lunch.injections.UserViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.models.User;
-import com.cirederf.go4lunch.viewmodels.UserViewModel;
-import com.cirederf.go4lunch.views.activities.RestaurantDetailsActivity;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.List;
 
@@ -27,6 +25,7 @@ import butterknife.ButterKnife;
 
 public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRestaurantsListAdapter.RestaurantViewHolder> {
 
+    private static final String COLLECTION_NAME = "users";
     List<Restaurant> nearbyRestaurants;
     private final OnItemRestaurantClickListerner onItemRestaurantClickListerner;
 
@@ -41,10 +40,8 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
         TextView textViewDistance;
         @BindView(R.id.item_list_restaurant_illustration_image)
         ImageView imageView;
-//        @BindView(R.id.item_list_restaurant_star_1_image)
-//        TextView textViewRating;
         @BindView(R.id.item_list_restaurant_number_workmates_txt)
-        TextView numberOfWorkmates;
+        TextView numberWorkmates;
 
         public RestaurantViewHolder(@NonNull View itemRestaurantView) {
             super(itemRestaurantView);
@@ -86,12 +83,29 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
                 .apply(RequestOptions.centerCropTransform())
                 .into(holder.imageView);
 
-        //todo search for display user list size for user in a restaurant:
+        Query query = getCollection().whereEqualTo("chosenRestaurant", nearbySearchRestaurants.getPlaceId());
+
+        query.addSnapshotListener((snapshots, e) -> {
+            int numberWorkmates;
+            if (e != null) {
+                return;
+            }
+            if (snapshots != null && !snapshots.isEmpty()) {
+                numberWorkmates = snapshots.size();
+                holder.numberWorkmates.setText
+                                (String.valueOf(numberWorkmates));
+            }
+            if (snapshots != null && snapshots.isEmpty()) {
+                holder.numberWorkmates.setText("0");
+            }
+        });
 
         holder.itemView.setOnClickListener(v -> onItemRestaurantClickListerner.onItemClick(nearbySearchRestaurants));
     }
 
-
+    private CollectionReference getCollection() {
+        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
+    }
 
     @Override
     public int getItemCount() {

@@ -11,41 +11,25 @@ public class Restaurant {
     private Boolean openNow;
     private String type;
 
-    //////// CONSTRUCTORS ////////
-    //-------CONSTRUCTOR FOR SEARCH PLACES--------
-    public Restaurant(String restaurantName, String address, double rating, String picture, String placeId, Boolean openNow, String type) {
+    private Restaurant(String restaurantName, String address
+            , double rating, String picture
+            , String placeId, String phoneNumber
+            , String website, Boolean openNow
+            , String type) {
+
         this.restaurantName = restaurantName;
         this.address = address;
         this.rating = rating;
         this.picture = picture;
         this.placeId = placeId;
+        this.phoneNumber = phoneNumber;
+        this.website = website;
         this.openNow = openNow;
         this.type = type;
     }
 
-    //---------CONSTRUCTOR FOR DETAILS-----------
-    public Restaurant(String setDetailName, String setDetailsAddress, double rating, String setDetailsPicture,
-                      String setDetailsType, String website, String phoneNumber) {
-        this.restaurantName = setDetailName;
-        this.address = setDetailsAddress;
-        this.rating = rating;
-        this.picture = setDetailsPicture;
-        this.type = setDetailsType;
-        this.website = website;
-        this.phoneNumber = phoneNumber;
-    }
+    //---------------GETTERS----------------
 
-    //-------FIREBASE CONSTRUCTOR--------
-    /**
-     //* @param workmatesUserList: list of workmates using the app and having selected this restaurant
-     * @param placeId: id for each restaurant
-     */
-    public Restaurant (String restaurantName, String placeId) {
-        this.restaurantName = restaurantName;
-        this.placeId = placeId;
-    }
-
-    //////// GETTERS ////////
     public String getRestaurantName() {
         return restaurantName;
     }
@@ -82,7 +66,7 @@ public class Restaurant {
         return type;
     }
 
-    //////// SETTERS ////////
+    //---------------SETTERS---------------------
 
     public void setPlaceId(String placeId) {
         this.placeId = placeId;
@@ -92,4 +76,71 @@ public class Restaurant {
         this.picture = picture;
     }
 
+    public static class Builder {
+        private String restaurantName;
+        private String address;
+        private double rating;
+        private String picture;
+        private String placeId;
+        private String phoneNumber;
+        private String website;
+        private Boolean openNow;
+        private String type;
+
+        public Builder setRestaurantName(String restaurantName) {
+            this.restaurantName = restaurantName == null ? "" : restaurantName;
+            return this;
+        }
+
+        public Builder setAddress(String address) {
+            this.address = address == null ? "" : address;
+            return this;
+        }
+
+        public Builder setRating(double rating) {
+            this.rating = rating;
+            return this;
+        }
+
+        public Builder setPicture(String picture) {
+            this.picture = picture;
+            return this;
+        }
+
+        public Builder setPpicture(String photoReference, String apiKey) {
+            this.picture = "https://maps.googleapis.com/maps/api/place/photo?" + "photoreference=" + photoReference
+                    + "&maxwidth=" + 250 + "&key=" + apiKey;
+            return this;
+        }
+
+        public Builder setPlaceId(String placeId) {
+            this.placeId = placeId == null ? "" : placeId;
+            return this;
+        }
+
+        public Builder setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber == null ? "" : phoneNumber;
+            return this;
+        }
+
+        public Builder setWebsite(String website) {
+            //this.website = website == null ? "" : website;
+            this.website = website != null ? website : "";
+            return this;
+        }
+
+        public Builder setOpenNow(Boolean openNow) {
+            this.openNow = openNow != null && openNow;
+            return this;
+        }
+
+        public Builder setType(String type) {
+            this.type = type == null ? "" : type;
+            return this;
+        }
+
+        public Restaurant build() {
+            return new Restaurant(restaurantName, address, rating, picture, placeId, phoneNumber, website, openNow, type/*, workmatesNumber*/);
+        }
+    }
 }

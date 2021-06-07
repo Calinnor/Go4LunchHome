@@ -25,7 +25,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.cirederf.go4lunch.views.fragments.ListRestaurantsFragment.RESTAURANT_PLACE_ID_PARAM;
+import static com.cirederf.go4lunch.views.fragments.RestaurantsListFragment.RESTAURANT_PLACE_ID_PARAM;
 
 public class RestaurantDetailsActivity extends BaseActivity {
 
@@ -192,6 +192,12 @@ public class RestaurantDetailsActivity extends BaseActivity {
         workmatesRecyclerView.setAdapter(workmatesListAdapter);
         RecyclerView.LayoutManager workmatesView = new LinearLayoutManager(this);
         workmatesRecyclerView.setLayoutManager(workmatesView);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        this.onBackPressed();
+        return true;
     }
 
 }
