@@ -9,6 +9,9 @@ import com.cirederf.go4lunch.models.apiNearbyModels.Result;
 import com.cirederf.go4lunch.api.PlacesApiRequests;
 import com.cirederf.go4lunch.api.RetrofitService;
 import com.cirederf.go4lunch.apiServices.placesInterfaces.NearbyPlaceInterface;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ import retrofit2.Response;
  */
 public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
 
+    private static final String COLLECTION_NAME = "users";
     private final MutableLiveData<List<Restaurant>> _restaurants = new MutableLiveData<>();
     public LiveData<List<Restaurant>> restaurantsList = _restaurants;
 
@@ -66,21 +70,32 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                         List<Result> results = response.body().getResults();
 
                         for (int i = 0; i < results.size(); i ++) {
-
-                            Restaurant nearbySearchRestaurant = new Restaurant.Builder()
-                                    .setRestaurantName(results.get(i).getName())
-                                    .setAddress(results.get(i).getVicinity())
-                                    .setRating(results.get(i).getRating())
-                                    .setPpicture(results.get(i).getPhotos().get(0).getPhotoReference(), apiKey)
-                                    .setPlaceId(results.get(i).getPlaceId())
-                                    .setOpenNow(results.get(i).getOpeningHours() != null ? results.get(i).getOpeningHours().getOpenNow() : false)
-                                    .setType(results.get(i).getTypes().get(0))
-                                    .build();
-
+                            Result result = results.get(i);
+                            Restaurant nearbySearchRestaurant = buildRestaurant(result, apiKey);
                             restaurants.add(nearbySearchRestaurant);
                         }
                         _restaurants.setValue(restaurants);
                     }
+                    //TODO find why there's a white screen with query here
+
+//                          for (int i = 0; i < results.size(); i++) {
+//                        Result result = results.get(i);
+//                        Restaurant nearbySearchRestaurant = buildRestaurant(result, apiKey);//
+//                        Query query = getCollection().whereEqualTo("chosenRestaurant", nearbySearchRestaurant.getPlaceId());
+//                        query.addSnapshotListener((snapshots, e) -> {
+//                            if (snapshots != null && e == null) {
+//                                int numberWorkmates = snapshots.size();
+//                                nearbySearchRestaurant.setWorkmatesNumber(numberWorkmates);
+//                            }
+//                            restaurants.add(nearbySearchRestaurant);
+//                        });
+//
+//                        if (i == results.size() - 1) {
+//                            _restaurants.setValue(restaurants);
+//                        }
+//                    }
+//                }
+
 
                     @Override
                     public void onFailure(Call<PlacesSearchApi> call, Throwable t) {
@@ -89,6 +104,22 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                 });
 
         return restaurantsList;
+    }
+
+    private Restaurant buildRestaurant(Result result, String apiKey) {
+        return new Restaurant.Builder()
+                .setRestaurantName(result.getName())
+                .setAddress(result.getVicinity())
+                .setRating(result.getRating())
+                .setPpicture(result.getPhotos().get(0).getPhotoReference(), apiKey)
+                .setPlaceId(result.getPlaceId())
+                .setOpenNow(result.getOpeningHours() != null ? result.getOpeningHours().getOpenNow() : false)
+                .setType(result.getTypes().get(0))
+                .build();
+    }
+
+    private CollectionReference getCollection() {
+        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 }
 

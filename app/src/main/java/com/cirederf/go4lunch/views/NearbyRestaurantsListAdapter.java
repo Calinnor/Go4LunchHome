@@ -82,6 +82,7 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
                 .load(nearbySearchRestaurants.getPicture())
                 .apply(RequestOptions.centerCropTransform())
                 .into(holder.imageView);
+        holder.numberWorkmates.setText(String.valueOf(nearbySearchRestaurants.getWorkmatesNumber()));
 
         Query query = getCollection().whereEqualTo("chosenRestaurant", nearbySearchRestaurants.getPlaceId());
 
@@ -93,7 +94,7 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
             if (snapshots != null && !snapshots.isEmpty()) {
                 numberWorkmates = snapshots.size();
                 holder.numberWorkmates.setText
-                                (String.valueOf(numberWorkmates));
+                        (String.valueOf(numberWorkmates));
             }
             if (snapshots != null && snapshots.isEmpty()) {
                 holder.numberWorkmates.setText("0");

@@ -10,12 +10,13 @@ public class Restaurant {
     private String website;
     private Boolean openNow;
     private String type;
+    private int workmatesNumber;
 
     private Restaurant(String restaurantName, String address
             , double rating, String picture
             , String placeId, String phoneNumber
             , String website, Boolean openNow
-            , String type) {
+            , String type, int workmatesNumber) {
 
         this.restaurantName = restaurantName;
         this.address = address;
@@ -26,6 +27,7 @@ public class Restaurant {
         this.website = website;
         this.openNow = openNow;
         this.type = type;
+        this.workmatesNumber = workmatesNumber;
     }
 
     //---------------GETTERS----------------
@@ -66,6 +68,10 @@ public class Restaurant {
         return type;
     }
 
+    public int getWorkmatesNumber() {
+        return workmatesNumber;
+    }
+
     //---------------SETTERS---------------------
 
     public void setPlaceId(String placeId) {
@@ -74,6 +80,10 @@ public class Restaurant {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public void setWorkmatesNumber(int workmatesNumber) {
+        this.workmatesNumber = workmatesNumber;
     }
 
     public static class Builder {
@@ -86,6 +96,7 @@ public class Restaurant {
         private String website;
         private Boolean openNow;
         private String type;
+        private int workmatesNumber;
 
         public Builder setRestaurantName(String restaurantName) {
             this.restaurantName = restaurantName == null ? "" : restaurantName;
@@ -124,7 +135,6 @@ public class Restaurant {
         }
 
         public Builder setWebsite(String website) {
-            //this.website = website == null ? "" : website;
             this.website = website != null ? website : "";
             return this;
         }
@@ -139,8 +149,13 @@ public class Restaurant {
             return this;
         }
 
+        public Builder setWorkmatesNumber(int workmatesNumber) {
+            this.workmatesNumber = workmatesNumber;
+            return this;
+        }
+
         public Restaurant build() {
-            return new Restaurant(restaurantName, address, rating, picture, placeId, phoneNumber, website, openNow, type/*, workmatesNumber*/);
+            return new Restaurant(restaurantName, address, rating, picture, placeId, phoneNumber, website, openNow, type, workmatesNumber);
         }
     }
 }
