@@ -65,13 +65,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         //TODO modify code line for needing !
         //this line is the line asked at the starting view for the project asked in p7
-        //this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
+        this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
 
         //this one is for test with woklist
         //this.showSelectedFragment(R.id.main_content, WorkmatesListFragment.newInstance());
 
         //this one for restolist
-        this.showSelectedFragment(R.id.main_content, RestaurantsListFragment.newInstance());
+        //this.showSelectedFragment(R.id.main_content, RestaurantsListFragment.newInstance());
     }
 
     /**
