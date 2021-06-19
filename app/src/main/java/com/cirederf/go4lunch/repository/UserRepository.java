@@ -103,7 +103,7 @@ public class UserRepository implements UsersInterface {
                 for (int i = 0; i < size; i++) {
                     User user = userList.get(i).toObject(User.class);
                     assert user != null;
-                    user.setIschosenRestaurantDisplay(true);
+                    user.setIsChosenRestaurantDisplay(true);
                     users.add(user);
                 }
                 _usersList.setValue(users);
@@ -124,7 +124,7 @@ public class UserRepository implements UsersInterface {
                 for (int i = 0; i < size; i++) {
                     User user = userList.get(i).toObject(User.class);
                     assert user != null;
-                    user.setIschosenRestaurantDisplay(false);
+                    user.setIsChosenRestaurantDisplay(false);
                     users.add(user);
                 }
                 _usersListWithRestaurant.setValue(users);

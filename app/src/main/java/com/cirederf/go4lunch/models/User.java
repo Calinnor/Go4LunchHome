@@ -5,25 +5,25 @@ import androidx.annotation.Nullable;
 public class User {
 
     private String uid;
-    private final String username;
+    private String username;
     @Nullable
-    private final String urlPicture;
+    private String urlPicture;
     @Nullable
     private String chosenRestaurant;
     @Nullable
-    private final String restaurantType;
-    private final String rating;
+    private String restaurantType;
+    private String rating;
     @Nullable
-    private final String restaurantName;
+    private String restaurantName;
     @Nullable
-    Boolean ischosenRestaurantDisplay;
+    Boolean isChosenRestaurantDisplay;
 
     //---------DETAILS FOR WORKMATES CHOSEN RESTAURANT----------
-//    public User(String username, @Nullable String urlPicture,@Nullable String chosenRestaurant) {
-//        this.username = username;
-//        this.urlPicture = urlPicture;
-//        this.chosenRestaurant = chosenRestaurant;
-//    }
+    public User(String username, @Nullable String urlPicture,@Nullable String chosenRestaurant) {
+        this.username = username;
+        this.urlPicture = urlPicture;
+        this.chosenRestaurant = chosenRestaurant;
+    }
 
     //------------FIREBASE CONSTRUCTOR-----------
     public User(String uid, String username
@@ -38,7 +38,7 @@ public class User {
         this.restaurantName = restaurantName;
     }
 
-//    public User() {}
+    public User() {}
 
     //---------GETTERS----------
     public String getUid() {
@@ -74,8 +74,8 @@ public class User {
     }
 
     @Nullable
-    public Boolean getIschosenRestaurantDisplay() {
-        return ischosenRestaurantDisplay;
+    public Boolean getIsChosenRestaurantDisplay() {
+        return isChosenRestaurantDisplay;
     }
 
     //------------SETTERS-----------
@@ -87,7 +87,7 @@ public class User {
         this.chosenRestaurant = chosenRestaurant;
     }
 
-    public void setIschosenRestaurantDisplay(@Nullable Boolean ischosenRestaurant) {
-        this.ischosenRestaurantDisplay = ischosenRestaurant;
+    public void setIsChosenRestaurantDisplay(@Nullable Boolean ischosenRestaurant) {
+        this.isChosenRestaurantDisplay = ischosenRestaurant;
     }
 }

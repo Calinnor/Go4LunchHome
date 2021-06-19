@@ -52,10 +52,10 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
     public void onBindViewHolder(@NonNull WorkmatesViewHolder holder, int position) {
         User workmate = workmatesList.get(position);
 
-        if (workmate.getIschosenRestaurantDisplay() != null && !workmate.getIschosenRestaurantDisplay()) {
+        if (workmate.getIsChosenRestaurantDisplay() != null && !workmate.getIsChosenRestaurantDisplay()) {
             holder.nameAndTypeAndRestaurantName.setText(String.format("%sis joining.", workmate.getUsername()));
         }
-        else if (workmate.getChosenRestaurant() != null && !workmate.getChosenRestaurant().equals("No restaurant") && workmate.getIschosenRestaurantDisplay()) {
+        else if (workmate.getChosenRestaurant() != null && !workmate.getChosenRestaurant().equals("No restaurant") && workmate.getIsChosenRestaurantDisplay()) {
             holder.nameAndTypeAndRestaurantName
                     .setText(String.format("%s is eating (%s) at %s", workmate.getUsername(), workmate.getRestaurantType(), workmate.getRestaurantName()));
         } else {
