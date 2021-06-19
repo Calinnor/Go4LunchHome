@@ -2,15 +2,15 @@ package com.cirederf.go4lunch.models;
 
 public class Restaurant {
     private String restaurantName;
-    private String address;
-    private double rating;
+    private final String address;
+    private final double rating;
     private String picture;
     private String placeId;
-    private String phoneNumber;
-    private String website;
-    private Boolean openNow;
-    private String type;
-    private int workmatesNumber;
+    private final String phoneNumber;
+    private final String website;
+    private final Boolean openNow;
+    private final String type;
+    private final int workmatesNumber;
 
     private Restaurant(String restaurantName, String address
             , double rating, String picture
@@ -82,9 +82,9 @@ public class Restaurant {
         this.picture = picture;
     }
 
-    public void setWorkmatesNumber(int workmatesNumber) {
-        this.workmatesNumber = workmatesNumber;
-    }
+//    public void setWorkmatesNumber(int workmatesNumber) {
+//        this.workmatesNumber = workmatesNumber;
+//    }
 
     public static class Builder {
         private String restaurantName;

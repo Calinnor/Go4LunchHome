@@ -35,36 +35,3 @@ public interface UsersInterface {
     //-------------DELETE------------------
     Task<Void> deleteFirestoreUser(String uid);
 }
-//    @Override
-//    public LiveData<List<Restaurant>> getRestaurantsListLiveData(String location, int radius, String type, String apiKey){
-//
-//        List<Restaurant> restaurants = new ArrayList<>();
-//apiDataSource.getNearbyPlacesList(location, radius, type, apiKey)
-//        .enqueue(new Callback<PlacesSearchApi>() {
-//@Override
-//public void onResponse(Call<PlacesSearchApi> call, Response<PlacesSearchApi> response) {
-//        assert response.body() != null;
-//        List<Result> results = response.body().getResults();
-//
-//        for (Result result : results) {
-//        getUsersByChosenRestaurant(result.getPlaceId()).addSnapshotListener((query, e) -> {
-//        int workmatesNumber = query != null ? query.getDocuments().size() : 0;
-//
-//        Restaurant restaurant = new Restaurant.Builder()
-//        .restaurantName(result.getName())
-//        .workmatesNumber(workmatesNumber)
-//        .build();
-//
-//        restaurants.add(restaurant);
-//        });
-//        _restaurants.setValue(restaurants);
-//        }
-//        }
-//
-//@Override
-//public void onFailure(Call<PlacesSearchApi> call, Throwable t) {
-//        _restaurants.setValue(null);
-//        }
-//        });
-//        return restaurantsList;
-//        }

@@ -3,14 +3,12 @@ package com.cirederf.go4lunch.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.models.apiNearbyModels.PlacesSearchApi;
-import com.cirederf.go4lunch.models.apiNearbyModels.Result;
 import com.cirederf.go4lunch.api.PlacesApiRequests;
 import com.cirederf.go4lunch.api.RetrofitService;
 import com.cirederf.go4lunch.apiServices.placesInterfaces.NearbyPlaceInterface;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.cirederf.go4lunch.models.Restaurant;
+import com.cirederf.go4lunch.models.apiNearbyModels.PlacesSearchApi;
+import com.cirederf.go4lunch.models.apiNearbyModels.Result;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,6 @@ import retrofit2.Response;
  */
 public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
 
-    private static final String COLLECTION_NAME = "users";
     private final MutableLiveData<List<Restaurant>> _restaurants = new MutableLiveData<>();
     public LiveData<List<Restaurant>> restaurantsList = _restaurants;
 
@@ -64,6 +61,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                 .enqueue(new Callback<PlacesSearchApi>() {
                     @Override
                     public void onResponse(Call<PlacesSearchApi> call, Response<PlacesSearchApi> response) {
+                        assert response.body() != null;
                         List<Result> results = response.body().getResults();
                         List<Restaurant> restaurants = new ArrayList<>();
 
@@ -73,25 +71,6 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                             restaurants.add(nearbySearchRestaurant);
                         }
                         _restaurants.setValue(restaurants);
-
-                        //TODO find why there's a white screen with query here
-//                        for (int i = 0; i < results.size(); i++) {
-//                            Result result = results.get(i);
-//                            Restaurant nearbySearchRestaurant = buildRestaurant(result, apiKey);//
-//                            Query query = getCollection().whereEqualTo("chosenRestaurant", nearbySearchRestaurant.getPlaceId());
-//                            int finalI = i;
-//                            query.addSnapshotListener((snapshots, e) -> {
-//                                if (snapshots != null && e == null) {
-//                                    int numberWorkmates = snapshots.size();
-//                                    nearbySearchRestaurant.setWorkmatesNumber(numberWorkmates);
-//                                }
-//                                restaurants.add(nearbySearchRestaurant);
-//
-//                                if (finalI == results.size() - 1) {
-//                                    _restaurants.setValue(restaurants);
-//                                }
-//                            });
-//                        }
                     }
 
                     @Override
@@ -107,7 +86,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
         return new Restaurant.Builder()
                 .setRestaurantName(result.getName())
                 .setAddress(result.getVicinity())
-                .setRating(result.getRating())
+                .setRating((result.getRating()) != null ? result.getRating() : 0)
                 .setPicture(result.getPhotos() != null ? result.getPhotos().get(0).getPhotoReference() : null, apiKey)
                 .setPlaceId(result.getPlaceId())
                 .setOpenNow(result.getOpeningHours() != null ? result.getOpeningHours().getOpenNow() : false)
@@ -115,9 +94,6 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                 .build();
     }
 
-    private CollectionReference getCollection() {
-        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
-    }
 }
 
 

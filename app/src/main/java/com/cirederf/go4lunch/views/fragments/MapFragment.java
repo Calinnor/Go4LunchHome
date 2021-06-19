@@ -4,38 +4,28 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Looper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
-import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cirederf.go4lunch.R;
-import com.cirederf.go4lunch.views.activities.MainActivity;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Objects;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -43,10 +33,9 @@ public class MapFragment extends Fragment {
 
     private static final int REQUEST_CODE_LOCATION_PERMISSIONS = 12340;
     private SupportMapFragment supportMapFragment;
-
-    //todo don't understand
     private GoogleMap googleMap;
     private LatLng googleLocation;
+    public static String currentUserLocation;
 
     public static MapFragment newInstance() {
         return (new MapFragment());
@@ -67,22 +56,21 @@ public class MapFragment extends Fragment {
         getCurrentLocation();
     }
 
-    //private void getCurrentLocation() {
     public void getCurrentLocation() {
         LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(2500);
+        locationRequest.setInterval(2000);
+        locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         if (ActivityCompat.checkSelfPermission(
                 requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(
-                getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            if (ContextCompat.checkSelfPermission(getContext()
+            if (ContextCompat.checkSelfPermission(requireContext()
                     , Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
-                        getActivity()
+                        requireActivity()
                         , new String[]{
                                 Manifest.permission.ACCESS_FINE_LOCATION
                         }
@@ -91,16 +79,17 @@ public class MapFragment extends Fragment {
             }
             return;
         }
+
         getGoogleMap();
 
-        LocationServices.getFusedLocationProviderClient(getActivity())
+        LocationServices.getFusedLocationProviderClient(requireActivity())
                 .requestLocationUpdates(locationRequest, new LocationCallback() {
 
                             @Override
                             public void onLocationResult(LocationResult locationResult) {
                                 super.onLocationResult(locationResult);
 
-                                LocationServices.getFusedLocationProviderClient(getActivity())
+                                LocationServices.getFusedLocationProviderClient(requireActivity())
                                         .removeLocationUpdates(this);
 
                                 if(locationResult != null && locationResult.getLocations().size() > 0) {
@@ -109,10 +98,21 @@ public class MapFragment extends Fragment {
                                     double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
                                     double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
 
-                                    //todo don't understand
+//                                    double latitude =  -33.8667 ;
+//                                    double longitude = 151.206990 ;
+                                    currentUserLocation = latitude + ","+longitude;
+
                                     if(googleMap != null) {
                                         googleLocation = new LatLng(latitude, longitude);
                                         googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
+
+                                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                                .target(new LatLng(latitude, longitude))
+                                                .tilt(20)
+                                                .build();
+                                        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                                        googleMap.animateCamera(CameraUpdateFactory.zoomTo(18), 1500, null);
+
                                     }
                                 }
                             }
@@ -132,23 +132,24 @@ public class MapFragment extends Fragment {
         }
     }
 
+    /**
+     * @SuppressLint("MissingPermission")
+     * getGoogleMap is call just after the permissionsCheck in getCurrentLocation()
+     */
+    @SuppressLint("MissingPermission")
     private void getGoogleMap() {
-        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @SuppressLint("MissingPermission")
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                MapFragment.this.googleMap = googleMap;
+        supportMapFragment.getMapAsync(googleMap -> {
 
-                if (googleLocation != null) {
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
-                }
+            MapFragment.this.googleMap = googleMap;
 
-                googleMap.moveCamera(CameraUpdateFactory.zoomBy(1550));
-                googleMap.setMyLocationEnabled(true);
-                googleMap.addMarker(new MarkerOptions().position(new LatLng(48.5277772, 2.6580556))
-                        .title("apm"));
+            if (googleLocation != null) {
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
             }
+
+            //1/5/10/15/20 levels for strat zoom
+            googleMap.setMyLocationEnabled(true);
         });
     }
+
 
 }

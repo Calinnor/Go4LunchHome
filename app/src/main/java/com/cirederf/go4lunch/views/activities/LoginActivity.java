@@ -2,6 +2,7 @@ package com.cirederf.go4lunch.views.activities;
 
 import androidx.annotation.Nullable;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -26,10 +27,16 @@ public class LoginActivity extends BaseActivity {
     private static final int GOOGLE_PROVIDER_CHOICE = 300;
     private static final int FACEBOOK_PROVIDER_CHOICE = 200;
 
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.button_login_with_twitter)
     Button buttonTwitter;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.button_login_with_facebook)
     Button facebook;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.button_login_with_google)
     Button google;
 
@@ -50,6 +57,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     //----------ACTIONS---------
+
+    @SuppressLint("NonConstantResourceId")
     @OnClick({R.id.button_login_with_google, R.id.button_login_with_facebook, R.id.button_login_with_twitter })
     public void onItemClicked(View view){
         int providerIdChoice = -1;

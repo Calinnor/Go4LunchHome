@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,12 +37,20 @@ import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.activity_main_toolbar)
     Toolbar toolbar;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.activity_main_drawer_layout)
     DrawerLayout drawerLayout;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.activity_main_nav_view)
     NavigationView navigationView;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.bottom_navigation)
     BottomNavigationView mBottomNavigationView;
 
@@ -151,6 +160,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     //-----------BOTTOM NAVIGATION-------------
+    @SuppressLint("NonConstantResourceId")
     private void configureBottomNavigationView() {
         mBottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -169,6 +179,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     //------------NAVIGATION DRAWER-----------
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();

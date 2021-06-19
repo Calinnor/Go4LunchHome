@@ -1,17 +1,16 @@
 package com.cirederf.go4lunch.views.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.injections.Injection;
@@ -28,6 +27,8 @@ import butterknife.ButterKnife;
 
 public class RestaurantsListFragment extends Fragment implements NearbyRestaurantsListAdapter.OnItemRestaurantClickListerner {
 
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.fragment_list_restaurants_recycler_view)
     RecyclerView recyclerView;
 
@@ -56,20 +57,15 @@ public class RestaurantsListFragment extends Fragment implements NearbyRestauran
 
     //-----------FOR NEARBY RESTAURANTS LIST------------
     private void getRestaurantsList() {
-        String location = "48.410692,2.738093";
-        int radius = 250;
+        String location = MapFragment.currentUserLocation;
+        int radius = 700;
         String type = "restaurant";
         String apiKey = getString(R.string.places_api_google_key);
         this.nearbyRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
         this.nearbyRestaurantsViewModel
                 .getListRestaurantsLiveData()
                 .observe(getViewLifecycleOwner(),
-                        new Observer<List<Restaurant>>() {
-                            @Override
-                            public void onChanged(List<Restaurant> restaurants) {
-                                RestaurantsListFragment.this.configureRecyclerViewAdapter(RestaurantsListFragment.this.requireView(), restaurants);
-                            }
-                        });
+                        restaurants -> RestaurantsListFragment.this.configureRecyclerViewAdapter(RestaurantsListFragment.this.requireView(), restaurants));
     }
 
     //-----------Adapter CONFIGURATION----------------

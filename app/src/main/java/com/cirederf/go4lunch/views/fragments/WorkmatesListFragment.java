@@ -1,5 +1,6 @@
 package com.cirederf.go4lunch.views.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -25,6 +26,8 @@ import butterknife.ButterKnife;
 
 public class WorkmatesListFragment extends Fragment {
 
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.list_of_workmates_recyclerView)
     RecyclerView workmatesRecyclerView;
 

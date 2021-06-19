@@ -5,25 +5,25 @@ import androidx.annotation.Nullable;
 public class User {
 
     private String uid;
-    private String username;
+    private final String username;
     @Nullable
-    private String urlPicture;
+    private final String urlPicture;
     @Nullable
     private String chosenRestaurant;
     @Nullable
-    private String restaurantType;
-    private String rating;
+    private final String restaurantType;
+    private final String rating;
     @Nullable
-    private String restaurantName;
+    private final String restaurantName;
     @Nullable
     Boolean ischosenRestaurantDisplay;
 
     //---------DETAILS FOR WORKMATES CHOSEN RESTAURANT----------
-    public User(String username, @Nullable String urlPicture,@Nullable String chosenRestaurant) {
-        this.username = username;
-        this.urlPicture = urlPicture;
-        this.chosenRestaurant = chosenRestaurant;
-    }
+//    public User(String username, @Nullable String urlPicture,@Nullable String chosenRestaurant) {
+//        this.username = username;
+//        this.urlPicture = urlPicture;
+//        this.chosenRestaurant = chosenRestaurant;
+//    }
 
     //------------FIREBASE CONSTRUCTOR-----------
     public User(String uid, String username
@@ -38,7 +38,7 @@ public class User {
         this.restaurantName = restaurantName;
     }
 
-    public User() {}
+//    public User() {}
 
     //---------GETTERS----------
     public String getUid() {
@@ -54,10 +54,12 @@ public class User {
         return urlPicture;
     }
 
+    @Nullable
     public String getChosenRestaurant() {
         return chosenRestaurant;
     }
 
+    @Nullable
     public String getRestaurantType() {
         return restaurantType;
     }
@@ -81,7 +83,7 @@ public class User {
         this.uid = uid;
     }
 
-    public void setChosenRestaurant(String chosenRestaurant) {
+    public void setChosenRestaurant(@Nullable String chosenRestaurant) {
         this.chosenRestaurant = chosenRestaurant;
     }
 

@@ -1,5 +1,6 @@
 package com.cirederf.go4lunch.views.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -29,16 +30,28 @@ import static com.cirederf.go4lunch.views.fragments.RestaurantsListFragment.REST
 
 public class RestaurantDetailsActivity extends BaseActivity {
 
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.restaurant_details_type_and_address)
     TextView typeAndAddress;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.restaurant_details_name)
     TextView name;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.restaurant_detail_picture)
     ImageView imageView;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.restaurant_is_chosen_button)
     FloatingActionButton mChosenRestaurantButton;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.text_view_recyclerview_empty)
     TextView textViewRecyclerViewEmpty;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.workmates_recyclerView)
     RecyclerView workmatesRecyclerView;
 
@@ -129,15 +142,14 @@ public class RestaurantDetailsActivity extends BaseActivity {
                     assert currentUser != null;
                     String chosenRestaurant = currentUser.getChosenRestaurant();
 
+                    assert chosenRestaurant != null;
                     if (applyChosenRestaurantOption == applyChosenRestaurantOptionAtStart) {
-                        assert chosenRestaurant != null;
                         if (chosenRestaurant.equals(placeId)) {
                             mChosenRestaurantButton.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
                         } else {
                             mChosenRestaurantButton.setImageResource(0);
                         }
                     } else {
-                        assert chosenRestaurant != null;
                         if (chosenRestaurant.equals(placeId)) {
                             userViewModel.updateChosenRestaurant(getCurrentUser().getUid(), "No restaurant");
                             userViewModel.updateRestaurantType(getCurrentUser().getUid(), null);
@@ -162,6 +174,7 @@ public class RestaurantDetailsActivity extends BaseActivity {
 
     //----------ACTIONS---------
 
+    @SuppressLint("NonConstantResourceId")
     @OnClick({R.id.button_phone_call, R.id.button_web_site_launcher, R.id.restaurant_is_chosen_button})
     public void onRestaurantDetailsACTIONClick(View view){
         int applyChosenRestaurantOptionAtClickSelection = 200;

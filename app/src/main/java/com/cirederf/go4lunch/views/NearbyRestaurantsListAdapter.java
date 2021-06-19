@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,7 +64,7 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
     public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position) {
         Restaurant nearbySearchRestaurants = nearbyRestaurants.get(position);
         holder.textViewName.setText(nearbySearchRestaurants.getRestaurantName());
-        holder.textViewDistance.setText("seem 100m");
+        holder.textViewDistance.setText(R.string.default_distance_display);
         holder.textViewAddress.setText(nearbySearchRestaurants.getAddress());
 
         if(nearbySearchRestaurants.getOpenNow()) {
@@ -87,16 +86,16 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
         Query query = getCollection().whereEqualTo("chosenRestaurant", nearbySearchRestaurants.getPlaceId());
 
         query.addSnapshotListener((snapshots, e) -> {
-            int numberWorkmates;
-            if (e != null) {
-                return;
-            }
-            if (snapshots != null && !snapshots.isEmpty()) {
-                numberWorkmates = snapshots.size();
+//            int numberWorkmates;
+//            if (e != null) {
+//                return;
+//            }
+//            if (snapshots != null && !snapshots.isEmpty()) {
+            if (snapshots != null && e == null) {
+                int numberWorkmates = snapshots.size();
                 holder.numberWorkmates.setText
                         (String.valueOf(numberWorkmates));
-            }
-            if (snapshots != null && snapshots.isEmpty()) {
+            } else {
                 holder.numberWorkmates.setText("0");
             }
         });
