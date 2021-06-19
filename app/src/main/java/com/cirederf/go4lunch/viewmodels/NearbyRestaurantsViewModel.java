@@ -25,9 +25,6 @@ public class NearbyRestaurantsViewModel extends ViewModel {
      * Init a LiveData<List<Restaurant>> with method from Repository use in ListRestaurantsFragment
      */
     public void initRestaurantsList(String location, int radius, String type, String apiKey) {
-        if (listRestaurantsLiveData != null) {
-            return;
-        }
         nearbyRestaurantsDataSource = RestaurantsNearbySearchRepository.getInstance();
         listRestaurantsLiveData = nearbyRestaurantsDataSource.getRestaurantsListLiveData(location, radius, type, apiKey);
     }

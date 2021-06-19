@@ -46,6 +46,7 @@ public class MapFragment extends Fragment {
 
     //todo don't understand
     private GoogleMap googleMap;
+    private LatLng googleLocation;
 
     public static MapFragment newInstance() {
         return (new MapFragment());
@@ -66,7 +67,8 @@ public class MapFragment extends Fragment {
         getCurrentLocation();
     }
 
-    private void getCurrentLocation() {
+    //private void getCurrentLocation() {
+    public void getCurrentLocation() {
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(2500);
@@ -109,7 +111,7 @@ public class MapFragment extends Fragment {
 
                                     //todo don't understand
                                     if(googleMap != null) {
-                                        LatLng googleLocation = new LatLng(latitude, longitude);
+                                        googleLocation = new LatLng(latitude, longitude);
                                         googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
                                     }
                                 }
@@ -135,7 +137,13 @@ public class MapFragment extends Fragment {
             @SuppressLint("MissingPermission")
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                googleMap.moveCamera(CameraUpdateFactory.zoomBy(150));
+                MapFragment.this.googleMap = googleMap;
+
+                if (googleLocation != null) {
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
+                }
+
+                googleMap.moveCamera(CameraUpdateFactory.zoomBy(1550));
                 googleMap.setMyLocationEnabled(true);
                 googleMap.addMarker(new MarkerOptions().position(new LatLng(48.5277772, 2.6580556))
                         .title("apm"));

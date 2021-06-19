@@ -118,7 +118,7 @@ public class Restaurant {
             return this;
         }
 
-        public Builder setPpicture(String photoReference, String apiKey) {
+        public Builder setPicture(String photoReference, String apiKey) {
             this.picture = "https://maps.googleapis.com/maps/api/place/photo?" + "photoreference=" + photoReference
                     + "&maxwidth=" + 250 + "&key=" + apiKey;
             return this;

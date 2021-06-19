@@ -43,28 +43,21 @@ public class RestaurantsListFragment extends Fragment implements NearbyRestauran
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recyclerview_list_restaurants, container, false);
         ButterKnife.bind(this, view);
+        configureNearbyRestaurantsViewModel();
+        getRestaurantsList();
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (nearbyRestaurantsViewModel == null) {
-            this.configureNearbyRestaurantsViewModel();
-        }
     }
 
     //------------ViewModel CONFIGURATION---------------
     private void configureNearbyRestaurantsViewModel() {
         NearbyRestaurantsViewModelFactory nearbyRestaurantsViewModelFactory = Injection.provideNearbySearchFactory();
         nearbyRestaurantsViewModel = ViewModelProviders.of(this, nearbyRestaurantsViewModelFactory).get(NearbyRestaurantsViewModel.class);
-        this.getRestaurantsList();
     }
 
     //-----------FOR NEARBY RESTAURANTS LIST------------
     private void getRestaurantsList() {
         String location = "48.410692,2.738093";
-        int radius = 25000;
+        int radius = 250;
         String type = "restaurant";
         String apiKey = getString(R.string.places_api_google_key);
         this.nearbyRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);

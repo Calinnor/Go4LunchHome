@@ -11,7 +11,6 @@ import com.cirederf.go4lunch.api.RetrofitService;
 import com.cirederf.go4lunch.apiServices.placesInterfaces.NearbyPlaceInterface;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,13 +60,12 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
     @Override
     public LiveData<List<Restaurant>> getRestaurantsListLiveData(String location, int radius, String type, String apiKey){
 
-        List<Restaurant> restaurants = new ArrayList<>();
-
         apiDataSource.getNearbyPlacesList(location, radius, type, apiKey)
                 .enqueue(new Callback<PlacesSearchApi>() {
                     @Override
                     public void onResponse(Call<PlacesSearchApi> call, Response<PlacesSearchApi> response) {
                         List<Result> results = response.body().getResults();
+                        List<Restaurant> restaurants = new ArrayList<>();
 
                         for (int i = 0; i < results.size(); i ++) {
                             Result result = results.get(i);
@@ -75,27 +73,26 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                             restaurants.add(nearbySearchRestaurant);
                         }
                         _restaurants.setValue(restaurants);
-                    }
-                    //TODO find why there's a white screen with query here
 
-//                          for (int i = 0; i < results.size(); i++) {
-//                        Result result = results.get(i);
-//                        Restaurant nearbySearchRestaurant = buildRestaurant(result, apiKey);//
-//                        Query query = getCollection().whereEqualTo("chosenRestaurant", nearbySearchRestaurant.getPlaceId());
-//                        query.addSnapshotListener((snapshots, e) -> {
-//                            if (snapshots != null && e == null) {
-//                                int numberWorkmates = snapshots.size();
-//                                nearbySearchRestaurant.setWorkmatesNumber(numberWorkmates);
-//                            }
-//                            restaurants.add(nearbySearchRestaurant);
-//                        });
+                        //TODO find why there's a white screen with query here
+//                        for (int i = 0; i < results.size(); i++) {
+//                            Result result = results.get(i);
+//                            Restaurant nearbySearchRestaurant = buildRestaurant(result, apiKey);//
+//                            Query query = getCollection().whereEqualTo("chosenRestaurant", nearbySearchRestaurant.getPlaceId());
+//                            int finalI = i;
+//                            query.addSnapshotListener((snapshots, e) -> {
+//                                if (snapshots != null && e == null) {
+//                                    int numberWorkmates = snapshots.size();
+//                                    nearbySearchRestaurant.setWorkmatesNumber(numberWorkmates);
+//                                }
+//                                restaurants.add(nearbySearchRestaurant);
 //
-//                        if (i == results.size() - 1) {
-//                            _restaurants.setValue(restaurants);
+//                                if (finalI == results.size() - 1) {
+//                                    _restaurants.setValue(restaurants);
+//                                }
+//                            });
 //                        }
-//                    }
-//                }
-
+                    }
 
                     @Override
                     public void onFailure(Call<PlacesSearchApi> call, Throwable t) {
@@ -111,7 +108,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                 .setRestaurantName(result.getName())
                 .setAddress(result.getVicinity())
                 .setRating(result.getRating())
-                .setPpicture(result.getPhotos().get(0).getPhotoReference(), apiKey)
+                .setPicture(result.getPhotos() != null ? result.getPhotos().get(0).getPhotoReference() : null, apiKey)
                 .setPlaceId(result.getPlaceId())
                 .setOpenNow(result.getOpeningHours() != null ? result.getOpeningHours().getOpenNow() : false)
                 .setType(result.getTypes().get(0))

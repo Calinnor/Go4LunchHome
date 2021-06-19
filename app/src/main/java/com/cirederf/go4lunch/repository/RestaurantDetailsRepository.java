@@ -64,7 +64,7 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
                                 .setRestaurantName(result.getName())
                                 .setAddress(result.getFormattedAddress())
                                 .setRating(result.getRating())
-                                .setPpicture(result.getPhotos().get(0).getPhotoReference(), apiKey)
+                                .setPicture(result.getPhotos() != null  ? result.getPhotos().get(0).getPhotoReference() : null, apiKey)
                                 .setType(setDetailsType(result))
                                 .setWebsite(result.getWebsite())
                                 .setPhoneNumber(result.getFormattedPhoneNumber())
