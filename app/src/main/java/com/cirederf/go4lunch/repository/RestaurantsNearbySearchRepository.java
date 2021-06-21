@@ -91,6 +91,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                 .setPlaceId(result.getPlaceId())
                 .setOpenNow(result.getOpeningHours() != null ? result.getOpeningHours().getOpenNow() : false)
                 .setType(result.getTypes().get(0))
+                .setGeometry(result.getGeometry())
                 .build();
     }
 

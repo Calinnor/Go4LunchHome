@@ -100,7 +100,12 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
             }
         });
 
-        holder.itemView.setOnClickListener(v -> onItemRestaurantClickListerner.onItemClick(nearbySearchRestaurants));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemRestaurantClickListerner.onItemClick(nearbySearchRestaurants);
+            }
+        });
     }
 
     private CollectionReference getCollection() {

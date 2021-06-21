@@ -1,5 +1,7 @@
 package com.cirederf.go4lunch.models;
 
+import com.cirederf.go4lunch.models.apiNearbyModels.Geometry;
+
 public class Restaurant {
     private String restaurantName;
     private final String address;
@@ -11,12 +13,14 @@ public class Restaurant {
     private final Boolean openNow;
     private final String type;
     private final int workmatesNumber;
+    private Geometry geometry;
 
     private Restaurant(String restaurantName, String address
             , double rating, String picture
             , String placeId, String phoneNumber
             , String website, Boolean openNow
-            , String type, int workmatesNumber) {
+            , String type, int workmatesNumber
+            , Geometry geometry) {
 
         this.restaurantName = restaurantName;
         this.address = address;
@@ -28,6 +32,7 @@ public class Restaurant {
         this.openNow = openNow;
         this.type = type;
         this.workmatesNumber = workmatesNumber;
+        this.geometry = geometry;
     }
 
     //---------------GETTERS----------------
@@ -72,6 +77,8 @@ public class Restaurant {
         return workmatesNumber;
     }
 
+    public  Geometry getGeometry() { return geometry; }
+
     //---------------SETTERS---------------------
 
     public void setPlaceId(String placeId) {
@@ -81,6 +88,8 @@ public class Restaurant {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
+    public void setGeometry(Geometry geometry) { this.geometry = geometry; }
 
 //    public void setWorkmatesNumber(int workmatesNumber) {
 //        this.workmatesNumber = workmatesNumber;
@@ -97,6 +106,7 @@ public class Restaurant {
         private Boolean openNow;
         private String type;
         private int workmatesNumber;
+        private Geometry geometry;
 
         public Builder setRestaurantName(String restaurantName) {
             this.restaurantName = restaurantName == null ? "" : restaurantName;
@@ -154,8 +164,15 @@ public class Restaurant {
             return this;
         }
 
-        public Restaurant build() {
-            return new Restaurant(restaurantName, address, rating, picture, placeId, phoneNumber, website, openNow, type, workmatesNumber);
+        public Builder setGeometry(Geometry geometry) {
+            this.geometry = geometry;
+            return this;
         }
+
+        public Restaurant build() {
+            return new Restaurant(restaurantName, address, rating, picture, placeId, phoneNumber, website, openNow, type, workmatesNumber, geometry);
+        }
+
+
     }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,7 +66,12 @@ public class RestaurantsListFragment extends Fragment implements NearbyRestauran
         this.nearbyRestaurantsViewModel
                 .getListRestaurantsLiveData()
                 .observe(getViewLifecycleOwner(),
-                        restaurants -> RestaurantsListFragment.this.configureRecyclerViewAdapter(RestaurantsListFragment.this.requireView(), restaurants));
+                        new Observer<List<Restaurant>>() {
+                            @Override
+                            public void onChanged(List<Restaurant> restaurants) {
+                                RestaurantsListFragment.this.configureRecyclerViewAdapter(RestaurantsListFragment.this.requireView(), restaurants);
+                            }
+                        });
     }
 
     //-----------Adapter CONFIGURATION----------------

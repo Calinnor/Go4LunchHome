@@ -80,4 +80,6 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
         //for the main contenair, the adapter will display ONLY ONE (the firs) item...!!!!!!!
     }
 
+
+
 }

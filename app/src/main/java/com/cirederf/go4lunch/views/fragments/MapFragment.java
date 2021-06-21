@@ -14,8 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.cirederf.go4lunch.R;
+import com.cirederf.go4lunch.injections.Injection;
+import com.cirederf.go4lunch.injections.NearbyRestaurantsViewModelFactory;
+import com.cirederf.go4lunch.models.Restaurant;
+import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -25,6 +31,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -32,10 +41,11 @@ import butterknife.ButterKnife;
 public class MapFragment extends Fragment {
 
     private static final int REQUEST_CODE_LOCATION_PERMISSIONS = 12340;
+    public static String currentUserLocation;
     private SupportMapFragment supportMapFragment;
     private GoogleMap googleMap;
     private LatLng googleLocation;
-    public static String currentUserLocation;
+    private NearbyRestaurantsViewModel nearbyRestaurantsViewModel;
 
     public static MapFragment newInstance() {
         return (new MapFragment());
@@ -46,29 +56,28 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.id_for_google_map_fragment);
+        configureNearbyRestaurantsViewModel();
+        getCurrentLocation();
         ButterKnife.bind(this, view);
         return view;
-          }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getCurrentLocation();
     }
 
+    @SuppressLint("MissingPermission")
     public void getCurrentLocation() {
         LocationRequest locationRequest = new LocationRequest();
         locationRequest.setInterval(2000);
         locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission
+                (requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                &&
+                ActivityCompat.checkSelfPermission
+                        (requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            if (ContextCompat.checkSelfPermission(requireContext()
-                    , Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //todo find why i cant reduce this part of code...
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
                         requireActivity()
                         , new String[]{
@@ -81,43 +90,7 @@ public class MapFragment extends Fragment {
         }
 
         getGoogleMap();
-
-        LocationServices.getFusedLocationProviderClient(requireActivity())
-                .requestLocationUpdates(locationRequest, new LocationCallback() {
-
-                            @Override
-                            public void onLocationResult(LocationResult locationResult) {
-                                super.onLocationResult(locationResult);
-
-                                LocationServices.getFusedLocationProviderClient(requireActivity())
-                                        .removeLocationUpdates(this);
-
-                                if(locationResult != null && locationResult.getLocations().size() > 0) {
-
-                                    int latestLocationIndex = locationResult.getLocations().size() -1;
-                                    double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
-                                    double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
-
-//                                    double latitude =  -33.8667 ;
-//                                    double longitude = 151.206990 ;
-                                    currentUserLocation = latitude + ","+longitude;
-
-                                    if(googleMap != null) {
-                                        googleLocation = new LatLng(latitude, longitude);
-                                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
-
-                                        CameraPosition cameraPosition = new CameraPosition.Builder()
-                                                .target(new LatLng(latitude, longitude))
-                                                .tilt(20)
-                                                .build();
-                                        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                                        googleMap.animateCamera(CameraUpdateFactory.zoomTo(18), 1500, null);
-
-                                    }
-                                }
-                            }
-                        }
-                        , Looper.getMainLooper());
+        getFusedLocation(locationRequest);
     }
 
     @Override
@@ -133,8 +106,7 @@ public class MapFragment extends Fragment {
     }
 
     /**
-     * @SuppressLint("MissingPermission")
-     * getGoogleMap is call just after the permissionsCheck in getCurrentLocation()
+     * @SuppressLint("MissingPermission") getGoogleMap is call just after the permissionsCheck in getCurrentLocation()
      */
     @SuppressLint("MissingPermission")
     private void getGoogleMap() {
@@ -145,11 +117,84 @@ public class MapFragment extends Fragment {
             if (googleLocation != null) {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
             }
-
-            //1/5/10/15/20 levels for strat zoom
+            googleMap.setMinZoomPreference(15.0f);//not need too far view, we search for nearby restaurants, not, world...
+            googleMap.setMaxZoomPreference(20.0f);
+            //1 far far far /5/10/15/20 near near near levels for strat zoom
             googleMap.setMyLocationEnabled(true);
         });
     }
 
+    private void configureNearbyRestaurantsViewModel() {
+        NearbyRestaurantsViewModelFactory nearbyRestaurantsViewModelFactory = Injection.provideNearbySearchFactory();
+        nearbyRestaurantsViewModel = ViewModelProviders.of(this, nearbyRestaurantsViewModelFactory).get(NearbyRestaurantsViewModel.class);
+    }
+
+    private void setRestaurantsMarkers(String location) {
+        int radius = 700;
+        String type = "restaurant";
+        String apiKey = getString(R.string.places_api_google_key);
+        this.nearbyRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
+        this.nearbyRestaurantsViewModel
+                .getListRestaurantsLiveData()
+                .observe(getViewLifecycleOwner(),
+                        new Observer<List<Restaurant>>() {
+                            @Override
+                            public void onChanged(List<Restaurant> restaurants) {
+                                MapFragment.this.configureRestaurantsMarkers(restaurants);
+                            }
+                        });
+    }
+
+    private void configureRestaurantsMarkers(List<Restaurant> restaurants) {
+        for (int i = 0; i < restaurants.size(); i++) {
+            googleMap.addMarker(new MarkerOptions().position(
+                    new LatLng(
+                            restaurants.get(i).getGeometry().getLocation().getLat(),
+                            restaurants.get(i).getGeometry().getLocation().getLng()))
+                    .title(restaurants.get(i).getRestaurantName()));
+        }
+    }
+
+    private void setMapOption(LocationResult locationResult) {
+        if (googleMap != null) {
+            if (locationResult != null && locationResult.getLocations().size() > 0) {
+
+                int latestLocationIndex = locationResult.getLocations().size() - 1;
+                double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
+                double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
+
+                currentUserLocation = latitude + "," + longitude;
+
+                setRestaurantsMarkers(currentUserLocation);
+
+                googleLocation = new LatLng(latitude, longitude);
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
+
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(latitude, longitude))
+                        .tilt(20)
+                        .build();
+                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                googleMap.animateCamera(CameraUpdateFactory.zoomTo(17), 1500, null);
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getFusedLocation(LocationRequest locationRequest) {
+        LocationServices
+                .getFusedLocationProviderClient(requireActivity())
+                .requestLocationUpdates(locationRequest, new LocationCallback() {
+                            @Override
+                            public void onLocationResult(LocationResult locationResult) {
+                                super.onLocationResult(locationResult);
+                                LocationServices.getFusedLocationProviderClient(requireActivity())
+                                        .removeLocationUpdates(this);
+
+                                setMapOption(locationResult);
+                            }
+                        }
+                        , Looper.getMainLooper());
+    }
 
 }
