@@ -29,6 +29,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -147,11 +148,28 @@ public class MapFragment extends Fragment {
 
     private void configureRestaurantsMarkers(List<Restaurant> restaurants) {
         for (int i = 0; i < restaurants.size(); i++) {
-            googleMap.addMarker(new MarkerOptions().position(
-                    new LatLng(
-                            restaurants.get(i).getGeometry().getLocation().getLat(),
-                            restaurants.get(i).getGeometry().getLocation().getLng()))
-                    .title(restaurants.get(i).getRestaurantName()));
+
+//            if(restaurants.get(i).getWorkmatesNumber() > 0) {
+//                googleMap.addMarker(new MarkerOptions()
+//                        .position(
+//                                new LatLng (
+//                                        restaurants.get(i).getGeometry().getLocation().getLat(),
+//                                        restaurants.get(i).getGeometry().getLocation().getLng()
+//                                )
+//                        )
+//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+//                        .title(restaurants.get(i).getRestaurantName()));
+//            } else {
+                googleMap.addMarker(new MarkerOptions()
+                        .position(
+                                new LatLng(
+                                        restaurants.get(i).getGeometry().getLocation().getLat(),
+                                        restaurants.get(i).getGeometry().getLocation().getLng()
+                                )
+                        )
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .title(restaurants.get(i).getRestaurantName()));
+//            }
         }
     }
 
