@@ -22,6 +22,7 @@ import com.cirederf.go4lunch.injections.Injection;
 import com.cirederf.go4lunch.injections.NearbyRestaurantsViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
+import com.cirederf.go4lunch.viewmodels.UserViewModel;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -33,6 +34,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.List;
 
@@ -47,6 +51,9 @@ public class MapFragment extends Fragment {
     private GoogleMap googleMap;
     private LatLng googleLocation;
     private NearbyRestaurantsViewModel nearbyRestaurantsViewModel;
+    private UserViewModel userViewModel;
+    private static final String COLLECTION_NAME = "users";
+    private int numberWorkmates;
 
     public static MapFragment newInstance() {
         return (new MapFragment());
@@ -89,7 +96,6 @@ public class MapFragment extends Fragment {
             }
             return;
         }
-
         getGoogleMap();
         getFusedLocation(locationRequest);
     }
@@ -149,28 +155,39 @@ public class MapFragment extends Fragment {
     private void configureRestaurantsMarkers(List<Restaurant> restaurants) {
         for (int i = 0; i < restaurants.size(); i++) {
 
-//            if(restaurants.get(i).getWorkmatesNumber() > 0) {
-//                googleMap.addMarker(new MarkerOptions()
-//                        .position(
-//                                new LatLng (
-//                                        restaurants.get(i).getGeometry().getLocation().getLat(),
-//                                        restaurants.get(i).getGeometry().getLocation().getLng()
-//                                )
-//                        )
-//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-//                        .title(restaurants.get(i).getRestaurantName()));
-//            } else {
-                googleMap.addMarker(new MarkerOptions()
-                        .position(
-                                new LatLng(
-                                        restaurants.get(i).getGeometry().getLocation().getLat(),
-                                        restaurants.get(i).getGeometry().getLocation().getLng()
-                                )
-                        )
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                        .title(restaurants.get(i).getRestaurantName()));
-//            }
+            Query query = getCollection().whereEqualTo("chosenRestaurant", restaurants.get(i).getPlaceId());
+            int finalI = i;
+            query.addSnapshotListener((snapshots, e) -> {
+                if (snapshots != null && e == null) {
+                    numberWorkmates = snapshots.size();
+                }
+
+                if(numberWorkmates > 0) {
+                    googleMap.addMarker(new MarkerOptions()
+                            .position(
+                                    new LatLng (
+                                            restaurants.get(finalI).getGeometry().getLocation().getLat(),
+                                            restaurants.get(finalI).getGeometry().getLocation().getLng()
+                                    )
+                            )
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                            .title(restaurants.get(finalI).getRestaurantName()));
+                } else {
+                    googleMap.addMarker(new MarkerOptions()
+                            .position(
+                                    new LatLng(
+                                            restaurants.get(finalI).getGeometry().getLocation().getLat(),
+                                            restaurants.get(finalI).getGeometry().getLocation().getLng()
+                                    )
+                            )
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                            .title(restaurants.get(finalI).getRestaurantName()));
+                }
+            });
         }
+
+
+
     }
 
     private void setMapOption(LocationResult locationResult) {
@@ -178,22 +195,26 @@ public class MapFragment extends Fragment {
             if (locationResult != null && locationResult.getLocations().size() > 0) {
 
                 int latestLocationIndex = locationResult.getLocations().size() - 1;
+
                 double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
                 double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
-
-                currentUserLocation = latitude + "," + longitude;
-
-                setRestaurantsMarkers(currentUserLocation);
+                //double latitudeForTest = -33.867487;
+                //double longitudeForTest = 151.206990;
 
                 googleLocation = new LatLng(latitude, longitude);
+                //googleLocation = new LatLng(latitudeForTest, longitudeForTest);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
+                currentUserLocation = googleLocation.latitude+","+googleLocation.longitude;
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(new LatLng(latitude, longitude))
+                        //.target(new LatLng(latitudeForTest, longitudeForTest))
                         .tilt(20)
                         .build();
                 googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 googleMap.animateCamera(CameraUpdateFactory.zoomTo(17), 1500, null);
+
+                setRestaurantsMarkers(currentUserLocation);
             }
         }
     }
@@ -214,5 +235,10 @@ public class MapFragment extends Fragment {
                         }
                         , Looper.getMainLooper());
     }
+
+    private CollectionReference getCollection() {
+        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
+    }
+
 
 }

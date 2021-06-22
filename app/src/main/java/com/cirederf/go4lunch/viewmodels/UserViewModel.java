@@ -17,6 +17,7 @@ public class UserViewModel extends ViewModel {
     private Task<Void> userToCreate;
     private LiveData<List<User>> userList;
     private LiveData<List<User>> userListWithRestaurant;
+    private LiveData<Integer> workmatesNumber;
 
     //----------REPOSITORY----------
     private UserRepository userDataSource;
@@ -71,6 +72,12 @@ public class UserViewModel extends ViewModel {
 
     public LiveData<List<User>> getLivedataUsersList() {
         return this.userList;
+    }
+
+    public LiveData<Integer> getWorkmatesNumber(String chosenRestaurant) {
+        userDataSource = UserRepository.getInstance();
+        workmatesNumber = userDataSource.getWorkmatesNumber(chosenRestaurant);
+        return this.workmatesNumber;
     }
 
     //------------------UPDATE IN FIRESTORE--------------
