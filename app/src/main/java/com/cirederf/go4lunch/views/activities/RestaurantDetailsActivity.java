@@ -28,7 +28,7 @@ import butterknife.OnClick;
 
 import static com.cirederf.go4lunch.views.fragments.RestaurantsListFragment.RESTAURANT_PLACE_ID_PARAM;
 
-public class RestaurantDetailsActivity extends BaseActivity {
+public class RestaurantDetailsActivity extends BaseActivity implements WorkmatesListAdapter.OnItemWorkmatesClick{
 
 
     @SuppressLint("NonConstantResourceId")
@@ -47,9 +47,7 @@ public class RestaurantDetailsActivity extends BaseActivity {
     @BindView(R.id.restaurant_is_chosen_button)
     FloatingActionButton mChosenRestaurantButton;
 
-    @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.text_view_recyclerview_empty)
-    TextView textViewRecyclerViewEmpty;
+
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.workmates_recyclerView)
@@ -201,7 +199,7 @@ public class RestaurantDetailsActivity extends BaseActivity {
     }
 
     private void configureRecyclerAdapterForWorkmates(List<User> users) {
-        WorkmatesListAdapter workmatesListAdapter = new WorkmatesListAdapter(users);
+        WorkmatesListAdapter workmatesListAdapter = new WorkmatesListAdapter(users, this);
         workmatesRecyclerView.setAdapter(workmatesListAdapter);
         RecyclerView.LayoutManager workmatesView = new LinearLayoutManager(this);
         workmatesRecyclerView.setLayoutManager(workmatesView);
@@ -213,4 +211,7 @@ public class RestaurantDetailsActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    public void onUserItemClick(User user) {
+    }
 }

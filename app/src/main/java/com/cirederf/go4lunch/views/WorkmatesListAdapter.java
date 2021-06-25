@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdapter.WorkmatesViewHolder> {
 
     List<User> workmatesList;
+    private final OnItemWorkmatesClick onItemWorkmatesClick;
 
     public static class WorkmatesViewHolder extends RecyclerView.ViewHolder {
 
@@ -37,8 +38,9 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
         }
     }
 
-    public WorkmatesListAdapter(List<User> workmatesList) {
+    public WorkmatesListAdapter(List<User> workmatesList, OnItemWorkmatesClick onItemWorkmatesClick) {
         this.workmatesList = workmatesList;
+        this.onItemWorkmatesClick = onItemWorkmatesClick;
     }
 
     @NonNull
@@ -70,6 +72,13 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
                     .load(workmate.getUrlPicture())
                     .apply(RequestOptions.centerCropTransform())
                     .into(holder.workmatesPicture);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemWorkmatesClick.onUserItemClick(workmate);
+            }
+        });
     }
 
     @Override
@@ -78,6 +87,10 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
         //beware, if item.xml for list is
         //android:layout_height="wrap_content"
         //for the main contenair, the adapter will display ONLY ONE (the firs) item...!!!!!!!
+    }
+
+    public interface OnItemWorkmatesClick {
+        void onUserItemClick(User user);
     }
 
 

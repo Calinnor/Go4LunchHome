@@ -2,6 +2,7 @@ package com.cirederf.go4lunch.views.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Looper;
@@ -23,6 +24,7 @@ import com.cirederf.go4lunch.injections.NearbyRestaurantsViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
 import com.cirederf.go4lunch.viewmodels.UserViewModel;
+import com.cirederf.go4lunch.views.activities.RestaurantDetailsActivity;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -33,6 +35,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,7 +46,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
     private static final int REQUEST_CODE_LOCATION_PERMISSIONS = 12340;
     public static String currentUserLocation;
@@ -54,6 +57,7 @@ public class MapFragment extends Fragment {
     private UserViewModel userViewModel;
     private static final String COLLECTION_NAME = "users";
     private int numberWorkmates;
+    private Marker marker;
 
     public static MapFragment newInstance() {
         return (new MapFragment());
@@ -163,6 +167,7 @@ public class MapFragment extends Fragment {
                 }
 
                 if(numberWorkmates > 0) {
+                    marker =
                     googleMap.addMarker(new MarkerOptions()
                             .position(
                                     new LatLng (
@@ -172,7 +177,10 @@ public class MapFragment extends Fragment {
                             )
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
                             .title(restaurants.get(finalI).getRestaurantName()));
+                    marker.setTag(restaurants.get(finalI).getPlaceId());
+
                 } else {
+                    marker =
                     googleMap.addMarker(new MarkerOptions()
                             .position(
                                     new LatLng(
@@ -182,7 +190,10 @@ public class MapFragment extends Fragment {
                             )
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                             .title(restaurants.get(finalI).getRestaurantName()));
+                    marker.setTag(restaurants.get(finalI).getPlaceId());
                 }
+
+                googleMap.setOnMarkerClickListener(this);
             });
         }
 
@@ -241,4 +252,17 @@ public class MapFragment extends Fragment {
     }
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        this.startDetailsActivity(marker);
+        return false;
+    }
+
+    private void startDetailsActivity(Marker marker) {
+        String restaurantPlaceId = (String) marker.getTag();
+        Intent intent = new Intent(getContext(), RestaurantDetailsActivity.class);
+        intent.putExtra(RestaurantsListFragment.RESTAURANT_PLACE_ID_PARAM, restaurantPlaceId);
+        this.startActivity(intent);
+
+    }
 }

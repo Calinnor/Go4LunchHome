@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.injections.Injection;
@@ -27,7 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WorkmatesListFragment extends Fragment {
+public class WorkmatesListFragment extends Fragment implements WorkmatesListAdapter.OnItemWorkmatesClick{
 
 
     @SuppressLint("NonConstantResourceId")
@@ -68,11 +69,26 @@ public class WorkmatesListFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), users -> WorkmatesListFragment.this.configureRecyclerAdapterForWks(WorkmatesListFragment.this.requireView(), users));
     }
 
-    private void configureRecyclerAdapterForWks(View requireView, List<User> users) {
-        WorkmatesListAdapter workmatesListAdapter = new WorkmatesListAdapter(users);
+    private void configureRecyclerAdapterForWks(View view, List<User> users) {
+        WorkmatesListAdapter workmatesListAdapter = new WorkmatesListAdapter(users, this);
         workmatesRecyclerView.setAdapter(workmatesListAdapter);
-        RecyclerView.LayoutManager workmatesView = new LinearLayoutManager(requireView.getContext());
+        RecyclerView.LayoutManager workmatesView = new LinearLayoutManager(view.getContext());
         workmatesRecyclerView.setLayoutManager(workmatesView);
+    }
+
+    @Override
+    public void onUserItemClick(User user) {
+        if (user.getChosenRestaurant() != null && !user.getChosenRestaurant().equals("No restaurant")) {
+            this.startDetailRestaurantActivity(user);
+        } else {
+            Toast.makeText(getContext(), user.getUsername()+" hasn't chosen yet !", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void startDetailRestaurantActivity(User user) {
+        Intent intent = new Intent(getContext(), RestaurantDetailsActivity.class);
+        intent.putExtra(RestaurantsListFragment.RESTAURANT_PLACE_ID_PARAM, user.getChosenRestaurant());
+        this.startActivity(intent);
     }
 }
 

@@ -61,7 +61,7 @@ public class RestaurantDetailsRepository implements RestaurantDetailsInterface {
                         Result result = response.body().getResult();
 
                         Restaurant detailsRestaurant = new Restaurant.Builder()
-                                .setRestaurantName(result.getName())
+                                .setRestaurantName(result.getName() != null ? result.getName() : null)
                                 .setAddress(result.getFormattedAddress())
                                 .setRating(result.getRating())
                                 .setPicture(result.getPhotos() != null  ? result.getPhotos().get(0).getPhotoReference() : null, apiKey)
