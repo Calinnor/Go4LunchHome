@@ -48,8 +48,6 @@ public class RestaurantDetailsActivity extends BaseActivity implements Workmates
     @BindView(R.id.restaurant_is_chosen_button)
     FloatingActionButton mChosenRestaurantButton;
 
-
-
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.workmates_recyclerView)
     RecyclerView workmatesRecyclerView;
@@ -58,7 +56,6 @@ public class RestaurantDetailsActivity extends BaseActivity implements Workmates
     private String type;
     private String restaurantName;
     private final int applyChosenRestaurantOptionAtStart = 100;
-
 
     @Override
     public int getActivityLayout() {
