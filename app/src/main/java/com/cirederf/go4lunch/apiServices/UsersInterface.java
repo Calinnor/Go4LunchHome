@@ -1,17 +1,12 @@
 package com.cirederf.go4lunch.apiServices;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 
-import com.cirederf.go4lunch.models.Restaurant;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public interface UsersInterface {
 
@@ -28,10 +23,10 @@ public interface UsersInterface {
     Query getUsersByChosenRestaurant(String chosenRestaurant);
 
     //-------------UPDATE----------------
-    Task<Void> updateChosenRestaurant(String uid, String chosenRestaurant);
-    Task<Void> updateTypeRestaurant(String uid, String typenRestaurant);
-    Task<Void> updateNameRestaurant(String uid, String nameRestaurant);
+    void updateChosenRestaurant(String uid, String chosenRestaurant);
+    void updateTypeRestaurant(String uid, String typenRestaurant);
+    void updateNameRestaurant(String uid, String nameRestaurant);
 
     //-------------DELETE------------------
-    Task<Void> deleteFirestoreUser(String uid);
+    void deleteFirestoreUser(String uid);
 }

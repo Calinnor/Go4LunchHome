@@ -3,7 +3,7 @@ package com.cirederf.go4lunch.models;
 import com.cirederf.go4lunch.models.apiNearbyModels.Geometry;
 
 public class Restaurant {
-    private String restaurantName;
+    private final String restaurantName;
     private final String address;
     private final double rating;
     private String picture;

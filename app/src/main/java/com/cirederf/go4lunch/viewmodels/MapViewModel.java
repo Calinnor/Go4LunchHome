@@ -12,7 +12,6 @@ import java.util.List;
 public class MapViewModel extends ViewModel {
     //---------FOR DATA-----------
     private LiveData<List<Restaurant>> listRestaurantsLiveData;
-    private LiveData<Integer> workmatesNumber;
 
     private UserRepository userDataSource;
     private RestaurantsNearbySearchRepository restaurantsNearbySearchRepository;
@@ -39,7 +38,6 @@ public class MapViewModel extends ViewModel {
 
     public LiveData<Integer> getWorkmatesNumber(String chosenRestaurant) {
         userDataSource = UserRepository.getInstance();
-        workmatesNumber = userDataSource.getWorkmatesNumber(chosenRestaurant);
-        return this.workmatesNumber;
+        return userDataSource.getWorkmatesNumber(chosenRestaurant);
     }
 }

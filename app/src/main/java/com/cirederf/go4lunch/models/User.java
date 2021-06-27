@@ -18,12 +18,8 @@ public class User {
     @Nullable
     Boolean isChosenRestaurantDisplay;
 
-    //---------DETAILS FOR WORKMATES CHOSEN RESTAURANT----------
-    public User(String username, @Nullable String urlPicture,@Nullable String chosenRestaurant) {
-        this.username = username;
-        this.urlPicture = urlPicture;
-        this.chosenRestaurant = chosenRestaurant;
-    }
+
+    public User() {}
 
     //------------FIREBASE CONSTRUCTOR-----------
     public User(String uid, String username
@@ -37,8 +33,6 @@ public class User {
         this.rating = rating;
         this.restaurantName = restaurantName;
     }
-
-    public User() {}
 
     //---------GETTERS----------
     public String getUid() {

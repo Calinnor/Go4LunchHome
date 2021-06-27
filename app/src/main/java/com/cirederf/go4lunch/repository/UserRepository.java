@@ -70,23 +70,23 @@ public class UserRepository implements UsersInterface {
     }
 
     @Override
-    public Task<Void> updateChosenRestaurant(String uid, String chosenRestaurant) {
-        return currentUserDocumentReference(uid).update("chosenRestaurant", chosenRestaurant);
+    public void updateChosenRestaurant(String uid, String chosenRestaurant) {
+        currentUserDocumentReference(uid).update("chosenRestaurant", chosenRestaurant);
     }
 
     @Override
-    public Task<Void> updateTypeRestaurant(String uid, String typeRestaurant) {
-        return currentUserDocumentReference(uid).update("restaurantType", typeRestaurant);
+    public void updateTypeRestaurant(String uid, String typeRestaurant) {
+        currentUserDocumentReference(uid).update("restaurantType", typeRestaurant);
     }
 
     @Override
-    public Task<Void> updateNameRestaurant(String uid, String nameRestaurant) {
-        return currentUserDocumentReference(uid).update("restaurantName", nameRestaurant);
+    public void updateNameRestaurant(String uid, String nameRestaurant) {
+        currentUserDocumentReference(uid).update("restaurantName", nameRestaurant);
     }
 
     @Override
-    public Task<Void> deleteFirestoreUser(String uid) {
-        return currentUserDocumentReference(uid).delete();
+    public void deleteFirestoreUser(String uid) {
+        currentUserDocumentReference(uid).delete();
     }
 
     //-----------LIVEDATA TRANSFORM---------------

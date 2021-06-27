@@ -1,5 +1,6 @@
 package com.cirederf.go4lunch.views;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,11 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
 
     public static class WorkmatesViewHolder extends RecyclerView.ViewHolder {
 
+
+        @SuppressLint("NonConstantResourceId")
         @BindView(R.id.workmates_name_restaurant_type_and_name)
         TextView nameAndTypeAndRestaurantName;
+        @SuppressLint("NonConstantResourceId")
         @BindView(R.id.workmates_picture)
         ImageView workmatesPicture;
 
@@ -73,12 +77,7 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
                     .apply(RequestOptions.centerCropTransform())
                     .into(holder.workmatesPicture);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemWorkmatesClick.onUserItemClick(workmate);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> onItemWorkmatesClick.onUserItemClick(workmate));
     }
 
     @Override

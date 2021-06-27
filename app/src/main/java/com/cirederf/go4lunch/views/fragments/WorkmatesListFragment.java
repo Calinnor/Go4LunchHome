@@ -3,21 +3,19 @@ package com.cirederf.go4lunch.views.fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.injections.Injection;
 import com.cirederf.go4lunch.injections.UserViewModelFactory;
-import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.viewmodels.UserViewModel;
 import com.cirederf.go4lunch.views.WorkmatesListAdapter;

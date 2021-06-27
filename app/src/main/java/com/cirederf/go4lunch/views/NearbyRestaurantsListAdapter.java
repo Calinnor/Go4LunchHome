@@ -1,5 +1,6 @@
 package com.cirederf.go4lunch.views;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,16 +30,23 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
     private final OnItemRestaurantClickListerner onItemRestaurantClickListerner;
 
     public static class RestaurantViewHolder extends RecyclerView.ViewHolder {
+
+        @SuppressLint("NonConstantResourceId")
         @BindView(R.id.item_list_restaurant_name_txt)
         TextView textViewName;
+        @SuppressLint("NonConstantResourceId")
         @BindView(R.id.item_list_restaurant_address_txt)
         TextView textViewAddress;
+        @SuppressLint("NonConstantResourceId")
         @BindView(R.id.item_list_restaurant_hours_txt)
         TextView textViewOpeningHours;
+        @SuppressLint("NonConstantResourceId")
         @BindView(R.id.item_list_restaurant_distance_txt)
         TextView textViewDistance;
+        @SuppressLint("NonConstantResourceId")
         @BindView(R.id.item_list_restaurant_illustration_image)
         ImageView imageView;
+        @SuppressLint("NonConstantResourceId")
         @BindView(R.id.item_list_restaurant_number_workmates_txt)
         TextView numberWorkmates;
 
@@ -100,12 +108,7 @@ public class NearbyRestaurantsListAdapter extends RecyclerView.Adapter<NearbyRes
             }
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemRestaurantClickListerner.onItemClick(nearbySearchRestaurants);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> onItemRestaurantClickListerner.onItemClick(nearbySearchRestaurants));
     }
 
     private CollectionReference getCollection() {

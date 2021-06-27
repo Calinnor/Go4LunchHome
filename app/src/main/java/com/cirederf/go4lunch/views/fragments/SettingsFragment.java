@@ -178,18 +178,22 @@ public class SettingsFragment extends Fragment {
     }
 
     private void isChecked() {
-        if (typeToSearch.equals("restaurant")) {
-            radioButtonRestaurants.setChecked(true);
-            radioButtonBakers.setChecked(false);
-            radioButtonBars.setChecked(false);
-        } else if (typeToSearch.equals("bar")) {
-            radioButtonRestaurants.setChecked(false);
-            radioButtonBakers.setChecked(false);
-            radioButtonBars.setChecked(true);
-        } else if (typeToSearch.equals("bakery")) {
-            radioButtonRestaurants.setChecked(false);
-            radioButtonBakers.setChecked(true);
-            radioButtonBars.setChecked(false);
+        switch (typeToSearch) {
+            case "restaurant":
+                radioButtonRestaurants.setChecked(true);
+                radioButtonBakers.setChecked(false);
+                radioButtonBars.setChecked(false);
+                break;
+            case "bar":
+                radioButtonRestaurants.setChecked(false);
+                radioButtonBakers.setChecked(false);
+                radioButtonBars.setChecked(true);
+                break;
+            case "bakery":
+                radioButtonRestaurants.setChecked(false);
+                radioButtonBakers.setChecked(true);
+                radioButtonBars.setChecked(false);
+                break;
         }
     }
 }

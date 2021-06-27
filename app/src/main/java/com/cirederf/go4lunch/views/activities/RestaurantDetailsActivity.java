@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.User;
@@ -98,7 +99,11 @@ public class RestaurantDetailsActivity extends BaseActivity implements Workmates
         restaurantName = restaurant.getRestaurantName();
         name.setText(restaurantName);
         typeAndAddress.setText(String.format("%s, %s", type, restaurant.getAddress()));
-        Glide.with(imageView.getContext()).load(restaurant.getPicture()).into(imageView);
+        Glide.with(imageView
+                .getContext())
+                .load(restaurant.getPicture())
+                .apply(RequestOptions.centerCropTransform())
+                .into(imageView);
     }
 
     //------------UTILS METHODS-------------

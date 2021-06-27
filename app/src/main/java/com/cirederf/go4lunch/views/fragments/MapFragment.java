@@ -17,19 +17,14 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.injections.Injection;
 import com.cirederf.go4lunch.injections.MapViewModelFactory;
-import com.cirederf.go4lunch.injections.NearbyRestaurantsViewModelFactory;
-import com.cirederf.go4lunch.injections.UserViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.models.apiNearbyModels.Location;
 import com.cirederf.go4lunch.viewmodels.MapViewModel;
-import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
-import com.cirederf.go4lunch.viewmodels.UserViewModel;
 import com.cirederf.go4lunch.views.activities.RestaurantDetailsActivity;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -43,9 +38,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.util.List;
 
@@ -154,21 +146,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         this.mapViewModel
                 .getListRestaurantsLiveData()
                 .observe(getViewLifecycleOwner(),
-                        new Observer<List<Restaurant>>() {
-                            @Override
-                            public void onChanged(List<Restaurant> restaurants) {
-                                MapFragment.this.configureRestaurantsMarkers(restaurants);
-                            }
-                        });
+                        MapFragment.this::configureRestaurantsMarkers);
     }
 
     private void configureRestaurantsMarkers(List<Restaurant> restaurants) {
         for (Restaurant restaurant: restaurants) {
             mapViewModel
                     .getWorkmatesNumber(restaurant.getPlaceId())
-                    .observe(getViewLifecycleOwner(), numberWorkmates -> {
-                configureMarker(restaurant, numberWorkmates);
-            });
+                    .observe(getViewLifecycleOwner(), numberWorkmates -> configureMarker(restaurant, numberWorkmates));
         }
     }
 
@@ -249,7 +234,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     private void setSharedPrefs() {
-        SharedPreferences appPrefs = getContext().getSharedPreferences(SettingsFragment.APP_PREFS, Context.MODE_PRIVATE );
+        SharedPreferences appPrefs = requireContext().getSharedPreferences(SettingsFragment.APP_PREFS, Context.MODE_PRIVATE );
         radius = appPrefs.getInt(SettingsFragment.RADIUS_PREFS, 700);
         tilt = appPrefs.getInt(SettingsFragment.TILT_PREFS, 20);
         typeToSearch = appPrefs.getString(SettingsFragment.TYPE_PREFS, "restaurant");
