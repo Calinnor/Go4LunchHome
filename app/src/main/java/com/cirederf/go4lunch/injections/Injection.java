@@ -21,6 +21,7 @@ public class Injection {
         return new UserRepository();
     }
 
+
     /**
      * @return Factories with associated repository as param
      * to use in fragment/activities associated
@@ -38,5 +39,11 @@ public class Injection {
     public static UserViewModelFactory provideUserDetailsFactory() {
         UserRepository userRepository = provideUserRepository();
         return new UserViewModelFactory(userRepository);
+    }
+
+    public static MapViewModelFactory provideMapFactory() {
+        UserRepository userRepository = provideUserRepository();
+        RestaurantsNearbySearchRepository restaurantsNearbySearchRepository = provideNearbyRestaurantsRepository();
+        return new MapViewModelFactory(userRepository, restaurantsNearbySearchRepository);
     }
 }

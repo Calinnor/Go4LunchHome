@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cirederf.go4lunch.views.fragments.RestaurantsListFragment;
 import com.cirederf.go4lunch.views.fragments.MapFragment;
+import com.cirederf.go4lunch.views.fragments.SettingsFragment;
 import com.cirederf.go4lunch.views.fragments.WorkmatesListFragment;
 import com.cirederf.go4lunch.views.fragments.YourLunchFragment;
 import com.cirederf.go4lunch.R;
@@ -207,6 +208,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 this.onClickLogoutButton();
                 break;
             case FRAGMENT_SETTINGS:
+                this.showSelectedFragment(R.id.fragment_settings, SettingsFragment.newInstance());
                 break;
             case FRAGMENT_YOUR_LUNCH:
                 this.showSelectedFragment(R.id.fragment_your_lunch, YourLunchFragment.newInstance());
@@ -261,5 +263,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             this.startTransactionFragment(fragment);
         }
     }
+
+
 
 }

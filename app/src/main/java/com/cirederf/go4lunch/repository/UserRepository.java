@@ -21,10 +21,10 @@ public class UserRepository implements UsersInterface {
     private static UserRepository userRepository;
     private final MutableLiveData<List<User>> _usersList = new MutableLiveData<>();
     private final MutableLiveData<List<User>> _usersListWithRestaurant = new MutableLiveData<>();
-    private final MutableLiveData<Integer> _workmatesNumber = new MutableLiveData<>();
     private final LiveData<List<User>> usersList = _usersList;
     private final LiveData<List<User>> usersListWithRestaurant = _usersListWithRestaurant;
-    private final LiveData<Integer> workmatesNumber = _workmatesNumber;
+    //private final MutableLiveData<Integer> _workmatesNumber = new MutableLiveData<>();
+    //private final LiveData<Integer> workmatesNumber = _workmatesNumber;
 
     public static UserRepository getInstance() {
         if (userRepository == null) {
@@ -136,12 +136,14 @@ public class UserRepository implements UsersInterface {
     }
 
     public LiveData<Integer> getWorkmatesNumber(String chosenRestaurant) {
+        final MutableLiveData<Integer> _workmatesNumber = new MutableLiveData<>();
+
         getUsersByChosenRestaurant(chosenRestaurant).addSnapshotListener((snapshots, e) -> {
             if (snapshots != null && e == null) {
                 _workmatesNumber.setValue(snapshots.size());
             }
         });
-        return workmatesNumber;
+        return _workmatesNumber;
     }
 
 

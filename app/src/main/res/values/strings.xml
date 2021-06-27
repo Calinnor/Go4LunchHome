@@ -65,5 +65,7 @@
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
     <string name="default_distance_display">seem 100m</string>
+    <string name="radius_max">%dm/%dm max</string>
+    <string name="tilt_max">%d/%d max</string>
     <!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
 </resources>

@@ -1,23 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/fragment_your_lunch"
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cirederf.go4lunch.views.fragments.SettingsFragment"
-    android:gravity="center"
-    android:background="@color/twitter">
+    android:id="@+id/fragment_settings"
+    tools:context=".views.fragments.SettingsFragment">
+
+<TextView
+    android:id="@+id/textAppSettings"
+    android:layout_width="0dp"
+    android:layout_height="37dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="24dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
+    android:text="Go4Lunch Settings"
+    android:textSize="24sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+<TextView
+    android:id="@+id/textRadiusSettings"
+    android:layout_width="0dp"
+    android:layout_height="24dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="22dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
+    android:text="Radius settings: max 1500 m"
+    android:textSize="16sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textAppSettings" />
+
+<SeekBar
+    android:id="@+id/seekBar_radius"
+    android:layout_width="0dp"
+    android:layout_height="24dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textRadiusSettings" />
 
     <TextView
-        android:id="@+id/fragment_page_news_title"
+        android:id="@+id/radius_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dip"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:textColor="#fff"
-        android:textAlignment="center"
-        android:text="display_settings_here"/>
+        android:text="Radius is"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar_radius"
+        app:layout_constraintStart_toStartOf="@+id/seekBar_radius"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar_radius" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tilt_settings"
+        android:layout_width="0dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Tilt:"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radius_view" />
+
+<SeekBar
+    android:id="@+id/seekBar_tilt"
+    android:layout_width="0dp"
+    android:layout_height="22dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tilt_settings" />
+
+    <TextView
+        android:id="@+id/tilt_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tilt is:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar_tilt" />
+
+    <TextView
+        android:id="@+id/text_search_type"
+        android:layout_width="0dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Search type:"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilt_view" />
+
+<RadioGroup
+    android:id="@+id/radioGroup_searchType"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
+    android:orientation="horizontal"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/text_search_type">
+
+    <RadioButton
+        android:id="@+id/radioButton_search_restaurants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Default (Restaurant)"
+        android:textSize="12sp"/>
+
+    <RadioButton
+        android:id="@+id/radioButton_search_bar"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bar"
+        android:textSize="12sp"/>
+
+    <RadioButton
+        android:id="@+id/radioButton_search_food"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bakery"
+        android:textSize="12sp"/>
+</RadioGroup>
+
+<Button
+    android:id="@+id/button_save_settings"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="33dp"
+    android:text="Save"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/radioGroup_searchType" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

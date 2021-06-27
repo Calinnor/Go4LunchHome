@@ -2,7 +2,9 @@ package com.cirederf.go4lunch.views.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Looper;
@@ -20,8 +22,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.injections.Injection;
+import com.cirederf.go4lunch.injections.MapViewModelFactory;
 import com.cirederf.go4lunch.injections.NearbyRestaurantsViewModelFactory;
+import com.cirederf.go4lunch.injections.UserViewModelFactory;
 import com.cirederf.go4lunch.models.Restaurant;
+import com.cirederf.go4lunch.models.apiNearbyModels.Location;
+import com.cirederf.go4lunch.viewmodels.MapViewModel;
 import com.cirederf.go4lunch.viewmodels.NearbyRestaurantsViewModel;
 import com.cirederf.go4lunch.viewmodels.UserViewModel;
 import com.cirederf.go4lunch.views.activities.RestaurantDetailsActivity;
@@ -53,11 +59,10 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     private SupportMapFragment supportMapFragment;
     private GoogleMap googleMap;
     private LatLng googleLocation;
-    private NearbyRestaurantsViewModel nearbyRestaurantsViewModel;
-    private UserViewModel userViewModel;
-    private static final String COLLECTION_NAME = "users";
-    private int numberWorkmates;
-    private Marker marker;
+    private MapViewModel mapViewModel;
+    private int radius;
+    private int tilt;
+    private String typeToSearch;
 
     public static MapFragment newInstance() {
         return (new MapFragment());
@@ -68,8 +73,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.id_for_google_map_fragment);
-        configureNearbyRestaurantsViewModel();
+        configureMapViewModel();
         getCurrentLocation();
+        setSharedPrefs();
         ButterKnife.bind(this, view);
         return view;
     }
@@ -128,24 +134,24 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
             if (googleLocation != null) {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
             }
-            googleMap.setMinZoomPreference(15.0f);//not need too far view, we search for nearby restaurants, not, world...
+            googleMap.setMinZoomPreference(14.0f);//not need too far view, we search for nearby restaurants, not, world...
             googleMap.setMaxZoomPreference(20.0f);
             //1 far far far /5/10/15/20 near near near levels for strat zoom
             googleMap.setMyLocationEnabled(true);
         });
     }
 
-    private void configureNearbyRestaurantsViewModel() {
-        NearbyRestaurantsViewModelFactory nearbyRestaurantsViewModelFactory = Injection.provideNearbySearchFactory();
-        nearbyRestaurantsViewModel = ViewModelProviders.of(this, nearbyRestaurantsViewModelFactory).get(NearbyRestaurantsViewModel.class);
+    private void configureMapViewModel() {
+        MapViewModelFactory mapViewModelFactory = Injection.provideMapFactory();
+        mapViewModel = ViewModelProviders.of(this, mapViewModelFactory).get(MapViewModel.class);
     }
 
     private void setRestaurantsMarkers(String location) {
-        int radius = 700;
-        String type = "restaurant";
+        //String type = "restaurant";
         String apiKey = getString(R.string.places_api_google_key);
-        this.nearbyRestaurantsViewModel.initRestaurantsList(location, radius, type, apiKey);
-        this.nearbyRestaurantsViewModel
+        //this.mapViewModel.initRestaurantsList(location, radius, type, apiKey);
+        this.mapViewModel.initRestaurantsList(location, radius, typeToSearch, apiKey);
+        this.mapViewModel
                 .getListRestaurantsLiveData()
                 .observe(getViewLifecycleOwner(),
                         new Observer<List<Restaurant>>() {
@@ -157,48 +163,28 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     private void configureRestaurantsMarkers(List<Restaurant> restaurants) {
-        for (int i = 0; i < restaurants.size(); i++) {
-
-            Query query = getCollection().whereEqualTo("chosenRestaurant", restaurants.get(i).getPlaceId());
-            int finalI = i;
-            query.addSnapshotListener((snapshots, e) -> {
-                if (snapshots != null && e == null) {
-                    numberWorkmates = snapshots.size();
-                }
-
-                if(numberWorkmates > 0) {
-                    marker =
-                    googleMap.addMarker(new MarkerOptions()
-                            .position(
-                                    new LatLng (
-                                            restaurants.get(finalI).getGeometry().getLocation().getLat(),
-                                            restaurants.get(finalI).getGeometry().getLocation().getLng()
-                                    )
-                            )
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
-                            .title(restaurants.get(finalI).getRestaurantName()));
-                    marker.setTag(restaurants.get(finalI).getPlaceId());
-
-                } else {
-                    marker =
-                    googleMap.addMarker(new MarkerOptions()
-                            .position(
-                                    new LatLng(
-                                            restaurants.get(finalI).getGeometry().getLocation().getLat(),
-                                            restaurants.get(finalI).getGeometry().getLocation().getLng()
-                                    )
-                            )
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                            .title(restaurants.get(finalI).getRestaurantName()));
-                    marker.setTag(restaurants.get(finalI).getPlaceId());
-                }
-
-                googleMap.setOnMarkerClickListener(this);
+        for (Restaurant restaurant: restaurants) {
+            mapViewModel
+                    .getWorkmatesNumber(restaurant.getPlaceId())
+                    .observe(getViewLifecycleOwner(), numberWorkmates -> {
+                configureMarker(restaurant, numberWorkmates);
             });
         }
+    }
 
+    private void configureMarker(Restaurant restaurant, Integer numberWorkmates) {
+        float iconColor = numberWorkmates > 0 ? BitmapDescriptorFactory.HUE_CYAN : BitmapDescriptorFactory.HUE_GREEN;
 
+        Location location = restaurant.getGeometry().getLocation();
+        LatLng latLng = new LatLng(location.getLat(), location.getLng());
 
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.defaultMarker(iconColor))
+                .title(restaurant.getRestaurantName());
+
+        googleMap.addMarker(markerOptions).setTag(restaurant.getPlaceId());
+        googleMap.setOnMarkerClickListener(MapFragment.this);
     }
 
     private void setMapOption(LocationResult locationResult) {
@@ -207,8 +193,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
                 int latestLocationIndex = locationResult.getLocations().size() - 1;
 
-                double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
-                double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
+                android.location.Location location = locationResult.getLocations().get(latestLocationIndex);
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
                 //double latitudeForTest = -33.867487;
                 //double longitudeForTest = 151.206990;
 
@@ -220,7 +207,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(new LatLng(latitude, longitude))
                         //.target(new LatLng(latitudeForTest, longitudeForTest))
-                        .tilt(20)
+                        .tilt(tilt)
                         .build();
                 googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 googleMap.animateCamera(CameraUpdateFactory.zoomTo(17), 1500, null);
@@ -247,11 +234,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                         , Looper.getMainLooper());
     }
 
-    private CollectionReference getCollection() {
-        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
-    }
-
-
     @Override
     public boolean onMarkerClick(Marker marker) {
         this.startDetailsActivity(marker);
@@ -264,5 +246,12 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         intent.putExtra(RestaurantsListFragment.RESTAURANT_PLACE_ID_PARAM, restaurantPlaceId);
         this.startActivity(intent);
 
+    }
+
+    private void setSharedPrefs() {
+        SharedPreferences appPrefs = getContext().getSharedPreferences(SettingsFragment.APP_PREFS, Context.MODE_PRIVATE );
+        radius = appPrefs.getInt(SettingsFragment.RADIUS_PREFS, 700);
+        tilt = appPrefs.getInt(SettingsFragment.TILT_PREFS, 20);
+        typeToSearch = appPrefs.getString(SettingsFragment.TYPE_PREFS, "restaurant");
     }
 }

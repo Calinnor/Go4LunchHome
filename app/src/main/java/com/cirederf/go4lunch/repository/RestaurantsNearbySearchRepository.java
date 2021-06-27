@@ -22,8 +22,8 @@ import retrofit2.Response;
  */
 public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
 
-    private final MutableLiveData<List<Restaurant>> _restaurants = new MutableLiveData<>();
-    public LiveData<List<Restaurant>> restaurantsList = _restaurants;
+//    private final MutableLiveData<List<Restaurant>> _restaurants = new MutableLiveData<>();
+//    public LiveData<List<Restaurant>> restaurantsList = _restaurants;
 
     /**
      * Singleton for RestaurantsRepository
@@ -57,6 +57,8 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
     @Override
     public LiveData<List<Restaurant>> getRestaurantsListLiveData(String location, int radius, String type, String apiKey){
 
+        MutableLiveData<List<Restaurant>> _restaurants = new MutableLiveData<>();
+
         apiDataSource.getNearbyPlacesList(location, radius, type, apiKey)
                 .enqueue(new Callback<PlacesSearchApi>() {
                     @Override
@@ -79,7 +81,7 @@ public class RestaurantsNearbySearchRepository implements NearbyPlaceInterface {
                     }
                 });
 
-        return restaurantsList;
+        return _restaurants;
     }
 
     private Restaurant buildRestaurant(Result result, String apiKey) {
