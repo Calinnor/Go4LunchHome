@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_map"
         android:enabled="true"
-        android:icon="@drawable/googleg_disabled_color_18"
+        android:icon="@drawable/logo_google"
         android:title="@string/bottom_navigation_menu_map"
         app:showAsAction="ifRoom" />
     <item

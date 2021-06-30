@@ -14,15 +14,9 @@
     <string name="popup_message_confirmation_logout_account">Voulez vous vous déconnecter ?</string>
     <string name="popup_message_choice_yes">Se déconnecter</string>
     <string name="popup_message_choice_no">Rester connecté</string>
-    <string name="choose_langage">Choisissez votre langue</string>
     <string name="your_lunch">Votre restaurant</string>
     <string name="settings">Paramètres</string>
     <string name="log_out">Se déconnecter</string>
-    <string name="French">Français</string>
-    <string name="English">Anglais</string>
-    <string name="locale_langage_value_en">en</string>
-    <string name="local_langage_value_fr">fr</string>
-    <string name="my_language">Ma langue</string>
     <string name="bottom_navigation_menu_map">Carte</string>
     <string name="bottom_navigation_menu_workmate">Collègues</string>
     <string name="bottom_navigation_menu_list">Liste</string>
@@ -44,4 +38,17 @@
     <string name="type_and_address">type et adresse</string>
     <string name="navigation_drawer_open">Ouvrir</string>
     <string name="navigation_drawer_close">Fermer</string>
+    <string name="default_distance_display">Distance statique</string>
+    <string name="radius_max">Rayon de recherche max</string>
+    <string name="tilt_max">Inclinaison max</string>
+    <string name="go4lunch_settings">Go4Lunch Paramètres</string>
+    <string name="radius_settings_max_1500_m">Rayon de recherche: max 1500 m</string>
+    <string name="radius_is">Rayon de recherche:</string>
+    <string name="tilt">Inclinaison:</string>
+    <string name="tilt_is">L\'inclinaison est de:</string>
+    <string name="search_type">Type recherché:</string>
+    <string name="default_restaurant">Défaut (Restaurant)</string>
+    <string name="bar">Bar</string>
+    <string name="bakery">Boulangerie</string>
+    <string name="save">Sauvegarder</string>
 </resources>

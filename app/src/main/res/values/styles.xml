@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="nav_drawer_title">Go4Lunch</style>
-
+    <style name="nav_drawer_title">I\'m Hungry !</style>
     <style name="nav_drawer_name">Username</style>
 
     <!-- Item Restaurant List Name Txt -->

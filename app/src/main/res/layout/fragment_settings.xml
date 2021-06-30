@@ -17,7 +17,7 @@
     android:layout_marginTop="24dp"
     android:layout_marginEnd="16dp"
     android:layout_marginRight="16dp"
-    android:text="Go4Lunch Settings"
+    android:text="@string/go4lunch_settings"
     android:textSize="24sp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
     android:layout_marginTop="22dp"
     android:layout_marginEnd="16dp"
     android:layout_marginRight="16dp"
-    android:text="Radius settings: max 1500 m"
+    android:text="@string/radius_settings_max_1500_m"
     android:textSize="16sp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
         android:id="@+id/radius_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Radius is"
+        android:text="@string/radius_is"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="@+id/seekBar_radius"
         app:layout_constraintStart_toStartOf="@+id/seekBar_radius"
@@ -68,7 +68,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Tilt:"
+        android:text="@string/tilt"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +91,7 @@
         android:id="@+id/tilt_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="tilt is:"
+        android:text="@string/tilt_is"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seekBar_tilt" />
@@ -103,7 +103,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Search type:"
+        android:text="@string/search_type"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +127,7 @@
         android:id="@+id/radioButton_search_restaurants"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Default (Restaurant)"
+        android:text="@string/default_restaurant"
         android:textSize="12sp"/>
 
     <RadioButton
@@ -135,7 +135,7 @@
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bar"
+        android:text="@string/bar"
         android:textSize="12sp"/>
 
     <RadioButton
@@ -143,7 +143,7 @@
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bakery"
+        android:text="@string/bakery"
         android:textSize="12sp"/>
 </RadioGroup>
 
@@ -152,7 +152,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="33dp"
-    android:text="Save"
+    android:text="@string/save"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/radioGroup_searchType" />

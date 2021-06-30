@@ -8,11 +8,14 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -26,12 +29,23 @@ import com.cirederf.go4lunch.views.fragments.WorkmatesListFragment;
 import com.cirederf.go4lunch.views.fragments.YourLunchFragment;
 import com.cirederf.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.LocationRestriction;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -39,6 +53,8 @@ import butterknife.BindView;
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
 
 
+    private static final int AUTOCOMPLETE_REQUEST_CODE = 235;
+    private static final String TAG = "handle_error";
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.activity_main_toolbar)
     Toolbar toolbar;
@@ -59,6 +75,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int FRAGMENT_SETTINGS = 1;
     private static final int FRAGMENT_YOUR_LUNCH = 2;
 
+    private static final int apiKey = R.string.places_api_google_key;
+
     @Override
     public int getActivityLayout() {
         return R.layout.activity_main;
@@ -67,6 +85,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onResume() {
         super.onResume();
+        this.getAutocomplete();
         this.configureBottomNavigationView();
         this.configureToolbar();
         this.configureNavigationDrawer();
@@ -264,6 +283,53 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+    private void getAutocomplete() {
+        if(!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(apiKey));
+        }
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.toolbar_search_button:
+                onSearchCalled();
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return false;
+        }
+    }
 
+    private void onSearchCalled() {
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+        Intent intent = new Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.OVERLAY, fields)
+                .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                .build(this);
+        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if(resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG,  "Place: "+ place.getName() + ", " + place.getId());
+                Toast.makeText(this, "ID: "
+                        + place.getId() + "NAME: "
+                        + place.getName() + "latLong: "
+                        + place.getLatLng(), Toast.LENGTH_LONG).show();
+            } else if(resultCode == AutocompleteActivity.RESULT_ERROR) {
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
