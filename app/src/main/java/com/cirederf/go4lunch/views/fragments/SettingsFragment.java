@@ -87,10 +87,6 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
-
-    /**
-     * setMin only available for API >=26, so there's no minimum because of the mini config asked for Go4Lunch
-     */
     private void setConfig() {
         seekBarRadius.setMax(2500);
         seekBarTilt.setMax(45);
@@ -102,14 +98,18 @@ public class SettingsFragment extends Fragment {
    
     public void doSave()  {
         SharedPreferences sharedPreferences= this.requireContext().getSharedPreferences(APP_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = getEditor(sharedPreferences);
+        editor.apply();
+        Toast.makeText(getContext(),"App Settings saved!",Toast.LENGTH_LONG).show();
+    }
+
+    private SharedPreferences.Editor getEditor(SharedPreferences sharedPreferences) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(TILT_PREFS, this.seekBarTilt.getProgress());
         editor.putInt(RADIUS_PREFS, this.seekBarRadius.getProgress());
         int checkedRadioButtonId = radioGroupSearchTypes.getCheckedRadioButtonId();
         editor.putString(TYPE_PREFS, setTypePref(checkedRadioButtonId));
-        editor.apply();
-
-        Toast.makeText(getContext(),"App Settings saved!",Toast.LENGTH_LONG).show();
+        return editor;
     }
 
     private void setSeekBarRadiusProgressValue() {
@@ -133,7 +133,6 @@ public class SettingsFragment extends Fragment {
             }
         });
     }
-
 
     private void setSeekBarTiltProgressValue() {
         seekBarTilt.setProgress(tilt);

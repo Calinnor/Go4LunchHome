@@ -95,8 +95,6 @@ public class RestaurantsListFragment extends Fragment implements NearbyRestauran
         SharedPreferences appPrefs = requireContext().getSharedPreferences(SettingsFragment.APP_PREFS, Context.MODE_PRIVATE );
         radius = appPrefs.getInt(SettingsFragment.RADIUS_PREFS, 700);
         typeToSearch = appPrefs.getString(SettingsFragment.TYPE_PREFS, "restaurant");
-
-
     }
 
 }

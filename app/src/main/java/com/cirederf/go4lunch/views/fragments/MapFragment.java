@@ -74,10 +74,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
     @SuppressLint("MissingPermission")
     public void getCurrentLocation() {
-        LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(2000);
-        locationRequest.setFastestInterval(1000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationRequest locationRequest = getLocationRequestOptions();
 
         if (ActivityCompat.checkSelfPermission
                 (requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -85,21 +82,32 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                 ActivityCompat.checkSelfPermission
                         (requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            //todo find why i cant reduce this part of code...
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                        requireActivity()
-                        , new String[]{
-                                Manifest.permission.ACCESS_FINE_LOCATION
-                        }
-                        , REQUEST_CODE_LOCATION_PERMISSIONS
-                );
-            }
+            checkPermissions();
             return;
         }
         getGoogleMap();
         getFusedLocation(locationRequest);
+    }
+
+    private LocationRequest getLocationRequestOptions() {
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(2000);
+        locationRequest.setFastestInterval(1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        return locationRequest;
+    }
+
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    requireActivity()
+                    , new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    }
+                    , REQUEST_CODE_LOCATION_PERMISSIONS
+            );
+        }
     }
 
     @Override
@@ -126,11 +134,15 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
             if (googleLocation != null) {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
             }
-            googleMap.setMinZoomPreference(14.0f);//not need too far view, we search for nearby restaurants, not, world...
-            googleMap.setMaxZoomPreference(20.0f);
+            setMapZoom(googleMap);
             //1 far far far /5/10/15/20 near near near levels for strat zoom
             googleMap.setMyLocationEnabled(true);
         });
+    }
+
+    private void setMapZoom(GoogleMap googleMap) {
+        googleMap.setMinZoomPreference(14.0f);//not need too far view, we search for nearby restaurants, not, world...
+        googleMap.setMaxZoomPreference(20.0f);
     }
 
     private void configureMapViewModel() {
@@ -139,9 +151,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     private void setRestaurantsMarkers(String location) {
-        //String type = "restaurant";
         String apiKey = getString(R.string.places_api_google_key);
-        //this.mapViewModel.initRestaurantsList(location, radius, type, apiKey);
         this.mapViewModel.initRestaurantsList(location, radius, typeToSearch, apiKey);
         this.mapViewModel
                 .getListRestaurantsLiveData()
@@ -159,15 +169,24 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
     private void configureMarker(Restaurant restaurant, Integer numberWorkmates) {
         float iconColor = numberWorkmates > 0 ? BitmapDescriptorFactory.HUE_CYAN : BitmapDescriptorFactory.HUE_GREEN;
+        LatLng latLng = getLatLng(restaurant);
+        MarkerOptions markerOptions = getMarkerOptions(restaurant, iconColor, latLng);
+        createMarker(restaurant, markerOptions);
+    }
 
+    private LatLng getLatLng(Restaurant restaurant) {
         Location location = restaurant.getGeometry().getLocation();
-        LatLng latLng = new LatLng(location.getLat(), location.getLng());
+        return new LatLng(location.getLat(), location.getLng());
+    }
 
-        MarkerOptions markerOptions = new MarkerOptions()
+    private MarkerOptions getMarkerOptions(Restaurant restaurant, float iconColor, LatLng latLng) {
+        return new MarkerOptions()
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.defaultMarker(iconColor))
                 .title(restaurant.getRestaurantName());
+    }
 
+    private void createMarker(Restaurant restaurant, MarkerOptions markerOptions) {
         googleMap.addMarker(markerOptions).setTag(restaurant.getPlaceId());
         googleMap.setOnMarkerClickListener(MapFragment.this);
     }
@@ -175,31 +194,36 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     private void setMapOption(LocationResult locationResult) {
         if (googleMap != null) {
             if (locationResult != null && locationResult.getLocations().size() > 0) {
-
                 int latestLocationIndex = locationResult.getLocations().size() - 1;
 
                 android.location.Location location = locationResult.getLocations().get(latestLocationIndex);
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                //double latitudeForTest = -33.867487;
-                //double longitudeForTest = 151.206990;
 
-                googleLocation = new LatLng(latitude, longitude);
-                //googleLocation = new LatLng(latitudeForTest, longitudeForTest);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
-                currentUserLocation = googleLocation.latitude+","+googleLocation.longitude;
-
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(latitude, longitude))
-                        //.target(new LatLng(latitudeForTest, longitudeForTest))
-                        .tilt(tilt)
-                        .build();
-                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                googleMap.animateCamera(CameraUpdateFactory.zoomTo(17), 1500, null);
-
+                initCurrentLocation(latitude, longitude);
+                setCameraPosition(latitude, longitude);
                 setRestaurantsMarkers(currentUserLocation);
             }
         }
+    }
+
+    private void initCurrentLocation(double latitude, double longitude) {
+        googleLocation = new LatLng(latitude, longitude);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(googleLocation));
+        currentUserLocation = googleLocation.latitude+","+googleLocation.longitude;
+    }
+
+    private void setCameraPosition(double latitude, double longitude) {
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(latitude, longitude))
+                .tilt(tilt)
+                .build();
+        initCameraPosition(cameraPosition);
+    }
+
+    private void initCameraPosition(CameraPosition cameraPosition) {
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(17), 1500, null);
     }
 
     @SuppressLint("MissingPermission")

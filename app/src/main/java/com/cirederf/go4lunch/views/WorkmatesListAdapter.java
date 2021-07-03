@@ -57,7 +57,23 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
     @Override
     public void onBindViewHolder(@NonNull WorkmatesViewHolder holder, int position) {
         User workmate = workmatesList.get(position);
+        setWorkmatesChoice(holder, workmate);
+        setWorkmatePicture(holder, workmate);
+        holder.itemView.setOnClickListener(v -> onItemWorkmatesClick.onUserItemClick(workmate));
+    }
 
+    private void setWorkmatePicture(WorkmatesViewHolder holder, User workmate) {
+        Glide.with(holder.workmatesPicture.getContext())
+                    .applyDefaultRequestOptions(
+                            new RequestOptions()
+                                    .error(R.drawable.workmates_default_image)
+                    )
+                    .load(workmate.getUrlPicture())
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(holder.workmatesPicture);
+    }
+
+    private void setWorkmatesChoice(WorkmatesViewHolder holder, User workmate) {
         if (workmate.getIsChosenRestaurantDisplay() != null && !workmate.getIsChosenRestaurantDisplay()) {
             holder.nameAndTypeAndRestaurantName.setText(String.format("%sis joining.", workmate.getUsername()));
         }
@@ -67,17 +83,6 @@ public class WorkmatesListAdapter extends RecyclerView.Adapter<WorkmatesListAdap
         } else {
             holder.nameAndTypeAndRestaurantName.setText(String.format("%s hasn't chosen yet.", workmate.getUsername()));
         }
-
-            Glide.with(holder.workmatesPicture.getContext())
-                    .applyDefaultRequestOptions(
-                            new RequestOptions()
-                                    .error(R.drawable.workmates_default_image)
-                    )
-                    .load(workmate.getUrlPicture())
-                    .apply(RequestOptions.centerCropTransform())
-                    .into(holder.workmatesPicture);
-
-        holder.itemView.setOnClickListener(v -> onItemWorkmatesClick.onUserItemClick(workmate));
     }
 
     @Override

@@ -96,6 +96,10 @@ public class RestaurantDetailsActivity extends BaseActivity implements Workmates
         restaurantName = restaurant.getRestaurantName();
         name.setText(restaurantName);
         typeAndAddress.setText(String.format("%s, %s", type, restaurant.getAddress()));
+        setImage(restaurant);
+    }
+
+    private void setImage(Restaurant restaurant) {
         Glide.with(imageView
                 .getContext())
                 .load(restaurant.getPicture())
