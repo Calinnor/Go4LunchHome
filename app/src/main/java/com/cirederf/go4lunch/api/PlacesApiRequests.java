@@ -30,4 +30,5 @@ public interface PlacesApiRequests {
     Call<RestaurantDetailsApi> getRestaurantDetails(@Query("place_id") String placeId,
                                                     @Query("key") String key);
 
+
 }

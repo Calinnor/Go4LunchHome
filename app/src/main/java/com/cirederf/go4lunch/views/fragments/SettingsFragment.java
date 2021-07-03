@@ -20,6 +20,8 @@ import androidx.fragment.app.Fragment;
 
 import com.cirederf.go4lunch.R;
 
+import java.text.MessageFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -85,10 +87,12 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
+    /**
+     * setMin only available for API >=26, so there's no minimum because of the mini config asked for Go4Lunch
+     */
     private void setConfig() {
         seekBarRadius.setMax(2500);
-        seekBarRadius.setMin(500);
         seekBarTilt.setMax(45);
     }
 
@@ -110,11 +114,12 @@ public class SettingsFragment extends Fragment {
 
     private void setSeekBarRadiusProgressValue() {
         seekBarRadius.setProgress(radius);
-        radiusView.setText(String.format(getString(R.string.radius_max), radius, seekBarRadius.getMax()));
+        radiusView.setText(MessageFormat.format("{0}{1}/{2}", getString(R.string.radius_is), radius, seekBarRadius.getMax()));
         seekBarRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int seekBarRadiusValue;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                radiusView.setText(MessageFormat.format("{0}{1}", getString(R.string.radius_is), String.valueOf(progress)));
                 seekBarRadiusValue = progress;
             }
 
@@ -124,7 +129,7 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                radiusView.setText(String.format(getString(R.string.radius_max), seekBarRadiusValue, seekBar.getMax()));
+                radiusView.setText(MessageFormat.format("{0}{1}/{2}", getString(R.string.radius_is), seekBarRadiusValue, seekBarRadius.getMax()));
             }
         });
     }
@@ -132,11 +137,12 @@ public class SettingsFragment extends Fragment {
 
     private void setSeekBarTiltProgressValue() {
         seekBarTilt.setProgress(tilt);
-        tiltView.setText(String.format(getString(R.string.tilt_max), tilt, seekBarTilt.getMax()));
+        tiltView.setText(MessageFormat.format("{0}{1}/{2}", getString(R.string.tilt_is), tilt, seekBarTilt.getMax()));
         seekBarTilt.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int seekBarTiltValue = tilt;
+            int seekBarTiltValue;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tiltView.setText(MessageFormat.format("{0}{1}", getString(R.string.tilt_is), String.valueOf(progress)));
                 seekBarTiltValue = progress;
             }
 
@@ -146,7 +152,7 @@ public class SettingsFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                tiltView.setText(String.format(getString(R.string.tilt_max), seekBarTiltValue, seekBar.getMax()));
+                tiltView.setText(MessageFormat.format("{0}{1}/{2}", getString(R.string.tilt_is), seekBarTiltValue, seekBarTilt.getMax()));
             }
         });
     }

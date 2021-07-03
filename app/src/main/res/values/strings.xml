@@ -59,13 +59,11 @@
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
     <string name="default_distance_display">seem 100m</string>
-    <string name="radius_max">%dm/%dm max</string>
-    <string name="tilt_max">%d/%d max</string>
     <string name="go4lunch_settings">Go4Lunch Settings</string>
     <string name="radius_settings_max_1500_m">Radius settings: max 1500 m</string>
     <string name="radius_is">Radius is</string>
     <string name="tilt">Tilt:</string>
-    <string name="tilt_is">tilt is:</string>
+    <string name="tilt_is">Tilt is: </string>
     <string name="search_type">Search lunch type:</string>
     <string name="default_restaurant">Default (Restaurant)</string>
     <string name="bar">Bar</string>

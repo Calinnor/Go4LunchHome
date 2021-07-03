@@ -1,12 +1,5 @@
 package com.cirederf.go4lunch.views.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -15,30 +8,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.cirederf.go4lunch.models.Restaurant;
-import com.cirederf.go4lunch.views.fragments.RestaurantsListFragment;
+import com.cirederf.go4lunch.R;
 import com.cirederf.go4lunch.views.fragments.MapFragment;
+import com.cirederf.go4lunch.views.fragments.RestaurantsListFragment;
 import com.cirederf.go4lunch.views.fragments.SettingsFragment;
 import com.cirederf.go4lunch.views.fragments.WorkmatesListFragment;
 import com.cirederf.go4lunch.views.fragments.YourLunchFragment;
-import com.cirederf.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.LocationRestriction;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
@@ -47,7 +42,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -289,6 +284,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -304,13 +300,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void onSearchCalled() {
-        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+        List<Place.Field> fields = Collections.singletonList(Place.Field.ID);
         //reduce the radius for google search to location near the location
         double radius = this.radius * 0.0008;
 
-        double[] boundsFromLatLng = getBoundsFromLatLng (radius, MapFragment.googleLocation.latitude, MapFragment.googleLocation.longitude);
-        Intent intent = new Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.OVERLAY, fields)
+        double[] boundsFromLatLng = getBoundsFromLatLng(radius, MapFragment.googleLocation.latitude, MapFragment.googleLocation.longitude);
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                 .setLocationRestriction(RectangularBounds.newInstance(
                         new LatLng(boundsFromLatLng[0], boundsFromLatLng[1]),
                         new LatLng(boundsFromLatLng[2], boundsFromLatLng[3])
@@ -331,21 +326,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         };
     }
 
+    /**
+     *
+     * @param requestCode to identify request
+     * @param resultCode result for the request
+     * @param data are values to fetch
+     * String placeId get place value before the request is kill
+     * adding finish() after getting values suppress the SearchView.hasFocus() on the last research
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
+                assert data != null;
                 Place place = Autocomplete.getPlaceFromIntent(data);
-                Log.i(TAG,  "Place: "+ place.getName() + ", " + place.getId());
-                Toast.makeText(this, "ID: "
-                        + place.getId() + "NAME: "
-                        + place.getName() + "latLong: "
-                        + place.getLatLng(), Toast.LENGTH_LONG).show();
                 String placeId = place.getId();
+                finish();
                 this.startDetailRestaurantActivity(placeId);
 
-                //todo:
-                //have sometimes this error which crashes the app
+                //had sometimes this error which crashes the app
                 //E/AndroidRuntime: FATAL EXCEPTION: main
                 //    Process: com.cirederf.go4lunch, PID: 23751
                 //    java.lang.NullPointerException: Attempt to invoke virtual method 'boolean androidx.appcompat.widget.SearchView.hasFocus()' on a null object reference
@@ -353,11 +352,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 //        at android.view.View.dispatchWindowFocusChanged(View.java:12819)
 
             } else if(resultCode == AutocompleteActivity.RESULT_ERROR) {
+                assert data != null;
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Log.i(TAG, status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
-
+                return;
             }
             return;
         }

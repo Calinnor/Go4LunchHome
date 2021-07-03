@@ -39,13 +39,11 @@
     <string name="navigation_drawer_open">Ouvrir</string>
     <string name="navigation_drawer_close">Fermer</string>
     <string name="default_distance_display">Distance statique</string>
-    <string name="radius_max">Rayon de recherche max</string>
-    <string name="tilt_max">Inclinaison max</string>
     <string name="go4lunch_settings">Go4Lunch Paramètres</string>
     <string name="radius_settings_max_1500_m">Rayon de recherche: max 1500 m</string>
     <string name="radius_is">Rayon de recherche:</string>
     <string name="tilt">Inclinaison:</string>
-    <string name="tilt_is">L\'inclinaison est de:</string>
+    <string name="tilt_is">L\'inclinaison est de: </string>
     <string name="search_type">Type recherché:</string>
     <string name="default_restaurant">Défaut (Restaurant)</string>
     <string name="bar">Bar</string>

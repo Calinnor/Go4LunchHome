@@ -10,6 +10,11 @@ public class RetrofitService {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
+    private static final Retrofit retrofitMatrix = new Retrofit.Builder()
+            .baseUrl("https://maps.googleapis.com/maps/api/distancematrix/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
     public static <S> S createService(Class<S> serviceClass) {
         return retrofit.create(serviceClass);
     }
