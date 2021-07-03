@@ -1,6 +1,8 @@
 package com.cirederf.go4lunch.views.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ import com.cirederf.go4lunch.injections.UserViewModelFactory;
 import com.cirederf.go4lunch.models.User;
 import com.cirederf.go4lunch.viewmodels.RestaurantDetailsViewModel;
 import com.cirederf.go4lunch.viewmodels.UserViewModel;
+import com.cirederf.go4lunch.views.fragments.SettingsFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private final List<User> userList = new ArrayList<>();
     protected UserViewModel userViewModel;
     protected RestaurantDetailsViewModel restaurantDetailsViewModel;
+    protected int radius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         this.configureRestaurantDetailsViewModel();
         this.configureUserViewModel();
+        this.setSharedPrefs();
     }
 
     public abstract int getActivityLayout();
@@ -95,5 +100,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     // -----ERROR HANDLER-----
     protected OnFailureListener onFailureListener(){
         return e -> Toast.makeText(getApplicationContext(), getString(R.string.error_unknown_error), Toast.LENGTH_LONG).show();
+    }
+
+    protected void setSharedPrefs() {
+        SharedPreferences appPrefs = getApplicationContext().getSharedPreferences(SettingsFragment.APP_PREFS, Context.MODE_PRIVATE );
+        radius = appPrefs.getInt(SettingsFragment.RADIUS_PREFS, 700);
     }
 }

@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.cirederf.go4lunch.models.Restaurant;
 import com.cirederf.go4lunch.views.fragments.RestaurantsListFragment;
 import com.cirederf.go4lunch.views.fragments.MapFragment;
 import com.cirederf.go4lunch.views.fragments.SettingsFragment;
@@ -30,10 +31,12 @@ import com.cirederf.go4lunch.views.fragments.YourLunchFragment;
 import com.cirederf.go4lunch.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.LocationRestriction;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -91,9 +94,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         this.configureNavigationDrawer();
         this.configureDrawerLayout();
         this.updateCurrentUserUi();
-
-        //TODO modify code line for needing !
-        //this line is the line asked at the starting view for the project asked in p7
         this.showSelectedFragment(R.id.main_content, MapFragment.newInstance());
 
         //this one is for test with woklist
@@ -305,11 +305,30 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void onSearchCalled() {
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+        //reduce the radius for google search to location near the location
+        double radius = this.radius * 0.0008;
+
+        double[] boundsFromLatLng = getBoundsFromLatLng (radius, MapFragment.googleLocation.latitude, MapFragment.googleLocation.longitude);
         Intent intent = new Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY, fields)
+                .setLocationRestriction(RectangularBounds.newInstance(
+                        new LatLng(boundsFromLatLng[0], boundsFromLatLng[1]),
+                        new LatLng(boundsFromLatLng[2], boundsFromLatLng[3])
+                ))
                 .setTypeFilter(TypeFilter.ESTABLISHMENT)
                 .build(this);
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+    }
+
+    private double[] getBoundsFromLatLng(double radius, double lat, double lng) {
+        double lat_change = radius / 111.2f;
+        double lng_change = Math.abs(Math.cos(lat * (Math.PI / 180)));
+        return new double[] {
+                lat - lat_change,
+                lng - lng_change,
+                lat + lat_change,
+                lng + lng_change
+        };
     }
 
     @Override
@@ -322,14 +341,32 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         + place.getId() + "NAME: "
                         + place.getName() + "latLong: "
                         + place.getLatLng(), Toast.LENGTH_LONG).show();
+                String placeId = place.getId();
+                this.startDetailRestaurantActivity(placeId);
+
+                //todo:
+                //have sometimes this error which crashes the app
+                //E/AndroidRuntime: FATAL EXCEPTION: main
+                //    Process: com.cirederf.go4lunch, PID: 23751
+                //    java.lang.NullPointerException: Attempt to invoke virtual method 'boolean androidx.appcompat.widget.SearchView.hasFocus()' on a null object reference
+                //        at androidx.appcompat.widget.SearchView$SearchAutoComplete.onWindowFocusChanged(SearchView.java:1910)
+                //        at android.view.View.dispatchWindowFocusChanged(View.java:12819)
+
             } else if(resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(data);
                 Log.i(TAG, status.getStatusMessage());
+
             } else if (resultCode == RESULT_CANCELED) {
 
             }
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void startDetailRestaurantActivity(String placeId){
+        Intent intent = new Intent(this, RestaurantDetailsActivity.class);
+        intent.putExtra(RestaurantsListFragment.RESTAURANT_PLACE_ID_PARAM, placeId);
+        this.startActivity(intent);
     }
 }

@@ -50,7 +50,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     public static String currentUserLocation;
     private SupportMapFragment supportMapFragment;
     private GoogleMap googleMap;
-    private LatLng googleLocation;
+    public static LatLng googleLocation;
     private MapViewModel mapViewModel;
     private int radius;
     private int tilt;
